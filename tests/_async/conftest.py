@@ -1,5 +1,6 @@
 import pytest
 
+from messagebus.service._async.registry import AsyncMessageRegistry
 from messagebus.service._async.repository import AsyncAbstractRepository
 from messagebus.service._async.unit_of_work import AsyncAbstractUnitOfWork
 
@@ -33,3 +34,8 @@ class AsyncDummyUnitOfWork(AsyncAbstractUnitOfWork):
 @pytest.fixture
 def async_uow() -> AsyncAbstractUnitOfWork:
     return AsyncDummyUnitOfWork()
+
+
+@pytest.fixture
+def bus() -> AsyncMessageRegistry:
+    return AsyncMessageRegistry()
