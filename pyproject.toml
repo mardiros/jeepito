@@ -1,0 +1,39 @@
+[tool.poetry]
+authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
+description = ""
+name = "messagebus"
+version = "0.1.0"
+
+[tool.pyright]
+include = ["src"]
+typeCheckingMode = "strict"
+
+[[tool.mypy.overrides]]
+disallow_any_generics = true
+disallow_untyped_defs = true
+module = "messagebus.*"
+
+[tool.poetry.dependencies]
+pydantic = "^1.10.9"
+python = "^3.7"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+flake8 = "^5"
+isort = "^5"
+mypy = "^1.4.0"
+pytest = "^7"
+pytest-asyncio = "^0.21.0"
+pytest-cov = "^4.1.0"
+unasync = "^0.5.0"
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
