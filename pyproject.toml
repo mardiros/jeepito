@@ -16,6 +16,7 @@ module = "messagebus.*"
 [tool.poetry.dependencies]
 pydantic = "^1.10.9"
 python = "^3.7"
+importlib-metadata = ">=4"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
