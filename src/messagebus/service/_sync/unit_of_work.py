@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import abc
 from types import TracebackType
-from typing import Iterator, Optional, Type
+from typing import Any, Iterator, Optional, Type
+
+from typing_extensions import Self
 
 from messagebus.domain.model import Message
 from messagebus.service._sync.repository import SyncAbstractRepository
@@ -12,8 +14,10 @@ from messagebus.service._sync.repository import SyncAbstractRepository
 class SyncAbstractUnitOfWork(abc.ABC):
     def collect_new_events(self) -> Iterator[Message]:
         for repo in self._iter_repositories():
-            while repo.messages:
-                yield repo.messages.pop(0)
+            while repo.seen:
+                model = repo.seen.pop(0)
+                while model.messages:
+                    yield model.messages.pop(0)
 
     def initialize(self) -> None:
         """Initialize every repositories."""
@@ -23,13 +27,13 @@ class SyncAbstractUnitOfWork(abc.ABC):
     @classmethod
     def _iter_repositories(
         cls,
-    ) -> Iterator[SyncAbstractRepository]:
+    ) -> Iterator[SyncAbstractRepository[Any]]:
         for member_name in cls.__dict__.keys():
             member = getattr(cls, member_name)
             if isinstance(member, SyncAbstractRepository):
                 yield member
 
-    def __enter__(self) -> SyncAbstractUnitOfWork:
+    def __enter__(self) -> Self:
         return self
 
     def __exit__(

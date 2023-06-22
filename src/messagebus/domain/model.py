@@ -5,11 +5,9 @@ Message base classes.
 
 """
 
+from typing import MutableSequence
+
 from pydantic import BaseModel, Field
-
-
-class Model(BaseModel):
-    """Base class for model."""
 
 
 class Metadata(BaseModel):
@@ -33,3 +31,15 @@ class Command(Message):
 
 class Event(Message):
     """Baseclass for message of type event."""
+
+
+class Model(BaseModel):
+    """Base class for model."""
+
+    messages: MutableSequence[Message] = Field(default_factory=list)
+    """
+    List of messages consumed by the unit of work to mutate the repository.
+
+    Those message are ephemeral, published by event handler and consumed
+    by the unit of work during the process of an original command.
+    """

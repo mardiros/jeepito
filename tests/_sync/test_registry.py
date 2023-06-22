@@ -2,14 +2,8 @@ import pytest
 from pydantic import Field
 
 from messagebus.domain.model import Command, Event, Metadata
-from messagebus.service._sync.registry import SyncMessageRegistry, ConfigurationError
-from tests._sync.conftest import SyncDummyUnitOfWork
-
-
-class DummyModel:
-    """A dummy model that will be updated using an event."""
-
-    counter: int = Field(0)
+from messagebus.service._sync.registry import ConfigurationError, SyncMessageRegistry
+from tests._sync.conftest import DummyModel, SyncDummyUnitOfWork
 
 
 class DummyCommand(Command):
@@ -23,14 +17,19 @@ class DummyEvent(Event):
     metadata: Metadata = Metadata(name="dummied", schema_version=1)
 
 
-def listen_command(cmd: DummyCommand, uow: SyncDummyUnitOfWork) -> None:
+def listen_command(cmd: DummyCommand, uow: SyncDummyUnitOfWork) -> DummyModel:
     """This command raise an event played by the message bus."""
-    uow.foos.messages.append(DummyEvent(id="", increment=10))
+    foo = DummyModel(id=cmd.id, counter=0)
+    foo.messages.append(DummyEvent(id=foo.id, increment=10))
+    uow.foos.add(foo)
+    return foo
 
 
 def listen_event(cmd: DummyEvent, uow: SyncDummyUnitOfWork) -> None:
     """This event is indented to be fire by the message bus."""
-    DummyModel.counter += cmd.increment
+    rfoo = uow.foos.get(cmd.id)
+    foo = rfoo.unwrap()
+    foo.counter += cmd.increment
 
 
 def test_messagebus(bus: SyncMessageRegistry, async_uow: SyncDummyUnitOfWork):
@@ -43,34 +42,32 @@ def test_messagebus(bus: SyncMessageRegistry, async_uow: SyncDummyUnitOfWork):
 
     DummyModel.counter = 0
 
-    listen_command(DummyCommand(id=""), async_uow)
-    assert list(async_uow.collect_new_events()) == [DummyEvent(id="", increment=10)]
+    foo = listen_command(DummyCommand(id="foo"), async_uow)
+    assert list(async_uow.collect_new_events()) == [DummyEvent(id="foo", increment=10)]
     assert (
         DummyModel.counter == 0
     ), "Events raised cannot be played before the attach_listener has been called"
 
-    listen_event(DummyEvent(id="", increment=1), async_uow)
-    assert DummyModel.counter == 1
+    listen_event(DummyEvent(id="foo", increment=1), async_uow)
+    assert foo.counter == 1
 
-    bus.handle(DummyCommand(id=""), async_uow)
-    assert (
-        DummyModel.counter == 1
-    ), "The command cannot raise event before attach_listener"
+    foo = bus.handle(DummyCommand(id="foo2"), async_uow)
+    assert foo is None, "The command cannot raise event before attach_listener"
 
     bus.add_listener(DummyCommand, listen_command)
     bus.add_listener(DummyEvent, listen_event)
 
-    bus.handle(DummyCommand(id=""), async_uow)
-    assert DummyModel.counter == 11, (
+    foo = bus.handle(DummyCommand(id="foo3"), async_uow)
+    assert foo.counter == 10, (
         "The command should raise an event that is handle by the bus that "
         "will increment the model to 10"
     )
 
     bus.remove_listener(DummyEvent, listen_event)
 
-    bus.handle(DummyCommand(id=""), async_uow)
+    foo = bus.handle(DummyCommand(id="foo4"), async_uow)
     assert (
-        DummyModel.counter == 11
+        foo.counter == 0
     ), "The command should raise an event that is not handled anymore "
 
 

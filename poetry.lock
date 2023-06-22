@@ -491,6 +491,20 @@ pytest = ">=4.6"
 testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtualenv"]
 
 [[package]]
+name = "result"
+version = "0.10.0"
+description = "A Rust-like result type for Python"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "result-0.10.0-py3-none-any.whl", hash = "sha256:a284420d599bd63d6a5bcf60701abf93f479b4aab282379ebadf51b6cafd1ba4"},
+    {file = "result-0.10.0.tar.gz", hash = "sha256:28bc217336c2f1d339b494241ccf3714e36e6bd90abc04df318d65dccb61594f"},
+]
+
+[package.dependencies]
+typing-extensions = {version = "*", markers = "python_version < \"3.10\""}
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -574,4 +588,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "d5a192d635554e5074d4972fdac5f2db313d57dd04c510d24b9d1970c2a81cf0"
+content-hash = "8f6f433eb6776d2fb8b6d7cb0a56024f78bba3cf31523a4486c936d5193230c1"
