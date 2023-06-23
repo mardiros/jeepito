@@ -13,7 +13,7 @@ from messagebus.typing import (
     AsyncMessageHandler,
 )
 
-from .unit_of_work import AsyncAbstractUnitOfWork
+from .unit_of_work import AsyncUnitOfWorkTransaction
 
 log = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ class AsyncMessageRegistry:
                 f"type {msg_type} should be a command or an event"
             )
 
-    async def handle(self, message: Message, uow: AsyncAbstractUnitOfWork) -> Any:
+    async def handle(self, message: Message, uow: AsyncUnitOfWorkTransaction) -> Any:
         """
         Notify listener of that event registered with `messagebus.add_listener`.
         Return the first event from the command.
@@ -93,10 +93,10 @@ class AsyncMessageRegistry:
                 )
                 if idx == 0:
                     ret = cmdret
-                queue.extend(uow.collect_new_events())
+                queue.extend(uow.uow.collect_new_events())
             elif msg_type in self.events_registry:
                 for callback in self.events_registry[cast(Type[Event], msg_type)]:
                     await callback(cast(Event, message), uow)
-                    queue.extend(uow.collect_new_events())
+                    queue.extend(uow.uow.collect_new_events())
             idx += 1
         return ret

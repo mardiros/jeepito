@@ -26,7 +26,7 @@ class BarCreated(Event):
 
 
 async def test_collect_new_events(
-    async_uow: AsyncDummyUnitOfWork, foo_factory: Type[DummyModel]
+    uow: AsyncDummyUnitOfWork, foo_factory: Type[DummyModel]
 ):
     foo = foo_factory(id="1", counter=0)
     foo.messages.append(FooCreated(id="1"))
@@ -35,13 +35,13 @@ async def test_collect_new_events(
     foo2 = foo_factory(id="2", counter=0)
     foo2.messages.append(FooCreated(id="2"))
 
-    async with async_uow as uow:
-        await uow.foos.add(foo)
-        await uow.bars.add(bar)
-        await uow.foos.add(foo2)
-        await uow.commit()
+    async with uow as tuow:
+        await tuow.foos.add(foo)
+        await tuow.bars.add(bar)
+        await tuow.foos.add(foo2)
+        await tuow.commit()
 
-    iter = async_uow.collect_new_events()
+    iter = uow.collect_new_events()
     assert next(iter) == FooCreated(id="1")
     assert next(iter) == FooCreated(id="2")
     assert next(iter) == BarCreated()
@@ -49,9 +49,9 @@ async def test_collect_new_events(
         next(iter)
 
 
-async def test_initialize(async_uow: AsyncDummyUnitOfWork):
-    assert async_uow.foos.initialized is False
-    assert async_uow.bars.initialized is False
-    await async_uow.initialize()
-    assert async_uow.foos.initialized is True
-    assert async_uow.bars.initialized is True
+async def test_initialize(uow: AsyncDummyUnitOfWork):
+    assert uow.foos.initialized is False
+    assert uow.bars.initialized is False
+    await uow.initialize()
+    assert uow.foos.initialized is True
+    assert uow.bars.initialized is True

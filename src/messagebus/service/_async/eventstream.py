@@ -2,7 +2,6 @@ import abc
 from typing import Any, Mapping
 
 from messagebus.domain.model import Message
-
 from messagebus.service.eventstream import AbstractMessageSerializer
 
 
@@ -18,6 +17,20 @@ class AsyncAbstractEventstreamTransport(abc.ABC):
     @abc.abstractmethod
     async def send_message_serialized(self, event: Mapping[str, Any]) -> None:
         """Publish a serialized message to the eventstream."""
+
+
+class AsyncSinkholeEventstreamTransport(AsyncAbstractEventstreamTransport):
+    """
+    Drop all messages.
+
+    By default, the events are not streamed until it is configured to do so.
+    """
+
+    async def initialize(self) -> None:
+        """Do nothing."""
+
+    async def send_message_serialized(self, event: Mapping[str, Any]) -> None:
+        """Do nothing."""
 
 
 class AsyncEventstreamPublisher:

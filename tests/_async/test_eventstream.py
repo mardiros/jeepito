@@ -1,10 +1,10 @@
 from typing import Any, Mapping, MutableSequence
 
-from messagebus.service.eventstream import MessageSerializer
 from messagebus.service._async.eventstream import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
 )
+from messagebus.service.eventstream import MessageSerializer
 from tests._async.conftest import DummyCommand, DummyEvent
 
 

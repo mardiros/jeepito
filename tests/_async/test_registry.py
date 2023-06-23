@@ -2,7 +2,7 @@ import pytest
 
 from messagebus.service._async.registry import AsyncMessageRegistry, ConfigurationError
 from tests._async.conftest import (
-    AsyncDummyUnitOfWork,
+    AsyncUnitOfWorkTransaction,
     DummyCommand,
     DummyEvent,
     DummyModel,
@@ -11,7 +11,9 @@ from tests._async.conftest import (
 conftest_mod = __name__.replace("test_registry", "conftest")
 
 
-async def listen_command(cmd: DummyCommand, uow: AsyncDummyUnitOfWork) -> DummyModel:
+async def listen_command(
+    cmd: DummyCommand, uow: AsyncUnitOfWorkTransaction
+) -> DummyModel:
     """This command raise an event played by the message bus."""
     foo = DummyModel(id=cmd.id, counter=0)
     foo.messages.append(DummyEvent(id=foo.id, increment=10))
@@ -19,39 +21,38 @@ async def listen_command(cmd: DummyCommand, uow: AsyncDummyUnitOfWork) -> DummyM
     return foo
 
 
-async def listen_event(cmd: DummyEvent, uow: AsyncDummyUnitOfWork) -> None:
+async def listen_event(cmd: DummyEvent, uow: AsyncUnitOfWorkTransaction) -> None:
     """This event is indented to be fire by the message bus."""
     rfoo = await uow.foos.get(cmd.id)
     foo = rfoo.unwrap()
     foo.counter += cmd.increment
 
 
-async def test_messagebus(bus: AsyncMessageRegistry, async_uow: AsyncDummyUnitOfWork):
+async def test_messagebus(bus: AsyncMessageRegistry, tuow: AsyncUnitOfWorkTransaction):
     """
     Test that the message bus is firing command and event.
 
     Because we use venusian, the bus only works the event as been
     attached.
     """
-
     DummyModel.counter = 0
 
-    foo = await listen_command(DummyCommand(id="foo"), async_uow)
-    assert list(async_uow.collect_new_events()) == [DummyEvent(id="foo", increment=10)]
+    foo = await listen_command(DummyCommand(id="foo"), tuow)
+    assert list(tuow.uow.collect_new_events()) == [DummyEvent(id="foo", increment=10)]
     assert (
         DummyModel.counter == 0
     ), "Events raised cannot be played before the attach_listener has been called"
 
-    await listen_event(DummyEvent(id="foo", increment=1), async_uow)
+    await listen_event(DummyEvent(id="foo", increment=1), tuow)
     assert foo.counter == 1
 
-    foo = await bus.handle(DummyCommand(id="foo2"), async_uow)
+    foo = await bus.handle(DummyCommand(id="foo2"), tuow)
     assert foo is None, "The command cannot raise event before attach_listener"
 
     bus.add_listener(DummyCommand, listen_command)
     bus.add_listener(DummyEvent, listen_event)
 
-    foo = await bus.handle(DummyCommand(id="foo3"), async_uow)
+    foo = await bus.handle(DummyCommand(id="foo3"), tuow)
     assert foo.counter == 10, (
         "The command should raise an event that is handle by the bus that "
         "will increment the model to 10"
@@ -59,21 +60,21 @@ async def test_messagebus(bus: AsyncMessageRegistry, async_uow: AsyncDummyUnitOf
 
     bus.remove_listener(DummyEvent, listen_event)
 
-    foo = await bus.handle(DummyCommand(id="foo4"), async_uow)
+    foo = await bus.handle(DummyCommand(id="foo4"), tuow)
     assert (
         foo.counter == 0
     ), "The command should raise an event that is not handled anymore "
 
 
 async def test_messagebus_handle_only_message(
-    bus: AsyncMessageRegistry, async_uow: AsyncDummyUnitOfWork
+    bus: AsyncMessageRegistry, tuow: AsyncUnitOfWorkTransaction
 ):
     class Msg:
         def __repr__(self):
             return "<msg>"
 
     with pytest.raises(RuntimeError) as ctx:
-        await bus.handle(Msg(), async_uow)  # type: ignore
+        await bus.handle(Msg(), tuow)  # type: ignore
     assert str(ctx.value) == "<msg> was not an Event or Command"
 
 

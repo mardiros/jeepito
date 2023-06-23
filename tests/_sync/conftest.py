@@ -1,5 +1,5 @@
 import enum
-from typing import Any, MutableMapping, Type
+from typing import Any, Iterator, MutableMapping, Type
 
 import pytest
 from pydantic import Field
@@ -8,7 +8,10 @@ from result import Err, Ok, Result
 from messagebus.domain.model import Command, Event, Metadata, Model
 from messagebus.service._sync.registry import SyncMessageRegistry
 from messagebus.service._sync.repository import SyncAbstractRepository
-from messagebus.service._sync.unit_of_work import SyncAbstractUnitOfWork
+from messagebus.service._sync.unit_of_work import (
+    SyncAbstractUnitOfWork,
+    SyncUnitOfWorkTransaction,
+)
 
 try:
     # does not exists in python 3.7
@@ -100,8 +103,17 @@ def foo_factory() -> Type[DummyModel]:
 
 
 @pytest.fixture
-def async_uow() -> SyncAbstractUnitOfWork:
+def uow() -> SyncDummyUnitOfWork:
     return SyncDummyUnitOfWork()
+
+
+@pytest.fixture
+def tuow(
+    uow: SyncDummyUnitOfWork,
+) -> Iterator[SyncUnitOfWorkTransaction]:
+    with uow as tuow:
+        yield tuow
+        tuow.rollback()
 
 
 @pytest.fixture
