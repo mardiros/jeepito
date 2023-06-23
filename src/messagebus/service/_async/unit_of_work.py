@@ -2,9 +2,8 @@
 from __future__ import annotations
 
 import abc
-import enum
 from types import TracebackType
-from typing import Any, Iterator, Optional, Type
+from typing import Any, Generic, Iterator, Optional, Type
 
 from messagebus.domain.model import Message
 from messagebus.service._async.repository import (
@@ -13,27 +12,18 @@ from messagebus.service._async.repository import (
     AsyncSinkholeEventstoreRepository,
 )
 
-
-class TransactionError(RuntimeError):
-    ...
+from ..unit_of_work import TransactionError, TransactionStatus, TRepositories
 
 
-class TransactionStatus(enum.Enum):
-    running = "running"
-    rolledback = "rolledback"
-    committed = "committed"
-    closed = "closed"
-
-
-class AsyncUnitOfWorkTransaction:
-    uow: AsyncAbstractUnitOfWork
+class AsyncUnitOfWorkTransaction(Generic[TRepositories]):
+    uow: AsyncAbstractUnitOfWork[TRepositories]
     status: TransactionStatus
 
-    def __init__(self, uow: "AsyncAbstractUnitOfWork") -> None:
+    def __init__(self, uow: "AsyncAbstractUnitOfWork[TRepositories]") -> None:
         self.status = TransactionStatus.running
         self.uow = uow
 
-    def __getattr__(self, name: str) -> AsyncAbstractRepository[Any]:
+    def __getattr__(self, name: str) -> TRepositories:
         return getattr(self.uow, name)
 
     async def commit(self) -> None:
@@ -45,7 +35,7 @@ class AsyncUnitOfWorkTransaction:
         await self.uow.rollback()
         self.status = TransactionStatus.rolledback
 
-    async def __aenter__(self) -> AsyncUnitOfWorkTransaction:
+    async def __aenter__(self) -> AsyncUnitOfWorkTransaction[TRepositories]:
         if self.status != TransactionStatus.running:
             raise ValueError("Invalid transaction status")
         return self
@@ -69,7 +59,7 @@ class AsyncUnitOfWorkTransaction:
         self.status = TransactionStatus.closed
 
 
-class AsyncAbstractUnitOfWork(abc.ABC):
+class AsyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
     eventstore: AsyncEventstoreAbstractRepository = AsyncSinkholeEventstoreRepository()
 
     def collect_new_events(self) -> Iterator[Message]:
@@ -93,7 +83,7 @@ class AsyncAbstractUnitOfWork(abc.ABC):
             if isinstance(member, AsyncAbstractRepository):
                 yield member
 
-    async def __aenter__(self) -> AsyncUnitOfWorkTransaction:
+    async def __aenter__(self) -> AsyncUnitOfWorkTransaction[TRepositories]:
         self.tuow = AsyncUnitOfWorkTransaction(self)
         await self.tuow.__aenter__()
         return self.tuow

@@ -6,13 +6,14 @@ from tests._sync.conftest import (
     DummyCommand,
     DummyEvent,
     DummyModel,
+    Repositories,
 )
 
 conftest_mod = __name__.replace("test_registry", "conftest")
 
 
 def listen_command(
-    cmd: DummyCommand, uow: SyncUnitOfWorkTransaction
+    cmd: DummyCommand, uow: SyncUnitOfWorkTransaction[Repositories]
 ) -> DummyModel:
     """This command raise an event played by the message bus."""
     foo = DummyModel(id=cmd.id, counter=0)
@@ -21,14 +22,19 @@ def listen_command(
     return foo
 
 
-def listen_event(cmd: DummyEvent, uow: SyncUnitOfWorkTransaction) -> None:
+def listen_event(
+    cmd: DummyEvent, uow: SyncUnitOfWorkTransaction[Repositories]
+) -> None:
     """This event is indented to be fire by the message bus."""
     rfoo = uow.foos.get(cmd.id)
     foo = rfoo.unwrap()
     foo.counter += cmd.increment
 
 
-def test_messagebus(bus: SyncMessageRegistry, tuow: SyncUnitOfWorkTransaction):
+def test_messagebus(
+    bus: SyncMessageRegistry[Repositories],
+    tuow: SyncUnitOfWorkTransaction[Repositories],
+):
     """
     Test that the message bus is firing command and event.
 
@@ -67,7 +73,8 @@ def test_messagebus(bus: SyncMessageRegistry, tuow: SyncUnitOfWorkTransaction):
 
 
 def test_messagebus_handle_only_message(
-    bus: SyncMessageRegistry, tuow: SyncUnitOfWorkTransaction
+    bus: SyncMessageRegistry[Repositories],
+    tuow: SyncUnitOfWorkTransaction[Repositories],
 ):
     class Msg:
         def __repr__(self):
@@ -78,7 +85,9 @@ def test_messagebus_handle_only_message(
     assert str(ctx.value) == "<msg> was not an Event or Command"
 
 
-def test_messagebus_cannot_register_handler_twice(bus: SyncMessageRegistry):
+def test_messagebus_cannot_register_handler_twice(
+    bus: SyncMessageRegistry[Repositories],
+):
     bus.add_listener(DummyCommand, listen_command)
     with pytest.raises(ConfigurationError) as ctx:
         bus.add_listener(DummyCommand, listen_command)
@@ -90,7 +99,9 @@ def test_messagebus_cannot_register_handler_twice(bus: SyncMessageRegistry):
     bus.add_listener(DummyCommand, listen_command)
 
 
-def test_messagebus_cannot_register_handler_on_non_message(bus: SyncMessageRegistry):
+def test_messagebus_cannot_register_handler_on_non_message(
+    bus: SyncMessageRegistry[Repositories],
+):
     with pytest.raises(ConfigurationError) as ctx:
         bus.add_listener(
             object,  # type: ignore
@@ -104,7 +115,7 @@ def test_messagebus_cannot_register_handler_on_non_message(bus: SyncMessageRegis
 
 
 def test_messagebus_cannot_unregister_non_unregistered_handler(
-    bus: SyncMessageRegistry,
+    bus: SyncMessageRegistry[Repositories],
 ):
     with pytest.raises(ConfigurationError) as ctx:
         bus.remove_listener(DummyCommand, listen_command)

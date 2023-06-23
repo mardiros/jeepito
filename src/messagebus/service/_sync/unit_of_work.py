@@ -2,9 +2,8 @@
 from __future__ import annotations
 
 import abc
-import enum
 from types import TracebackType
-from typing import Any, Iterator, Optional, Type
+from typing import Any, Generic, Iterator, Optional, Type
 
 from messagebus.domain.model import Message
 from messagebus.service._sync.repository import (
@@ -13,27 +12,18 @@ from messagebus.service._sync.repository import (
     SyncSinkholeEventstoreRepository,
 )
 
-
-class TransactionError(RuntimeError):
-    ...
+from ..unit_of_work import TransactionError, TransactionStatus, TRepositories
 
 
-class TransactionStatus(enum.Enum):
-    running = "running"
-    rolledback = "rolledback"
-    committed = "committed"
-    closed = "closed"
-
-
-class SyncUnitOfWorkTransaction:
-    uow: SyncAbstractUnitOfWork
+class SyncUnitOfWorkTransaction(Generic[TRepositories]):
+    uow: SyncAbstractUnitOfWork[TRepositories]
     status: TransactionStatus
 
-    def __init__(self, uow: "SyncAbstractUnitOfWork") -> None:
+    def __init__(self, uow: "SyncAbstractUnitOfWork[TRepositories]") -> None:
         self.status = TransactionStatus.running
         self.uow = uow
 
-    def __getattr__(self, name: str) -> SyncAbstractRepository[Any]:
+    def __getattr__(self, name: str) -> TRepositories:
         return getattr(self.uow, name)
 
     def commit(self) -> None:
@@ -45,7 +35,7 @@ class SyncUnitOfWorkTransaction:
         self.uow.rollback()
         self.status = TransactionStatus.rolledback
 
-    def __enter__(self) -> SyncUnitOfWorkTransaction:
+    def __enter__(self) -> SyncUnitOfWorkTransaction[TRepositories]:
         if self.status != TransactionStatus.running:
             raise ValueError("Invalid transaction status")
         return self
@@ -69,7 +59,7 @@ class SyncUnitOfWorkTransaction:
         self.status = TransactionStatus.closed
 
 
-class SyncAbstractUnitOfWork(abc.ABC):
+class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
     eventstore: SyncEventstoreAbstractRepository = SyncSinkholeEventstoreRepository()
 
     def collect_new_events(self) -> Iterator[Message]:
@@ -93,7 +83,7 @@ class SyncAbstractUnitOfWork(abc.ABC):
             if isinstance(member, SyncAbstractRepository):
                 yield member
 
-    def __enter__(self) -> SyncUnitOfWorkTransaction:
+    def __enter__(self) -> SyncUnitOfWorkTransaction[TRepositories]:
         self.tuow = SyncUnitOfWorkTransaction(self)
         self.tuow.__enter__()
         return self.tuow

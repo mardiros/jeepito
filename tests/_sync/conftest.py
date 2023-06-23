@@ -1,5 +1,5 @@
 import enum
-from typing import Any, Iterator, MutableMapping, Type
+from typing import Any, Iterator, MutableMapping, Type, Union
 
 import pytest
 from pydantic import Field
@@ -59,8 +59,15 @@ class SyncDummyRepository(SyncAbstractRepository[DummyModel]):
             return Err(DummyError.not_found)
 
 
-class SyncDummyUnitOfWork(SyncAbstractUnitOfWork):
-    foos = SyncDummyRepository()
+class SyncFooRepository(SyncDummyRepository):
+    ...
+
+
+Repositories = Union[SyncDummyRepository, SyncFooRepository]
+
+
+class SyncDummyUnitOfWork(SyncAbstractUnitOfWork[Repositories]):
+    foos = SyncFooRepository()
     bars = SyncDummyRepository()
 
     def __init__(self) -> None:
@@ -110,14 +117,14 @@ def uow() -> SyncDummyUnitOfWork:
 @pytest.fixture
 def tuow(
     uow: SyncDummyUnitOfWork,
-) -> Iterator[SyncUnitOfWorkTransaction]:
+) -> Iterator[SyncUnitOfWorkTransaction[Repositories]]:
     with uow as tuow:
         yield tuow
         tuow.rollback()
 
 
 @pytest.fixture
-def bus() -> SyncMessageRegistry:
+def bus() -> SyncMessageRegistry[Repositories]:
     return SyncMessageRegistry()
 
 

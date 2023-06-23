@@ -1,5 +1,5 @@
 import enum
-from typing import Any, AsyncIterator, MutableMapping, Type
+from typing import Any, AsyncIterator, MutableMapping, Type, Union
 
 import pytest
 from pydantic import Field
@@ -59,8 +59,15 @@ class AsyncDummyRepository(AsyncAbstractRepository[DummyModel]):
             return Err(DummyError.not_found)
 
 
-class AsyncDummyUnitOfWork(AsyncAbstractUnitOfWork):
-    foos = AsyncDummyRepository()
+class AsyncFooRepository(AsyncDummyRepository):
+    ...
+
+
+Repositories = Union[AsyncDummyRepository, AsyncFooRepository]
+
+
+class AsyncDummyUnitOfWork(AsyncAbstractUnitOfWork[Repositories]):
+    foos = AsyncFooRepository()
     bars = AsyncDummyRepository()
 
     def __init__(self) -> None:
@@ -110,14 +117,14 @@ async def uow() -> AsyncDummyUnitOfWork:
 @pytest.fixture
 async def tuow(
     uow: AsyncDummyUnitOfWork,
-) -> AsyncIterator[AsyncUnitOfWorkTransaction]:
+) -> AsyncIterator[AsyncUnitOfWorkTransaction[Repositories]]:
     async with uow as tuow:
         yield tuow
         await tuow.rollback()
 
 
 @pytest.fixture
-def bus() -> AsyncMessageRegistry:
+def bus() -> AsyncMessageRegistry[Repositories]:
     return AsyncMessageRegistry()
 
 

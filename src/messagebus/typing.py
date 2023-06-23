@@ -12,8 +12,8 @@ from .service._sync.unit_of_work import SyncAbstractUnitOfWork
 
 log = logging.getLogger(__name__)
 
-TSyncUow = TypeVar("TSyncUow", bound=AsyncAbstractUnitOfWork)
-TAsyncUow = TypeVar("TAsyncUow", bound=SyncAbstractUnitOfWork)
+TSyncUow = TypeVar("TSyncUow", bound=AsyncAbstractUnitOfWork[Any])
+TAsyncUow = TypeVar("TAsyncUow", bound=SyncAbstractUnitOfWork[Any])
 TCommand = TypeVar("TCommand", bound=Command)
 TEvent = TypeVar("TEvent", bound=Event)
 

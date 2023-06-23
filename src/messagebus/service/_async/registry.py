@@ -4,7 +4,7 @@ Propagate commands and events to every registered handles.
 """
 import logging
 from collections import defaultdict
-from typing import Any, Dict, List, Type, cast
+from typing import Any, Dict, Generic, List, Type, cast
 
 from messagebus.domain.model import Command, Event, Message
 from messagebus.typing import (
@@ -13,7 +13,7 @@ from messagebus.typing import (
     AsyncMessageHandler,
 )
 
-from .unit_of_work import AsyncUnitOfWorkTransaction
+from .unit_of_work import AsyncUnitOfWorkTransaction, TRepositories
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ class ConfigurationError(RuntimeError):
     """Prevents bad usage of the add_listener."""
 
 
-class AsyncMessageRegistry:
+class AsyncMessageRegistry(Generic[TRepositories]):
     """Store all the handlers for commands an events."""
 
     def __init__(self) -> None:
@@ -74,7 +74,9 @@ class AsyncMessageRegistry:
                 f"type {msg_type} should be a command or an event"
             )
 
-    async def handle(self, message: Message, uow: AsyncUnitOfWorkTransaction) -> Any:
+    async def handle(
+        self, message: Message, uow: AsyncUnitOfWorkTransaction[TRepositories]
+    ) -> Any:
         """
         Notify listener of that event registered with `messagebus.add_listener`.
         Return the first event from the command.

@@ -6,13 +6,14 @@ from tests._async.conftest import (
     DummyCommand,
     DummyEvent,
     DummyModel,
+    Repositories,
 )
 
 conftest_mod = __name__.replace("test_registry", "conftest")
 
 
 async def listen_command(
-    cmd: DummyCommand, uow: AsyncUnitOfWorkTransaction
+    cmd: DummyCommand, uow: AsyncUnitOfWorkTransaction[Repositories]
 ) -> DummyModel:
     """This command raise an event played by the message bus."""
     foo = DummyModel(id=cmd.id, counter=0)
@@ -21,14 +22,19 @@ async def listen_command(
     return foo
 
 
-async def listen_event(cmd: DummyEvent, uow: AsyncUnitOfWorkTransaction) -> None:
+async def listen_event(
+    cmd: DummyEvent, uow: AsyncUnitOfWorkTransaction[Repositories]
+) -> None:
     """This event is indented to be fire by the message bus."""
     rfoo = await uow.foos.get(cmd.id)
     foo = rfoo.unwrap()
     foo.counter += cmd.increment
 
 
-async def test_messagebus(bus: AsyncMessageRegistry, tuow: AsyncUnitOfWorkTransaction):
+async def test_messagebus(
+    bus: AsyncMessageRegistry[Repositories],
+    tuow: AsyncUnitOfWorkTransaction[Repositories],
+):
     """
     Test that the message bus is firing command and event.
 
@@ -67,7 +73,8 @@ async def test_messagebus(bus: AsyncMessageRegistry, tuow: AsyncUnitOfWorkTransa
 
 
 async def test_messagebus_handle_only_message(
-    bus: AsyncMessageRegistry, tuow: AsyncUnitOfWorkTransaction
+    bus: AsyncMessageRegistry[Repositories],
+    tuow: AsyncUnitOfWorkTransaction[Repositories],
 ):
     class Msg:
         def __repr__(self):
@@ -78,7 +85,9 @@ async def test_messagebus_handle_only_message(
     assert str(ctx.value) == "<msg> was not an Event or Command"
 
 
-def test_messagebus_cannot_register_handler_twice(bus: AsyncMessageRegistry):
+def test_messagebus_cannot_register_handler_twice(
+    bus: AsyncMessageRegistry[Repositories],
+):
     bus.add_listener(DummyCommand, listen_command)
     with pytest.raises(ConfigurationError) as ctx:
         bus.add_listener(DummyCommand, listen_command)
@@ -90,7 +99,9 @@ def test_messagebus_cannot_register_handler_twice(bus: AsyncMessageRegistry):
     bus.add_listener(DummyCommand, listen_command)
 
 
-def test_messagebus_cannot_register_handler_on_non_message(bus: AsyncMessageRegistry):
+def test_messagebus_cannot_register_handler_on_non_message(
+    bus: AsyncMessageRegistry[Repositories],
+):
     with pytest.raises(ConfigurationError) as ctx:
         bus.add_listener(
             object,  # type: ignore
@@ -104,7 +115,7 @@ def test_messagebus_cannot_register_handler_on_non_message(bus: AsyncMessageRegi
 
 
 def test_messagebus_cannot_unregister_non_unregistered_handler(
-    bus: AsyncMessageRegistry,
+    bus: AsyncMessageRegistry[Repositories],
 ):
     with pytest.raises(ConfigurationError) as ctx:
         bus.remove_listener(DummyCommand, listen_command)
