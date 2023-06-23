@@ -5,9 +5,16 @@ Message base classes.
 
 """
 
+from datetime import datetime
 from typing import MutableSequence
+from uuid import uuid1
 
 from pydantic import BaseModel, Field
+
+
+def generate_id() -> str:
+    """Generate a unique identifier."""
+    return str(uuid1())
 
 
 class Metadata(BaseModel):
@@ -22,6 +29,8 @@ class Metadata(BaseModel):
 class Message(BaseModel):
     """Base class for messaging."""
 
+    message_id: str = Field(default_factory=generate_id)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
     metadata: Metadata
 
 

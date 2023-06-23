@@ -1,18 +1,28 @@
-from typing import Type
+from typing import Any, Type
 
 import pytest
 
 from messagebus.domain.model import Event, Metadata
-from tests._sync.conftest import DummyModel, SyncDummyUnitOfWork
+from tests._sync.conftest import SyncDummyUnitOfWork, DummyModel
 
 
 class FooCreated(Event):
     id: str
     metadata: Metadata = Metadata(name="foo_created", schema_version=1, published=True)
 
+    def __eq__(self, other: Any):
+        slf = self.dict(exclude={"message_id", "created_at"})
+        otr = other.dict(exclude={"message_id", "created_at"})
+        return slf == otr
+
 
 class BarCreated(Event):
     metadata: Metadata = Metadata(name="bar_created", schema_version=1, published=True)
+
+    def __eq__(self, other: Any):
+        slf = self.dict(exclude={"message_id", "created_at"})
+        otr = other.dict(exclude={"message_id", "created_at"})
+        return slf == otr
 
 
 def test_collect_new_events(

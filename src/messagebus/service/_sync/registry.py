@@ -7,7 +7,11 @@ from collections import defaultdict
 from typing import Any, Dict, List, Type, cast
 
 from messagebus.domain.model import Command, Event, Message
-from messagebus.typing import SyncCommandHandler, SyncEventHandler, SyncMessageHandler
+from messagebus.typing import (
+    SyncCommandHandler,
+    SyncEventHandler,
+    SyncMessageHandler,
+)
 
 from .unit_of_work import SyncAbstractUnitOfWork
 

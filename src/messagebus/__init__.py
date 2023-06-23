@@ -2,6 +2,10 @@
 messagebus is a library to send message in a bus in order to get base classes
 for event driven development and domain driven development.
 
+messagebus is used for internal messaging inside a python program, but also,
+with external services that can consume messages throw an event stream,
+where message can be published to a given transport.
+
 """
 from importlib.metadata import version
 

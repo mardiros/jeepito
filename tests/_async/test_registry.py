@@ -1,20 +1,14 @@
 import pytest
-from pydantic import Field
 
-from messagebus.domain.model import Command, Event, Metadata
 from messagebus.service._async.registry import AsyncMessageRegistry, ConfigurationError
-from tests._async.conftest import AsyncDummyUnitOfWork, DummyModel
+from tests._async.conftest import (
+    AsyncDummyUnitOfWork,
+    DummyCommand,
+    DummyEvent,
+    DummyModel,
+)
 
-
-class DummyCommand(Command):
-    id: str = Field(...)
-    metadata: Metadata = Metadata(name="dummy", schema_version=1)
-
-
-class DummyEvent(Event):
-    id: str = Field(...)
-    increment: int = Field(...)
-    metadata: Metadata = Metadata(name="dummied", schema_version=1)
+conftest_mod = __name__.replace("test_registry", "conftest")
 
 
 async def listen_command(cmd: DummyCommand, uow: AsyncDummyUnitOfWork) -> DummyModel:
@@ -88,7 +82,7 @@ def test_messagebus_cannot_register_handler_twice(bus: AsyncMessageRegistry):
     with pytest.raises(ConfigurationError) as ctx:
         bus.add_listener(DummyCommand, listen_command)
     assert (
-        str(ctx.value) == f"<class '{__name__}.DummyCommand'> command "
+        str(ctx.value) == f"<class '{conftest_mod}.DummyCommand'> command "
         "has been registered twice"
     )
     bus.remove_listener(DummyCommand, listen_command)
@@ -115,7 +109,7 @@ def test_messagebus_cannot_unregister_non_unregistered_handler(
         bus.remove_listener(DummyCommand, listen_command)
 
     assert (
-        str(ctx.value) == f"<class '{__name__}.DummyCommand'> command "
+        str(ctx.value) == f"<class '{conftest_mod}.DummyCommand'> command "
         "has not been registered"
     )
 
@@ -123,7 +117,7 @@ def test_messagebus_cannot_unregister_non_unregistered_handler(
         bus.remove_listener(DummyEvent, listen_event)
 
     assert (
-        str(ctx.value) == f"<class '{__name__}.DummyEvent'> event "
+        str(ctx.value) == f"<class '{conftest_mod}.DummyEvent'> event "
         "has not been registered"
     )
 

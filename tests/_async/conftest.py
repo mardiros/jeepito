@@ -5,7 +5,7 @@ import pytest
 from pydantic import Field
 from result import Err, Ok, Result
 
-from messagebus.domain.model import Model
+from messagebus.domain.model import Command, Event, Metadata, Model
 from messagebus.service._async.registry import AsyncMessageRegistry
 from messagebus.service._async.repository import AsyncAbstractRepository
 from messagebus.service._async.unit_of_work import AsyncAbstractUnitOfWork
@@ -73,6 +73,27 @@ class AsyncDummyUnitOfWork(AsyncAbstractUnitOfWork):
         self.status = "aborted"
 
 
+class DummyCommand(Command):
+    id: str = Field(...)
+    metadata: Metadata = Metadata(name="dummy", schema_version=1)
+
+    def __eq__(self, other: Any):
+        slf = self.dict(exclude={"message_id", "created_at"})
+        otr = other.dict(exclude={"message_id", "created_at"})
+        return slf == otr
+
+
+class DummyEvent(Event):
+    id: str = Field(...)
+    increment: int = Field(...)
+    metadata: Metadata = Metadata(name="dummied", schema_version=1, published=True)
+
+    def __eq__(self, other: Any):
+        slf = self.dict(exclude={"message_id", "created_at"})
+        otr = other.dict(exclude={"message_id", "created_at"})
+        return slf == otr
+
+
 @pytest.fixture
 def foo_factory() -> Type[DummyModel]:
     return DummyModel
@@ -86,3 +107,13 @@ def async_uow() -> AsyncAbstractUnitOfWork:
 @pytest.fixture
 def bus() -> AsyncMessageRegistry:
     return AsyncMessageRegistry()
+
+
+@pytest.fixture
+def dummy_command() -> DummyCommand:
+    return DummyCommand(id="dummy_cmd")
+
+
+@pytest.fixture
+def dummy_event() -> DummyEvent:
+    return DummyEvent(id="dummy_evt", increment=1)
