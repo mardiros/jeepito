@@ -8,7 +8,7 @@ from messagebus.service._sync.unit_of_work import (
     TransactionError,
     TransactionStatus,
 )
-from tests._sync.conftest import DummyModel, SyncDummyUnitOfWork
+from tests._sync.conftest import SyncDummyUnitOfWork, DummyModel
 
 
 class FooCreated(Event):
@@ -30,7 +30,9 @@ class BarCreated(Event):
         return slf == otr
 
 
-def test_collect_new_events(uow: SyncDummyUnitOfWork, foo_factory: Type[DummyModel]):
+def test_collect_new_events(
+    uow: SyncDummyUnitOfWork, foo_factory: Type[DummyModel]
+):
     foo = foo_factory(id="1", counter=0)
     foo.messages.append(FooCreated(id="1"))
     bar = foo_factory(id="1", counter=0)

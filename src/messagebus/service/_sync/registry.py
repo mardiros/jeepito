@@ -11,7 +11,11 @@ import venusian  # type: ignore
 
 from messagebus.domain.model import Command, Event, Message
 from messagebus.service.registry import VENUSIAN_CATEGORY
-from messagebus.typing import SyncCommandHandler, SyncEventHandler, SyncMessageHandler
+from messagebus.typing import (
+    SyncCommandHandler,
+    SyncEventHandler,
+    SyncMessageHandler,
+)
 
 from .unit_of_work import SyncUnitOfWorkTransaction, TRepositories
 
@@ -26,7 +30,10 @@ def sync_listen(
     wrapped: SyncMessageHandler[Any, Any, Any]
 ) -> SyncMessageHandler[Any, Any, Any]:
     """
-    Decorator to listen for a message.
+    Decorator to listen for a command or an event.
+
+    Note that you can handle one listener for a command, and many for events.
+    The command handler result is returned by the handle call of the message bus.
     """
 
     def callback(

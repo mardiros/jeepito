@@ -2,13 +2,13 @@ from messagebus.domain.model import Metadata
 from messagebus.service._sync.registry import SyncMessageRegistry
 from messagebus.service._sync.unit_of_work import SyncUnitOfWorkTransaction
 from tests._sync.conftest import (
+    SyncDummyUnitOfWorkWithEvents,
+    SyncEventstreamPublisher,
+    SyncEventstreamTransport,
     DummyCommand,
     DummyEvent,
     DummyModel,
     Repositories,
-    SyncDummyUnitOfWorkWithEvents,
-    SyncEventstreamPublisher,
-    SyncEventstreamTransport,
 )
 
 
