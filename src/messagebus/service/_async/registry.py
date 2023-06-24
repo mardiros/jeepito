@@ -100,5 +100,6 @@ class AsyncMessageRegistry(Generic[TRepositories]):
                 for callback in self.events_registry[cast(Type[Event], msg_type)]:
                     await callback(cast(Event, message), uow)
                     queue.extend(uow.uow.collect_new_events())
+            await uow.eventstore.add(message)
             idx += 1
         return ret

@@ -2,7 +2,7 @@ import abc
 from typing import Any, Mapping
 
 from messagebus.domain.model import Message
-from messagebus.service.eventstream import AbstractMessageSerializer
+from messagebus.service.eventstream import AbstractMessageSerializer, MessageSerializer
 
 
 class SyncAbstractEventstreamTransport(abc.ABC):
@@ -43,12 +43,12 @@ class SyncEventstreamPublisher:
 
     def __init__(
         self,
-        serializer: AbstractMessageSerializer,
         transport: SyncAbstractEventstreamTransport,
+        serializer: AbstractMessageSerializer = MessageSerializer(),
     ) -> None:
         """Publish a message to the eventstream."""
-        self.serializer = serializer
         self.transport = transport
+        self.serializer = serializer
 
     def initialize(self) -> None:
         """Use to initialize the transport."""

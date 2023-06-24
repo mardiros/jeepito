@@ -27,7 +27,7 @@ class AsyncDummyEventstreamTransport(AsyncAbstractEventstreamTransport):
 async def test_send_message(dummy_command: DummyCommand, dummy_event: DummyEvent):
     srlz = MessageSerializer()
     transport = AsyncDummyEventstreamTransport()
-    stream = AsyncEventstreamPublisher(srlz, transport)
+    stream = AsyncEventstreamPublisher(transport, srlz)
     await stream.initialize()
     await stream.send_message(dummy_command)
     await stream.send_message(dummy_event)

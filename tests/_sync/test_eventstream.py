@@ -27,7 +27,7 @@ class SyncDummyEventstreamTransport(SyncAbstractEventstreamTransport):
 def test_send_message(dummy_command: DummyCommand, dummy_event: DummyEvent):
     srlz = MessageSerializer()
     transport = SyncDummyEventstreamTransport()
-    stream = SyncEventstreamPublisher(srlz, transport)
+    stream = SyncEventstreamPublisher(transport, srlz)
     stream.initialize()
     stream.send_message(dummy_command)
     stream.send_message(dummy_event)

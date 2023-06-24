@@ -2,8 +2,9 @@
 from __future__ import annotations
 
 import abc
+import enum
 from types import TracebackType
-from typing import Any, Generic, Iterator, Optional, Type
+from typing import Any, Generic, Iterator, Optional, Type, TypeVar
 
 from messagebus.domain.model import Message
 from messagebus.service._async.repository import (
@@ -12,7 +13,21 @@ from messagebus.service._async.repository import (
     AsyncSinkholeEventstoreRepository,
 )
 
-from ..unit_of_work import TransactionError, TransactionStatus, TRepositories
+
+class TransactionError(RuntimeError):
+    """A runtime error raised if the transaction lifetime is inappropriate."""
+
+
+class TransactionStatus(enum.Enum):
+    """Transaction status used to ensure transaction lifetime."""
+
+    running = "running"
+    rolledback = "rolledback"
+    committed = "committed"
+    closed = "closed"
+
+
+TRepositories = TypeVar("TRepositories", bound=AsyncAbstractRepository[Any])
 
 
 class AsyncUnitOfWorkTransaction(Generic[TRepositories]):
@@ -25,6 +40,10 @@ class AsyncUnitOfWorkTransaction(Generic[TRepositories]):
 
     def __getattr__(self, name: str) -> TRepositories:
         return getattr(self.uow, name)
+
+    @property
+    def eventstore(self) -> AsyncEventstoreAbstractRepository:
+        return self.uow.eventstore
 
     async def commit(self) -> None:
         await self.uow.commit()
@@ -74,12 +93,11 @@ class AsyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
         for repo in self._iter_repositories():
             await repo.initialize()
 
-    @classmethod
     def _iter_repositories(
-        cls,
+        self,
     ) -> Iterator[AsyncAbstractRepository[Any]]:
-        for member_name in cls.__dict__.keys():
-            member = getattr(cls, member_name)
+        for member_name in self.__dict__.keys():
+            member = getattr(self, member_name)
             if isinstance(member, AsyncAbstractRepository):
                 yield member
 

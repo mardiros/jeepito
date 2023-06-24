@@ -1,13 +1,29 @@
 import enum
-from typing import Any, Iterator, MutableMapping, Type, Union
+from typing import (
+    Any,
+    Iterator,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Type,
+    Union,
+)
 
 import pytest
 from pydantic import Field
 from result import Err, Ok, Result
 
-from messagebus.domain.model import Command, Event, Metadata, Model
+from messagebus.domain.model import Command, Event, Message, Metadata, Model
+from messagebus.service._sync.eventstream import (
+    SyncAbstractEventstreamTransport,
+    SyncEventstreamPublisher,
+)
 from messagebus.service._sync.registry import SyncMessageRegistry
-from messagebus.service._sync.repository import SyncAbstractRepository
+from messagebus.service._sync.repository import (
+    SyncAbstractRepository,
+    SyncEventstoreAbstractRepository,
+)
 from messagebus.service._sync.unit_of_work import (
     SyncAbstractUnitOfWork,
     SyncUnitOfWorkTransaction,
@@ -67,20 +83,55 @@ Repositories = Union[SyncDummyRepository, SyncFooRepository]
 
 
 class SyncDummyUnitOfWork(SyncAbstractUnitOfWork[Repositories]):
-    foos = SyncFooRepository()
-    bars = SyncDummyRepository()
-
     def __init__(self) -> None:
         super().__init__()
         self.status = "init"
+        self.foos = SyncFooRepository()
+        self.bars = SyncDummyRepository()
 
     def commit(self) -> None:
-        """Commit the transation."""
         self.status = "committed"
 
     def rollback(self) -> None:
-        """Rollback the transation."""
         self.status = "aborted"
+
+
+class SyncEventstreamTransport(SyncAbstractEventstreamTransport):
+    events: MutableSequence[Mapping[str, Any]]
+
+    def __init__(self):
+        self.events = []
+        self.initialized = False
+
+    def initialize(self) -> None:
+        self.initialized = True
+
+    def send_message_serialized(self, event: Mapping[str, Any]) -> None:
+        self.events.append(event)
+
+
+class SyncDummyEventStore(SyncEventstoreAbstractRepository):
+    messages: MutableSequence[Message]
+
+    def __init__(self, publisher: Optional[SyncEventstreamPublisher]):
+        super().__init__(publisher=publisher)
+        self.messages = []
+
+    def _add(self, message: Message) -> None:
+        self.messages.append(message)
+
+
+class SyncDummyUnitOfWorkWithEvents(SyncAbstractUnitOfWork[Repositories]):
+    def __init__(self, publisher: Optional[SyncEventstreamPublisher]) -> None:
+        self.foos = SyncFooRepository()
+        self.bars = SyncDummyRepository()
+        self.eventstore = SyncDummyEventStore(publisher=publisher)
+
+    def commit(self) -> None:
+        ...
+
+    def rollback(self) -> None:
+        ...
 
 
 class DummyCommand(Command):
@@ -110,8 +161,13 @@ def foo_factory() -> Type[DummyModel]:
 
 
 @pytest.fixture
-def uow() -> SyncDummyUnitOfWork:
-    return SyncDummyUnitOfWork()
+def uow() -> Iterator[SyncDummyUnitOfWork]:
+    uow = SyncDummyUnitOfWork()
+    yield uow
+    uow.foos.models.clear()
+    uow.foos.seen.clear()
+    uow.bars.models.clear()
+    uow.bars.seen.clear()
 
 
 @pytest.fixture
@@ -121,6 +177,38 @@ def tuow(
     with uow as tuow:
         yield tuow
         tuow.rollback()
+
+
+@pytest.fixture
+def eventstream_transport() -> SyncEventstreamTransport:
+    return SyncEventstreamTransport()
+
+
+@pytest.fixture
+def eventstream_pub(
+    eventstream_transport: SyncEventstreamTransport,
+) -> SyncEventstreamPublisher:
+    return SyncEventstreamPublisher(eventstream_transport)
+
+
+@pytest.fixture
+def eventstore(
+    eventstream_pub: SyncEventstreamPublisher,
+) -> SyncDummyEventStore:
+    return SyncDummyEventStore(eventstream_pub)
+
+
+@pytest.fixture
+def uow_with_eventstore(
+    eventstream_pub: SyncEventstreamPublisher,
+) -> Iterator[SyncDummyUnitOfWorkWithEvents]:
+    uow = SyncDummyUnitOfWorkWithEvents(eventstream_pub)
+    yield uow
+    uow.eventstore.messages.clear()  # type: ignore
+    uow.foos.models.clear()
+    uow.foos.seen.clear()
+    uow.bars.models.clear()
+    uow.bars.seen.clear()
 
 
 @pytest.fixture

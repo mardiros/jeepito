@@ -1,13 +1,29 @@
 import enum
-from typing import Any, AsyncIterator, MutableMapping, Type, Union
+from typing import (
+    Any,
+    AsyncIterator,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Type,
+    Union,
+)
 
 import pytest
 from pydantic import Field
 from result import Err, Ok, Result
 
-from messagebus.domain.model import Command, Event, Metadata, Model
+from messagebus.domain.model import Command, Event, Message, Metadata, Model
+from messagebus.service._async.eventstream import (
+    AsyncAbstractEventstreamTransport,
+    AsyncEventstreamPublisher,
+)
 from messagebus.service._async.registry import AsyncMessageRegistry
-from messagebus.service._async.repository import AsyncAbstractRepository
+from messagebus.service._async.repository import (
+    AsyncAbstractRepository,
+    AsyncEventstoreAbstractRepository,
+)
 from messagebus.service._async.unit_of_work import (
     AsyncAbstractUnitOfWork,
     AsyncUnitOfWorkTransaction,
@@ -67,20 +83,55 @@ Repositories = Union[AsyncDummyRepository, AsyncFooRepository]
 
 
 class AsyncDummyUnitOfWork(AsyncAbstractUnitOfWork[Repositories]):
-    foos = AsyncFooRepository()
-    bars = AsyncDummyRepository()
-
     def __init__(self) -> None:
         super().__init__()
         self.status = "init"
+        self.foos = AsyncFooRepository()
+        self.bars = AsyncDummyRepository()
 
     async def commit(self) -> None:
-        """Commit the transation."""
         self.status = "committed"
 
     async def rollback(self) -> None:
-        """Rollback the transation."""
         self.status = "aborted"
+
+
+class AsyncEventstreamTransport(AsyncAbstractEventstreamTransport):
+    events: MutableSequence[Mapping[str, Any]]
+
+    def __init__(self):
+        self.events = []
+        self.initialized = False
+
+    async def initialize(self) -> None:
+        self.initialized = True
+
+    async def send_message_serialized(self, event: Mapping[str, Any]) -> None:
+        self.events.append(event)
+
+
+class AsyncDummyEventStore(AsyncEventstoreAbstractRepository):
+    messages: MutableSequence[Message]
+
+    def __init__(self, publisher: Optional[AsyncEventstreamPublisher]):
+        super().__init__(publisher=publisher)
+        self.messages = []
+
+    async def _add(self, message: Message) -> None:
+        self.messages.append(message)
+
+
+class AsyncDummyUnitOfWorkWithEvents(AsyncAbstractUnitOfWork[Repositories]):
+    def __init__(self, publisher: Optional[AsyncEventstreamPublisher]) -> None:
+        self.foos = AsyncFooRepository()
+        self.bars = AsyncDummyRepository()
+        self.eventstore = AsyncDummyEventStore(publisher=publisher)
+
+    async def commit(self) -> None:
+        ...
+
+    async def rollback(self) -> None:
+        ...
 
 
 class DummyCommand(Command):
@@ -110,8 +161,13 @@ def foo_factory() -> Type[DummyModel]:
 
 
 @pytest.fixture
-async def uow() -> AsyncDummyUnitOfWork:
-    return AsyncDummyUnitOfWork()
+async def uow() -> AsyncIterator[AsyncDummyUnitOfWork]:
+    uow = AsyncDummyUnitOfWork()
+    yield uow
+    uow.foos.models.clear()
+    uow.foos.seen.clear()
+    uow.bars.models.clear()
+    uow.bars.seen.clear()
 
 
 @pytest.fixture
@@ -121,6 +177,38 @@ async def tuow(
     async with uow as tuow:
         yield tuow
         await tuow.rollback()
+
+
+@pytest.fixture
+async def eventstream_transport() -> AsyncEventstreamTransport:
+    return AsyncEventstreamTransport()
+
+
+@pytest.fixture
+async def eventstream_pub(
+    eventstream_transport: AsyncEventstreamTransport,
+) -> AsyncEventstreamPublisher:
+    return AsyncEventstreamPublisher(eventstream_transport)
+
+
+@pytest.fixture
+async def eventstore(
+    eventstream_pub: AsyncEventstreamPublisher,
+) -> AsyncDummyEventStore:
+    return AsyncDummyEventStore(eventstream_pub)
+
+
+@pytest.fixture
+async def uow_with_eventstore(
+    eventstream_pub: AsyncEventstreamPublisher,
+) -> AsyncIterator[AsyncDummyUnitOfWorkWithEvents]:
+    uow = AsyncDummyUnitOfWorkWithEvents(eventstream_pub)
+    yield uow
+    uow.eventstore.messages.clear()  # type: ignore
+    uow.foos.models.clear()
+    uow.foos.seen.clear()
+    uow.bars.models.clear()
+    uow.bars.seen.clear()
 
 
 @pytest.fixture

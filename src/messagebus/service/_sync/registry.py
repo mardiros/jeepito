@@ -100,5 +100,6 @@ class SyncMessageRegistry(Generic[TRepositories]):
                 for callback in self.events_registry[cast(Type[Event], msg_type)]:
                     callback(cast(Event, message), uow)
                     queue.extend(uow.uow.collect_new_events())
+            uow.eventstore.add(message)
             idx += 1
         return ret
