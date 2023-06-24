@@ -2,16 +2,16 @@
 Propagate commands and events to every registered handles.
 
 """
+import inspect
 import logging
 from collections import defaultdict
 from typing import Any, Dict, Generic, List, Type, cast
 
+import venusian  # type: ignore
+
 from messagebus.domain.model import Command, Event, Message
-from messagebus.typing import (
-    SyncCommandHandler,
-    SyncEventHandler,
-    SyncMessageHandler,
-)
+from messagebus.service.registry import VENUSIAN_CATEGORY
+from messagebus.typing import SyncCommandHandler, SyncEventHandler, SyncMessageHandler
 
 from .unit_of_work import SyncUnitOfWorkTransaction, TRepositories
 
@@ -20,6 +20,28 @@ log = logging.getLogger(__name__)
 
 class ConfigurationError(RuntimeError):
     """Prevents bad usage of the add_listener."""
+
+
+def sync_listen(
+    wrapped: SyncMessageHandler[Any, Any, Any]
+) -> SyncMessageHandler[Any, Any, Any]:
+    """
+    Decorator to listen for a message.
+    """
+
+    def callback(
+        scanner: venusian.Scanner,
+        name: str,
+        ob: SyncMessageHandler[Any, Any, Any],
+    ) -> None:
+        if not hasattr(scanner, VENUSIAN_CATEGORY):
+            return  # coverage: ignore
+        argsspec = inspect.getfullargspec(ob)
+        msg_type = argsspec.annotations[argsspec.args[0]]
+        scanner.messagebus.add_listener(msg_type, wrapped)  # type: ignore
+
+    venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+    return wrapped
 
 
 class SyncMessageRegistry(Generic[TRepositories]):

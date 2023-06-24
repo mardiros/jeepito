@@ -19,6 +19,7 @@ python = "^3.7"
 importlib-metadata = ">=4"
 typing-extensions = "^4.6.3"
 pytest-cov = "^4.1.0"
+venusian = "^3.0.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
@@ -37,6 +38,11 @@ profile = "black"
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "# coverage: ignore",
+]
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

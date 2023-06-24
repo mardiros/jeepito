@@ -571,6 +571,21 @@ files = [
 ]
 
 [[package]]
+name = "venusian"
+version = "3.0.0"
+description = "A library for deferring decorator actions"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "venusian-3.0.0-py3-none-any.whl", hash = "sha256:06e7385786ad3a15c70740b2af8d30dfb063a946a851dcb4159f9e2a2302578f"},
+    {file = "venusian-3.0.0.tar.gz", hash = "sha256:f6842b7242b1039c0c28f6feef29016e7e7dd3caaeb476a193acf737db31ee38"},
+]
+
+[package.extras]
+docs = ["Sphinx", "repoze.sphinx.autointerface"]
+testing = ["coverage", "pytest", "pytest-cov"]
+
+[[package]]
 name = "zipp"
 version = "3.15.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -588,4 +603,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "8f6f433eb6776d2fb8b6d7cb0a56024f78bba3cf31523a4486c936d5193230c1"
+content-hash = "eded0aa03ff81ce8e56b09e6d9ba4dcb27b9a96ca88ab82371a0bd1694a8a1a7"

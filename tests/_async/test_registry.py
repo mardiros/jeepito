@@ -1,6 +1,10 @@
+from typing import Any
+
 import pytest
 
+import tests._async.handlers
 from messagebus.service._async.registry import AsyncMessageRegistry, ConfigurationError
+from messagebus.service.registry import scan
 from tests._async.conftest import (
     AsyncUnitOfWorkTransaction,
     DummyCommand,
@@ -141,3 +145,16 @@ def test_messagebus_cannot_unregister_non_unregistered_handler(
         == "Invalid usage of the listen decorator: type <class 'object'> "
         "should be a command or an event"
     )
+
+
+def test_listen(bus: AsyncMessageRegistry[Any]):
+    assert bus.commands_registry == {}
+    assert bus.events_registry == {}
+    scan(bus, tests._async.handlers)
+    from tests._async.handlers import dummy
+
+    assert DummyCommand in bus.commands_registry
+    assert bus.commands_registry[DummyCommand] == dummy.handler
+
+    assert DummyEvent in bus.events_registry
+    assert bus.events_registry[DummyEvent] == [dummy.handler_evt1, dummy.handler_evt2]

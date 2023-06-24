@@ -2,11 +2,15 @@
 Propagate commands and events to every registered handles.
 
 """
+import inspect
 import logging
 from collections import defaultdict
 from typing import Any, Dict, Generic, List, Type, cast
 
+import venusian  # type: ignore
+
 from messagebus.domain.model import Command, Event, Message
+from messagebus.service.registry import VENUSIAN_CATEGORY
 from messagebus.typing import (
     AsyncCommandHandler,
     AsyncEventHandler,
@@ -20,6 +24,31 @@ log = logging.getLogger(__name__)
 
 class ConfigurationError(RuntimeError):
     """Prevents bad usage of the add_listener."""
+
+
+def async_listen(
+    wrapped: AsyncMessageHandler[Any, Any, Any]
+) -> AsyncMessageHandler[Any, Any, Any]:
+    """
+    Decorator to listen for a command or an event.
+
+    Note that you can handle one listener for a command, and many for events.
+    The command handler result is returned by the handle call of the message bus.
+    """
+
+    def callback(
+        scanner: venusian.Scanner,
+        name: str,
+        ob: AsyncMessageHandler[Any, Any, Any],
+    ) -> None:
+        if not hasattr(scanner, VENUSIAN_CATEGORY):
+            return  # coverage: ignore
+        argsspec = inspect.getfullargspec(ob)
+        msg_type = argsspec.annotations[argsspec.args[0]]
+        scanner.messagebus.add_listener(msg_type, wrapped)  # type: ignore
+
+    venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
+    return wrapped
 
 
 class AsyncMessageRegistry(Generic[TRepositories]):
