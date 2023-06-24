@@ -10,7 +10,7 @@ Glossary
       Harry J.W. Percival and Bob Gregory that expose design pattern coming from
       :term:`DDD`. 
 
-   Breaking changes
+   Breaking Change
       In programming, updating contracts can involve breaking changes.
       Not every changes are breaker.
       Breaking changes should be well known and documented by software maintener.
@@ -33,7 +33,8 @@ Glossary
       https://github.com/mardiros/casualcms/
 
    Command
-      A command is an object that represent an intention of mutation of the model.
+      A command is an object that represent an intention of mutation of the
+      :term:`Domain Model`.
       This is an atomic change. Commands are timestamped, ordered, and immutable.
       In :term:`Event Sourcing`, we store those commands as the source of truth.
 
@@ -85,13 +86,29 @@ Glossary
       A domain name registrar.
       https://www.gandi.net/
 
+   Message
+      A :term:`Command` or an :term:`Event`.
+
    Message Bus
-      Thue bus of message is the software that dispatch commands and events to handlers
-      in order to update the model, using a :term:`Unit Of Work`.
+      The bus of message is the software component that dispatch commands and events
+      to handlers in order to update the :term:`Domain Model`, using
+      a :term:`Unit Of Work`.
 
    purgatory
       A circuit breaker implementation
       https://github.com/mardiros/purgatory/
+
+   Service Handler
+      A hook function which is made to update the application state, or to react to
+      a message from the bus. This hook is called by the :term:`message bus` and has
+      two parameters, a :term:`Message`, and a :term:`Unit Of Work`.
+      When the message is received, the service handler will update application
+      state throw the Unit Of Work.
+      Thus, if the message is a :term:`Command`, the service handler may return an
+      object. For instance a ``CreateObject`` can return an ``Object`` created by the
+      service handler.
+      Finally, a Service Handler can also create sub message to process, those message
+      will run inside the same transaction of the :term:`Unit Of Work`.
 
    Unit Of Work
       The unit of work is an object which is responsible to represent a transaction
