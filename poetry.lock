@@ -12,6 +12,38 @@ files = [
 ]
 
 [[package]]
+name = "appdirs"
+version = "1.4.4"
+description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
+optional = false
+python-versions = "*"
+files = [
+    {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
+    {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
+]
+
+[[package]]
+name = "attrs"
+version = "23.1.0"
+description = "Classes Without Boilerplate"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "attrs-23.1.0-py3-none-any.whl", hash = "sha256:1f28b4522cdc2fb4256ac1a020c78acf9cba2c6b461ccd2c126f3aa8e8335d04"},
+    {file = "attrs-23.1.0.tar.gz", hash = "sha256:6279836d581513a26f1bf235f9acd333bc9115683f14f7e8fae46c98fc50e015"},
+]
+
+[package.dependencies]
+importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
+
+[package.extras]
+cov = ["attrs[tests]", "coverage[toml] (>=5.3)"]
+dev = ["attrs[docs,tests]", "pre-commit"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-towncrier", "towncrier", "zope-interface"]
+tests = ["attrs[tests-no-zope]", "zope-interface"]
+tests-no-zope = ["cloudpickle", "hypothesis", "mypy (>=1.1.1)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "pytest-xdist[psutil]"]
+
+[[package]]
 name = "babel"
 version = "2.12.1"
 description = "Internationalization utilities"
@@ -24,6 +56,24 @@ files = [
 
 [package.dependencies]
 pytz = {version = ">=2015.7", markers = "python_version < \"3.9\""}
+
+[[package]]
+name = "beautifulsoup4"
+version = "4.12.2"
+description = "Screen-scraping library"
+optional = false
+python-versions = ">=3.6.0"
+files = [
+    {file = "beautifulsoup4-4.12.2-py3-none-any.whl", hash = "sha256:bd2520ca0d9d7d12694a53d44ac482d181b4ec1888909b035a3dbf40d0f57d4a"},
+    {file = "beautifulsoup4-4.12.2.tar.gz", hash = "sha256:492bbc69dca35d12daac71c4db1bfff0c876c00ef4a2ffacce226d4638eb72da"},
+]
+
+[package.dependencies]
+soupsieve = ">1.2"
+
+[package.extras]
+html5lib = ["html5lib"]
+lxml = ["lxml"]
 
 [[package]]
 name = "black"
@@ -74,6 +124,31 @@ colorama = ["colorama (>=0.4.3)"]
 d = ["aiohttp (>=3.7.4)"]
 jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
+
+[[package]]
+name = "cattrs"
+version = "23.1.2"
+description = "Composable complex class support for attrs and dataclasses."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "cattrs-23.1.2-py3-none-any.whl", hash = "sha256:b2bb14311ac17bed0d58785e5a60f022e5431aca3932e3fc5cc8ed8639de50a4"},
+    {file = "cattrs-23.1.2.tar.gz", hash = "sha256:db1c821b8c537382b2c7c66678c3790091ca0275ac486c76f3c8f3920e83c657"},
+]
+
+[package.dependencies]
+attrs = ">=20"
+exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
+typing_extensions = {version = ">=4.1.0", markers = "python_version < \"3.11\""}
+
+[package.extras]
+bson = ["pymongo (>=4.2.0,<5.0.0)"]
+cbor2 = ["cbor2 (>=5.4.6,<6.0.0)"]
+msgpack = ["msgpack (>=1.0.2,<2.0.0)"]
+orjson = ["orjson (>=3.5.2,<4.0.0)"]
+pyyaml = ["PyYAML (>=6.0,<7.0)"]
+tomlkit = ["tomlkit (>=0.11.4,<0.12.0)"]
+ujson = ["ujson (>=5.4.0,<6.0.0)"]
 
 [[package]]
 name = "certifi"
@@ -283,6 +358,29 @@ files = [
 ]
 
 [[package]]
+name = "esbonio"
+version = "0.16.1"
+description = "A Language Server for Sphinx projects."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "esbonio-0.16.1-py3-none-any.whl", hash = "sha256:cd5ed65666d7566a38b04cac01dd55b7d74147a016d1b2ac0a0f971a8cd510cc"},
+    {file = "esbonio-0.16.1.tar.gz", hash = "sha256:d5d57c29a793de9b9b1894f9bffdd3bd25a79d430459e3e597424f52e8d02320"},
+]
+
+[package.dependencies]
+appdirs = "*"
+pygls = ">=1.0.0"
+pyspellchecker = "*"
+sphinx = "*"
+typing-extensions = {version = "*", markers = "python_version < \"3.8\""}
+
+[package.extras]
+dev = ["black", "flake8", "pre-commit", "tox"]
+test = ["mock", "pytest", "pytest-cov", "pytest-lsp", "pytest-timeout"]
+typecheck = ["mypy", "pytest-lsp", "types-appdirs", "types-docutils", "types-pygments"]
+
+[[package]]
 name = "exceptiongroup"
 version = "1.1.1"
 description = "Backport of PEP 654 (exception groups)"
@@ -312,6 +410,23 @@ importlib-metadata = {version = ">=1.1.0,<4.3", markers = "python_version < \"3.
 mccabe = ">=0.7.0,<0.8.0"
 pycodestyle = ">=2.9.0,<2.10.0"
 pyflakes = ">=2.5.0,<2.6.0"
+
+[[package]]
+name = "furo"
+version = "2022.9.29"
+description = "A clean customisable Sphinx documentation theme."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "furo-2022.9.29-py3-none-any.whl", hash = "sha256:559ee17999c0f52728481dcf6b1b0cf8c9743e68c5e3a18cb45a7992747869a9"},
+    {file = "furo-2022.9.29.tar.gz", hash = "sha256:d4238145629c623609c2deb5384f8d036e2a1ee2a101d64b67b4348112470dbd"},
+]
+
+[package.dependencies]
+beautifulsoup4 = "*"
+pygments = ">=2.7"
+sphinx = ">=4.0,<6.0"
+sphinx-basic-ng = "*"
 
 [[package]]
 name = "idna"
@@ -398,6 +513,21 @@ MarkupSafe = ">=2.0"
 
 [package.extras]
 i18n = ["Babel (>=2.7)"]
+
+[[package]]
+name = "lsprotocol"
+version = "2023.0.0a2"
+description = "Python implementation of the Language Server Protocol."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "lsprotocol-2023.0.0a2-py3-none-any.whl", hash = "sha256:c4f2f77712b50d065b17f9b50d2b88c480dc2ce4bbaa56eea8269dbf54bc9701"},
+    {file = "lsprotocol-2023.0.0a2.tar.gz", hash = "sha256:80aae7e39171b49025876a524937c10be2eb986f4be700ca22ee7d186b8488aa"},
+]
+
+[package.dependencies]
+attrs = ">=21.3.0"
+cattrs = "*"
 
 [[package]]
 name = "markupsafe"
@@ -660,6 +790,27 @@ files = [
 ]
 
 [[package]]
+name = "pygls"
+version = "1.0.1"
+description = "a pythonic generic language server (pronounced like \"pie glass\")."
+optional = false
+python-versions = "<4,>=3.7"
+files = [
+    {file = "pygls-1.0.1-py3-none-any.whl", hash = "sha256:adacc96da77598c70f46acfdfd1481d3da90cd54f639f7eee52eb6e4dbd57b55"},
+    {file = "pygls-1.0.1.tar.gz", hash = "sha256:f3ee98ddbb4690eb5c755bc32ba7e129607f14cbd313575f33d0cea443b78cb2"},
+]
+
+[package.dependencies]
+lsprotocol = "*"
+typeguard = ">=2.10.0,<3"
+
+[package.extras]
+dev = ["bandit (==1.7.4)", "flake8 (==4.0.1)", "mypy (==0.961)"]
+docs = ["sphinx (==5.0.1)", "sphinx-rtd-theme (==1.0.0)"]
+test = ["mock (==4.0.3)", "pytest (==7.1.2)", "pytest-asyncio (==0.18.3)"]
+ws = ["websockets (==10.*)"]
+
+[[package]]
 name = "pygments"
 version = "2.15.1"
 description = "Pygments is a syntax highlighting package written in Python."
@@ -672,6 +823,17 @@ files = [
 
 [package.extras]
 plugins = ["importlib-metadata"]
+
+[[package]]
+name = "pyspellchecker"
+version = "0.7.2"
+description = "Pure python spell checker based on work by Peter Norvig"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "pyspellchecker-0.7.2-py3-none-any.whl", hash = "sha256:b5ef23437702b8d03626f814b9646779b572d378b325ad252d8a8e616b3d76db"},
+    {file = "pyspellchecker-0.7.2.tar.gz", hash = "sha256:bc51ffb2c18ba26eaa1340756ebf96d0d886ed6a31d6f8e7a0094ad49d24550a"},
+]
 
 [[package]]
 name = "pytest"
@@ -807,6 +969,17 @@ files = [
 ]
 
 [[package]]
+name = "soupsieve"
+version = "2.4.1"
+description = "A modern CSS selector implementation for Beautiful Soup."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "soupsieve-2.4.1-py3-none-any.whl", hash = "sha256:1c1bfee6819544a3447586c889157365a27e10d88cde3ad3da0cf0ddf646feb8"},
+    {file = "soupsieve-2.4.1.tar.gz", hash = "sha256:89d12b2d5dfcd2c9e8c22326da9d9aa9cb3dfab0a83a024f05704076ee8d35ea"},
+]
+
+[[package]]
 name = "sphinx"
 version = "4.3.2"
 description = "Python documentation generator"
@@ -840,6 +1013,23 @@ sphinxcontrib-serializinghtml = ">=1.1.5"
 docs = ["sphinxcontrib-websupport"]
 lint = ["docutils-stubs", "flake8 (>=3.5.0)", "isort", "mypy (>=0.920)", "types-pkg-resources", "types-requests", "types-typed-ast"]
 test = ["cython", "html5lib", "pytest", "pytest-cov", "typed-ast"]
+
+[[package]]
+name = "sphinx-basic-ng"
+version = "1.0.0b1"
+description = "A modern skeleton for Sphinx themes."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "sphinx_basic_ng-1.0.0b1-py3-none-any.whl", hash = "sha256:ade597a3029c7865b24ad0eda88318766bcc2f9f4cef60df7e28126fde94db2a"},
+    {file = "sphinx_basic_ng-1.0.0b1.tar.gz", hash = "sha256:89374bd3ccd9452a301786781e28c8718e99960f2d4f411845ea75fc7bb5a9b0"},
+]
+
+[package.dependencies]
+sphinx = ">=4.0"
+
+[package.extras]
+docs = ["furo", "ipython", "myst-parser", "sphinx-copybutton", "sphinx-inline-tabs"]
 
 [[package]]
 name = "sphinxcontrib-applehelp"
@@ -942,6 +1132,17 @@ files = [
 ]
 
 [[package]]
+name = "tomlkit"
+version = "0.11.8"
+description = "Style preserving TOML library"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "tomlkit-0.11.8-py3-none-any.whl", hash = "sha256:8c726c4c202bdb148667835f68d68780b9a003a9ec34167b6c673b38eff2a171"},
+    {file = "tomlkit-0.11.8.tar.gz", hash = "sha256:9330fc7faa1db67b541b28e62018c17d20be733177d290a13b24c62d1614e0c3"},
+]
+
+[[package]]
 name = "typed-ast"
 version = "1.5.4"
 description = "a fork of Python 2 and 3 ast modules with type comment support"
@@ -973,6 +1174,21 @@ files = [
     {file = "typed_ast-1.5.4-cp39-cp39-win_amd64.whl", hash = "sha256:0fdbcf2fef0ca421a3f5912555804296f0b0960f0418c440f5d6d3abb549f3e1"},
     {file = "typed_ast-1.5.4.tar.gz", hash = "sha256:39e21ceb7388e4bb37f4c679d72707ed46c2fbf2a5609b8b8ebc4b067d977df2"},
 ]
+
+[[package]]
+name = "typeguard"
+version = "2.13.3"
+description = "Run-time type checker for Python"
+optional = false
+python-versions = ">=3.5.3"
+files = [
+    {file = "typeguard-2.13.3-py3-none-any.whl", hash = "sha256:5e3e3be01e887e7eafae5af63d1f36c849aaa94e3a0112097312aabfa16284f1"},
+    {file = "typeguard-2.13.3.tar.gz", hash = "sha256:00edaa8da3a133674796cf5ea87d9f4b4c367d77476e185e80251cc13dfbb8c4"},
+]
+
+[package.extras]
+doc = ["sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
+test = ["mypy", "pytest", "typing-extensions"]
 
 [[package]]
 name = "typing-extensions"
@@ -1046,4 +1262,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "5d1525fa34fa536b6bfb7fd55c4daa6eaaa9b9d1451e90ab49d08a3ea95b8d5f"
+content-hash = "2014a57a57051a8bd3b4a2633919c81c787e313268852f80079a7ffed782baf7"
