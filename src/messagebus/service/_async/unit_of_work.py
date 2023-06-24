@@ -46,17 +46,18 @@ class AsyncUnitOfWorkTransaction(Generic[TRepositories]):
         return self.uow.eventstore
 
     async def commit(self) -> None:
+        if self.status != TransactionStatus.running:
+            raise TransactionError(f"Transaction already closed ({self.status.value}).")
         await self.uow.commit()
         self.status = TransactionStatus.committed
 
     async def rollback(self) -> None:
-        """Rollback the transation."""
         await self.uow.rollback()
         self.status = TransactionStatus.rolledback
 
     async def __aenter__(self) -> AsyncUnitOfWorkTransaction[TRepositories]:
         if self.status != TransactionStatus.running:
-            raise ValueError("Invalid transaction status")
+            raise TransactionError("Invalid transaction status.")
         return self
 
     async def __aexit__(
@@ -70,9 +71,11 @@ class AsyncUnitOfWorkTransaction(Generic[TRepositories]):
             await self.rollback()
             return
         if self.status == TransactionStatus.closed:
-            raise TransactionError("Transaction is closed")
+            raise TransactionError("Transaction is closed.")
         if self.status == TransactionStatus.running:
-            raise TransactionError("Transaction must be commited or aborted")
+            raise TransactionError(
+                "Transaction must be explicitly close. Missing commit/rollback call."
+            )
         if self.status == TransactionStatus.committed:
             await self.uow.eventstore.publish_eventstream()
         self.status = TransactionStatus.closed
@@ -102,9 +105,9 @@ class AsyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
                 yield member
 
     async def __aenter__(self) -> AsyncUnitOfWorkTransaction[TRepositories]:
-        self.tuow = AsyncUnitOfWorkTransaction(self)
-        await self.tuow.__aenter__()
-        return self.tuow
+        self.__trans = AsyncUnitOfWorkTransaction(self)
+        await self.__trans.__aenter__()
+        return self.__trans
 
     async def __aexit__(
         self,
@@ -113,7 +116,7 @@ class AsyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
         tb: Optional[TracebackType],
     ) -> None:
         # AsyncUnitOfWorkTransaction is making the thing
-        await self.tuow.__aexit__(exc_type, exc, tb)
+        await self.__trans.__aexit__(exc_type, exc, tb)
 
     @abc.abstractmethod
     async def commit(self) -> None:
