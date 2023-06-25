@@ -1,5 +1,3 @@
-from typing import Iterator
-import pytest
 from result import Ok, Err
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
@@ -8,9 +6,6 @@ from reading_club.service.repositories import (
     BookRepositoryOperationResult,
     BookRepositoryResult,
 )
-from reading_club.service.uow import AbstractUnitOfWork
-from reading_club.domain.messages import RegisterBook
-
 
 class InMemoryBookRepository(AbstractBookRepository):
     books = {}
@@ -29,32 +24,3 @@ class InMemoryBookRepository(AbstractBookRepository):
         if id not in self.books:
             return Err(BookRepositoryError.not_found)
         return Ok(self.books[id])
-
-
-class InMemoryUnitOfWork(AbstractUnitOfWork):
-    def __init__(self):
-        self.books = InMemoryBookRepository()
-
-    async def commit(self) -> None:
-        ...
-
-    async def rollback(self) -> None:
-        ...
-
-
-@pytest.fixture
-def register_book_cmd():
-    return RegisterBook(
-        id="x",
-        title="Domain Driven Design",
-        author="Eric Evans",
-        isbn="0-321-12521-5",
-    )
-
-
-@pytest.fixture
-def uow() -> Iterator[InMemoryUnitOfWork]:
-    uow = InMemoryUnitOfWork()
-    yield uow
-    uow.books.books.clear()  # type: ignore
-    uow.books.ix_books_isbn.clear()  # type: ignore

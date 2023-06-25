@@ -1,6 +1,4 @@
-from pydantic import Field
-
-from messagebus import Command, Event, Metadata
+from messagebus import Command, Event, Field, Metadata
 
 
 class RegisterBook(Command):

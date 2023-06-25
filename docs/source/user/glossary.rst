@@ -15,14 +15,18 @@ Glossary
       Not every changes are breaker.
       Breaking changes should be well known and documented by software maintener.
       Usually, breaking changes are:
+
       * adding a new required field (or marking an optional field required)
       * removing required field
       * renaming field
       * removing or renaming enum values
+
       Non breaking changes are:
+
       * adding a new type of operation (api method, command, event)
       * adding an optional field
       * adding an enum value
+
       Those rules are used to define when a new version is required. When a new
       version of an operation is created, a new handler is created for that version,
       the old one is kept as is, or updated if necessary, reused in case of
@@ -86,6 +90,15 @@ Glossary
       A domain name registrar.
       https://www.gandi.net/
 
+   Hexagonal Architecture
+      An architectural pattern used in software design to create loosely coupled
+      application components that can be easily connected. The testability of
+      hexagonal application is improved by making components exchangeable on any
+      level of abstraction.
+
+      The term was coined by Alistair Cockburn in 2005.
+      https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)
+
    Message
       A :term:`Command` or an :term:`Event`.
 
@@ -109,6 +122,18 @@ Glossary
       service handler.
       Finally, a Service Handler can also create sub message to process, those message
       will run inside the same transaction of the :term:`Unit Of Work`.
+
+   testing goat
+      An not to the book Test-Driven Development with Python from Harry Percival.
+
+   Ubiquitous Language
+      In the Domain Driven Design book, Eric introduce the approach by communication
+      issue, where stake holder and developper does not share the same language.
+      When you work as a team, we have to establish the same language for every
+      team player, to get the best communication between people. The vocabulary used
+      to discribe a the business and shared by all the team is named the Ubiquitous
+      Language. This is the first step of the :term:`DDD`, following design patterns
+      like unit of work is not enough to practice :term:`DDD`.
 
    Unit Of Work
       The unit of work is an object which is responsible to represent a transaction

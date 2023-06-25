@@ -15,6 +15,7 @@
    :caption: Users Documentation:
 
    user/introduction
+   user/cookbook/index
    user/api
    user/changelog
    user/glossary

@@ -47,4 +47,5 @@ Finally, when the unit of work commit its transaction, the a publisher
 object can send all the desired message to an :term:`Event Stream`.
 
 This is a bit condensed, but the essence of the event driven throw the
-message bus, is here. So lets get deeper going step by step.
+message bus, is here. So lets get deeper going step by step in the
+cookbook.

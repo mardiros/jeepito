@@ -1,6 +1,4 @@
-from pydantic import Field
-
-from messagebus import Model
+from messagebus import Model, Field
 
 
 class Book(Model):
@@ -15,7 +13,7 @@ class Reviewer(Model):
     nickname: str = Field(...)
 
 
-class Review:
+class Review(Model):
     id: str = Field(...)
     reviewer_id: str = Field(...)
     book_id: str = Field(...)
