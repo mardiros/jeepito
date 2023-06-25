@@ -2,6 +2,7 @@
 Propagate commands and events to every registered handles.
 
 """
+import importlib
 import inspect
 import logging
 from collections import defaultdict
@@ -10,16 +11,12 @@ from typing import Any, Dict, Generic, List, Type, cast
 import venusian  # type: ignore
 
 from messagebus.domain.model import Command, Event, Message
-from messagebus.service.registry import VENUSIAN_CATEGORY
-from messagebus.typing import (
-    SyncCommandHandler,
-    SyncEventHandler,
-    SyncMessageHandler,
-)
+from messagebus.typing import SyncCommandHandler, SyncEventHandler, SyncMessageHandler
 
 from .unit_of_work import SyncUnitOfWorkTransaction, TRepositories
 
 log = logging.getLogger(__name__)
+VENUSIAN_CATEGORY = "messagebus"
 
 
 class ConfigurationError(RuntimeError):
@@ -51,7 +48,7 @@ def sync_listen(
     return wrapped
 
 
-class SyncMessageRegistry(Generic[TRepositories]):
+class SyncMessageBus(Generic[TRepositories]):
     """Store all the handlers for commands an events."""
 
     def __init__(self) -> None:
@@ -132,3 +129,21 @@ class SyncMessageRegistry(Generic[TRepositories]):
             uow.eventstore.add(message)
             idx += 1
         return ret
+
+    def scan(
+        self,
+        *mods: str,
+    ) -> None:
+        """
+        Scan the module (or modules) containing service handlers.
+
+        when a message is handled by the bus, the bus propagate the message
+        to hook functions, called :term:`Service Handler` that receive the message,
+        and a :term:`Unit Of Work` to process it has a business transaction.
+        """
+        scanner = venusian.Scanner(messagebus=self)
+        for modname in mods:
+            if modname.startswith("."):
+                raise ValueError(f"{modname}: Relative package unsupported")
+            mod = importlib.import_module(modname)
+            scanner.scan(mod, categories=[VENUSIAN_CATEGORY])  # type: ignore

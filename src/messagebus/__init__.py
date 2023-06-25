@@ -4,12 +4,14 @@ messagebus API.
 
 from importlib.metadata import version
 
+from pydantic import Field
+
 from .domain.model import Command, Event, Message, Metadata, Model
 from .service._async.eventstream import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
 )
-from .service._async.registry import AsyncMessageRegistry, async_listen
+from .service._async.registry import AsyncMessageBus, async_listen
 from .service._async.repository import AsyncAbstractRepository
 from .service._async.unit_of_work import (
     AsyncAbstractUnitOfWork,
@@ -19,14 +21,13 @@ from .service._sync.eventstream import (
     SyncAbstractEventstreamTransport,
     SyncEventstreamPublisher,
 )
-from .service._sync.registry import SyncMessageRegistry, sync_listen
+from .service._sync.registry import SyncMessageBus, sync_listen
 from .service._sync.repository import SyncAbstractRepository
 from .service._sync.unit_of_work import (
     SyncAbstractUnitOfWork,
     SyncUnitOfWorkTransaction,
 )
 from .service.eventstream import AbstractMessageSerializer
-from .service.registry import scan
 
 __version__ = version("messagebus")
 
@@ -37,6 +38,7 @@ __all__ = [
     "Message",
     "Metadata",
     "Model",
+    "Field",
     # Repository
     "AsyncAbstractRepository",
     "SyncAbstractRepository",
@@ -46,11 +48,10 @@ __all__ = [
     "SyncAbstractUnitOfWork",
     "SyncUnitOfWorkTransaction",
     # Registry
-    "scan",
     "async_listen",
     "sync_listen",
-    "AsyncMessageRegistry",
-    "SyncMessageRegistry",
+    "AsyncMessageBus",
+    "SyncMessageBus",
     # Eventstream
     "AbstractMessageSerializer",
     "AsyncAbstractEventstreamTransport",

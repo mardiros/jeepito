@@ -19,7 +19,7 @@ from messagebus.service._async.eventstream import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
 )
-from messagebus.service._async.registry import AsyncMessageRegistry
+from messagebus.service._async.registry import AsyncMessageBus
 from messagebus.service._async.repository import (
     AsyncAbstractRepository,
     AsyncEventstoreAbstractRepository,
@@ -204,8 +204,8 @@ async def uow_with_eventstore(
 
 
 @pytest.fixture
-def bus() -> AsyncMessageRegistry[Repositories]:
-    return AsyncMessageRegistry()
+def bus() -> AsyncMessageBus[Repositories]:
+    return AsyncMessageBus()
 
 
 @pytest.fixture

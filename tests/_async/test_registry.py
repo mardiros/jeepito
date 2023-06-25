@@ -2,9 +2,7 @@ from typing import Any
 
 import pytest
 
-import tests._async.handlers
-from messagebus.service._async.registry import AsyncMessageRegistry, ConfigurationError
-from messagebus.service.registry import scan
+from messagebus.service._async.registry import AsyncMessageBus, ConfigurationError
 from tests._async.conftest import (
     AsyncUnitOfWorkTransaction,
     DummyCommand,
@@ -36,7 +34,7 @@ async def listen_event(
 
 
 async def test_messagebus(
-    bus: AsyncMessageRegistry[Repositories],
+    bus: AsyncMessageBus[Repositories],
     tuow: AsyncUnitOfWorkTransaction[Repositories],
 ):
     """
@@ -77,7 +75,7 @@ async def test_messagebus(
 
 
 async def test_messagebus_handle_only_message(
-    bus: AsyncMessageRegistry[Repositories],
+    bus: AsyncMessageBus[Repositories],
     tuow: AsyncUnitOfWorkTransaction[Repositories],
 ):
     class Msg:
@@ -90,7 +88,7 @@ async def test_messagebus_handle_only_message(
 
 
 def test_messagebus_cannot_register_handler_twice(
-    bus: AsyncMessageRegistry[Repositories],
+    bus: AsyncMessageBus[Repositories],
 ):
     bus.add_listener(DummyCommand, listen_command)
     with pytest.raises(ConfigurationError) as ctx:
@@ -104,7 +102,7 @@ def test_messagebus_cannot_register_handler_twice(
 
 
 def test_messagebus_cannot_register_handler_on_non_message(
-    bus: AsyncMessageRegistry[Repositories],
+    bus: AsyncMessageBus[Repositories],
 ):
     with pytest.raises(ConfigurationError) as ctx:
         bus.add_listener(
@@ -119,7 +117,7 @@ def test_messagebus_cannot_register_handler_on_non_message(
 
 
 def test_messagebus_cannot_unregister_non_unregistered_handler(
-    bus: AsyncMessageRegistry[Repositories],
+    bus: AsyncMessageBus[Repositories],
 ):
     with pytest.raises(ConfigurationError) as ctx:
         bus.remove_listener(DummyCommand, listen_command)
@@ -147,10 +145,10 @@ def test_messagebus_cannot_unregister_non_unregistered_handler(
     )
 
 
-def test_listen(bus: AsyncMessageRegistry[Any]):
+def test_scan(bus: AsyncMessageBus[Any]):
     assert bus.commands_registry == {}
     assert bus.events_registry == {}
-    scan(bus, tests._async.handlers)
+    bus.scan("tests._async.handlers")
     from tests._async.handlers import dummy
 
     assert DummyCommand in bus.commands_registry

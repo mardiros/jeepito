@@ -1,13 +1,13 @@
 from messagebus.domain.model import Metadata
-from messagebus.service._sync.registry import SyncMessageRegistry
+from messagebus.service._sync.registry import SyncMessageBus
 from messagebus.service._sync.unit_of_work import SyncUnitOfWorkTransaction
 from tests._sync.conftest import (
-    SyncDummyUnitOfWorkWithEvents,
-    SyncEventstreamTransport,
     DummyCommand,
     DummyEvent,
     DummyModel,
     Repositories,
+    SyncDummyUnitOfWorkWithEvents,
+    SyncEventstreamTransport,
 )
 
 
@@ -22,7 +22,7 @@ def listen_command(
 
 
 def test_store_events_and_publish(
-    bus: SyncMessageRegistry[Repositories],
+    bus: SyncMessageBus[Repositories],
     eventstream_transport: SyncEventstreamTransport,
     uow_with_eventstore: SyncDummyUnitOfWorkWithEvents,
     dummy_command: DummyCommand,
@@ -55,7 +55,7 @@ def test_store_events_and_publish(
 
 
 def test_store_events_and_rollback(
-    bus: SyncMessageRegistry[Repositories],
+    bus: SyncMessageBus[Repositories],
     eventstream_transport: SyncEventstreamTransport,
     uow_with_eventstore: SyncDummyUnitOfWorkWithEvents,
     dummy_command: DummyCommand,

@@ -1,5 +1,5 @@
 from messagebus.domain.model import Metadata
-from messagebus.service._async.registry import AsyncMessageRegistry
+from messagebus.service._async.registry import AsyncMessageBus
 from messagebus.service._async.unit_of_work import AsyncUnitOfWorkTransaction
 from tests._async.conftest import (
     AsyncDummyUnitOfWorkWithEvents,
@@ -22,7 +22,7 @@ async def listen_command(
 
 
 async def test_store_events_and_publish(
-    bus: AsyncMessageRegistry[Repositories],
+    bus: AsyncMessageBus[Repositories],
     eventstream_transport: AsyncEventstreamTransport,
     uow_with_eventstore: AsyncDummyUnitOfWorkWithEvents,
     dummy_command: DummyCommand,
@@ -55,7 +55,7 @@ async def test_store_events_and_publish(
 
 
 async def test_store_events_and_rollback(
-    bus: AsyncMessageRegistry[Repositories],
+    bus: AsyncMessageBus[Repositories],
     eventstream_transport: AsyncEventstreamTransport,
     uow_with_eventstore: AsyncDummyUnitOfWorkWithEvents,
     dummy_command: DummyCommand,

@@ -24,7 +24,7 @@ unasync.unasync_files(
             "tests/_sync",
             additional_replacements={
                 "_async": "_sync",
-                "AsyncSleep": "SyncSleep",
+                "tests._async.handlers": "tests._sync.handlers",
             },
         ),
     ],

@@ -19,7 +19,7 @@ from messagebus.service._sync.eventstream import (
     SyncAbstractEventstreamTransport,
     SyncEventstreamPublisher,
 )
-from messagebus.service._sync.registry import SyncMessageRegistry
+from messagebus.service._sync.registry import SyncMessageBus
 from messagebus.service._sync.repository import (
     SyncAbstractRepository,
     SyncEventstoreAbstractRepository,
@@ -204,8 +204,8 @@ def uow_with_eventstore(
 
 
 @pytest.fixture
-def bus() -> SyncMessageRegistry[Repositories]:
-    return SyncMessageRegistry()
+def bus() -> SyncMessageBus[Repositories]:
+    return SyncMessageBus()
 
 
 @pytest.fixture
