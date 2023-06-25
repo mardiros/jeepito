@@ -3,6 +3,7 @@ messagebus API.
 """
 
 from importlib.metadata import version
+from pydantic import Field
 
 from pydantic import Field
 
@@ -34,6 +35,7 @@ __version__ = version("messagebus")
 __all__ = [
     # models
     "Model",
+    "Field",
     "Message",
     "Metadata",
     "Model",
