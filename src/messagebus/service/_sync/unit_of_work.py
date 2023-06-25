@@ -82,6 +82,8 @@ class SyncUnitOfWorkTransaction(Generic[TRepositories]):
 
 
 class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
+    """ """
+
     eventstore: SyncEventstoreAbstractRepository = SyncSinkholeEventstoreRepository()
 
     def collect_new_events(self) -> Iterator[Message]:

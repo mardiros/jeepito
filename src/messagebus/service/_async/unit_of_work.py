@@ -82,6 +82,8 @@ class AsyncUnitOfWorkTransaction(Generic[TRepositories]):
 
 
 class AsyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
+    """ """
+
     eventstore: AsyncEventstoreAbstractRepository = AsyncSinkholeEventstoreRepository()
 
     def collect_new_events(self) -> Iterator[Message]:
