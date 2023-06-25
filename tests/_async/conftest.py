@@ -55,11 +55,7 @@ class AsyncDummyRepository(AsyncAbstractRepository[DummyModel]):
 
     def __init__(self) -> None:
         self.seen = []
-        self.initialized = False
         self.models = {}
-
-    async def initialize(self) -> None:
-        self.initialized = True
 
     async def add(self, model: DummyModel) -> DummyRepositoryOperationResult:
         if model.id in self.models:
@@ -101,10 +97,6 @@ class AsyncEventstreamTransport(AsyncAbstractEventstreamTransport):
 
     def __init__(self):
         self.events = []
-        self.initialized = False
-
-    async def initialize(self) -> None:
-        self.initialized = True
 
     async def send_message_serialized(self, event: Mapping[str, Any]) -> None:
         self.events.append(event)

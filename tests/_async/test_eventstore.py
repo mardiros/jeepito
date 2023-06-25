@@ -3,7 +3,6 @@ from messagebus.service._async.registry import AsyncMessageRegistry
 from messagebus.service._async.unit_of_work import AsyncUnitOfWorkTransaction
 from tests._async.conftest import (
     AsyncDummyUnitOfWorkWithEvents,
-    AsyncEventstreamPublisher,
     AsyncEventstreamTransport,
     DummyCommand,
     DummyEvent,
@@ -66,11 +65,3 @@ async def test_store_events_and_rollback(
         await bus.handle(dummy_command, tuow)
         await tuow.rollback()
     assert eventstream_transport.events == []
-
-
-async def test_store_initialize_transport(
-    eventstore: AsyncEventstreamPublisher,
-    eventstream_transport: AsyncEventstreamTransport,
-):
-    await eventstore.initialize()
-    assert eventstream_transport.initialized is True

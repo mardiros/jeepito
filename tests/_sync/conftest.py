@@ -55,11 +55,7 @@ class SyncDummyRepository(SyncAbstractRepository[DummyModel]):
 
     def __init__(self) -> None:
         self.seen = []
-        self.initialized = False
         self.models = {}
-
-    def initialize(self) -> None:
-        self.initialized = True
 
     def add(self, model: DummyModel) -> DummyRepositoryOperationResult:
         if model.id in self.models:
@@ -101,10 +97,6 @@ class SyncEventstreamTransport(SyncAbstractEventstreamTransport):
 
     def __init__(self):
         self.events = []
-        self.initialized = False
-
-    def initialize(self) -> None:
-        self.initialized = True
 
     def send_message_serialized(self, event: Mapping[str, Any]) -> None:
         self.events.append(event)

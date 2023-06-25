@@ -54,14 +54,6 @@ async def test_collect_new_events(
         next(iter)
 
 
-async def test_initialize(uow: AsyncDummyUnitOfWork):
-    assert uow.foos.initialized is False
-    assert uow.bars.initialized is False
-    await uow.initialize()
-    assert uow.foos.initialized is True
-    assert uow.bars.initialized is True
-
-
 async def test_transaction_rollback_on_error(uow: AsyncDummyUnitOfWork):
     tuow = None
     try:

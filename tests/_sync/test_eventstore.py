@@ -3,7 +3,6 @@ from messagebus.service._sync.registry import SyncMessageRegistry
 from messagebus.service._sync.unit_of_work import SyncUnitOfWorkTransaction
 from tests._sync.conftest import (
     SyncDummyUnitOfWorkWithEvents,
-    SyncEventstreamPublisher,
     SyncEventstreamTransport,
     DummyCommand,
     DummyEvent,
@@ -66,11 +65,3 @@ def test_store_events_and_rollback(
         bus.handle(dummy_command, tuow)
         tuow.rollback()
     assert eventstream_transport.events == []
-
-
-def test_store_initialize_transport(
-    eventstore: SyncEventstreamPublisher,
-    eventstream_transport: SyncEventstreamTransport,
-):
-    eventstore.initialize()
-    assert eventstream_transport.initialized is True

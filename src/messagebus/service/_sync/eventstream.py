@@ -11,10 +11,6 @@ class SyncAbstractEventstreamTransport(abc.ABC):
     """
 
     @abc.abstractmethod
-    def initialize(self) -> None:
-        """Use to initialize the transport, usually open a tcp socket."""
-
-    @abc.abstractmethod
     def send_message_serialized(self, event: Mapping[str, Any]) -> None:
         """Publish a serialized message to the eventstream."""
 
@@ -25,9 +21,6 @@ class SyncSinkholeEventstreamTransport(SyncAbstractEventstreamTransport):
 
     By default, the events are not streamed until it is configured to do so.
     """
-
-    def initialize(self) -> None:
-        """Do nothing."""
 
     def send_message_serialized(self, event: Mapping[str, Any]) -> None:
         """Do nothing."""
@@ -49,10 +42,6 @@ class SyncEventstreamPublisher:
         """Publish a message to the eventstream."""
         self.transport = transport
         self.serializer = serializer
-
-    def initialize(self) -> None:
-        """Use to initialize the transport."""
-        self.transport.initialize()
 
     def send_message(self, message: Message) -> None:
         """

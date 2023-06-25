@@ -91,11 +91,6 @@ class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
                 while model.messages:
                     yield model.messages.pop(0)
 
-    def initialize(self) -> None:
-        """Initialize every repositories."""
-        for repo in self._iter_repositories():
-            repo.initialize()
-
     def _iter_repositories(
         self,
     ) -> Iterator[SyncAbstractRepository[Any]]:

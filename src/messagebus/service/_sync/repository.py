@@ -20,20 +20,11 @@ class SyncAbstractRepository(abc.ABC, Generic[TModel_contra]):
 
     seen: MutableSequence[TModel_contra]
 
-    @abc.abstractmethod
-    def initialize(self) -> None:
-        """Override to initialize the repository (asynchronous usage)."""
-
 
 class SyncEventstoreAbstractRepository(abc.ABC):
     def __init__(self, publisher: Optional[SyncEventstreamPublisher] = None) -> None:
         self.publisher = publisher
         self.stream_buffer: MutableSequence[Message] = []
-
-    def initialize(self) -> None:
-        """Override to initialize the repository (asynchronous usage)."""
-        if self.publisher:
-            self.publisher.initialize()
 
     @abc.abstractmethod
     def _add(self, message: Message) -> None:
