@@ -1,4 +1,3 @@
-from result import Ok, Err
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
     AbstractBookRepository,
@@ -6,6 +5,8 @@ from reading_club.service.repositories import (
     BookRepositoryOperationResult,
     BookRepositoryResult,
 )
+from result import Err, Ok
+
 
 class InMemoryBookRepository(AbstractBookRepository):
     books = {}

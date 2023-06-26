@@ -23,7 +23,7 @@ In traditional apps, we use to create a ``model`` module at the root of the
 project, so, it is legitimate to ask why we create a ``domain`` namespace.
 The ``domain`` module contains all the business logic, and it is the namespace
 where we only with the language of the business domain. In domain driven design,
-it is named the :term:`Ubiquitous Language``
+it is named the :term:`Ubiquitous Language`
 
 In a Django app, for example, the model contains database details, such as
 forein keys, index and also contains some GUI details.

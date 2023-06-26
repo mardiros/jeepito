@@ -1,8 +1,4 @@
-from tests._sync.conftest import (
-    DummyCommand,
-    DummyEvent,
-    DummyModel,
-)
+from tests._sync.conftest import DummyCommand, DummyEvent, DummyModel
 
 conftest_mod = __name__.replace("test_registry", "conftest")
 

@@ -14,3 +14,4 @@ using the messagebus library.
    02-repository
    03-unit-of-work
    04-service-handler
+   05-message-bus

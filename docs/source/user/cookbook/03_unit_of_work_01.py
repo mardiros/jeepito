@@ -1,8 +1,6 @@
-from messagebus import AsyncAbstractUnitOfWork
+from reading_club.service.repositories import AbstractBookRepository
 
-from reading_club.service.repositories import (
-    AbstractBookRepository,
-)
+from messagebus import AsyncAbstractUnitOfWork
 
 
 class AbstractUnitOfWork(AsyncAbstractUnitOfWork[AbstractBookRepository]):

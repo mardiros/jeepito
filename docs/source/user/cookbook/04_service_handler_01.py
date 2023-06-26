@@ -1,4 +1,3 @@
-from reading_club.domain.model import Book
 from reading_club.domain.messages import RegisterBook
 from reading_club.service.repositories import BookRepositoryOperationResult
 

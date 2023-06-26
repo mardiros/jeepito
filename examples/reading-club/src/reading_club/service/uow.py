@@ -1,12 +1,14 @@
-from messagebus import AsyncAbstractUnitOfWork
-
 from reading_club.service.repositories import (
-    # AbstractReviewRepository, AbstractReviewerRepository, Repositories,
     AbstractBookRepository,
+    AbstractReviewerRepository,
+    AbstractReviewRepository,
+    Repositories,
 )
 
+from messagebus import AsyncAbstractUnitOfWork
 
-class AbstractUnitOfWork(AsyncAbstractUnitOfWork[AbstractBookRepository]):
+
+class AbstractUnitOfWork(AsyncAbstractUnitOfWork[Repositories]):
     books: AbstractBookRepository
-    # reviewers: AbstractReviewerRepository
-    # reviews: AbstractReviewRepository
+    reviewers: AbstractReviewerRepository
+    reviews: AbstractReviewRepository

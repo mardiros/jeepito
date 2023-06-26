@@ -1,6 +1,7 @@
 from typing import Iterator
+
 import pytest
-from result import Ok, Err
+from reading_club.domain.messages import RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
     AbstractBookRepository,
@@ -9,7 +10,7 @@ from reading_club.service.repositories import (
     BookRepositoryResult,
 )
 from reading_club.service.uow import AbstractUnitOfWork
-from reading_club.domain.messages import RegisterBook
+from result import Err, Ok
 
 
 class InMemoryBookRepository(AbstractBookRepository):

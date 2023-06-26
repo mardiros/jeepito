@@ -1,6 +1,7 @@
 from typing import Iterator
+
 import pytest
-from result import Ok, Err
+from reading_club.domain.messages import RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
     AbstractBookRepository,
@@ -9,7 +10,9 @@ from reading_club.service.repositories import (
     BookRepositoryResult,
 )
 from reading_club.service.uow import AbstractUnitOfWork
-from reading_club.domain.messages import RegisterBook
+from result import Err, Ok
+
+from messagebus import AsyncMessageBus
 
 
 class InMemoryBookRepository(AbstractBookRepository):
@@ -58,3 +61,14 @@ def uow() -> Iterator[InMemoryUnitOfWork]:
     yield uow
     uow.books.books.clear()  # type: ignore
     uow.books.ix_books_isbn.clear()  # type: ignore
+
+
+# for performance reason, we reuse the bus here,
+# the scan operation is slowing down while repeated
+_bus = AsyncMessageBus()
+_bus.scan("reading_club.service.handlers")
+
+
+@pytest.fixture
+def bus() -> AsyncMessageBus:
+    return _bus

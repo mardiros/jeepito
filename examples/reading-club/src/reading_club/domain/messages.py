@@ -10,6 +10,7 @@ class RegisterBook(Command):
 
 
 class BookRegistered(Event):
+    id: str = Field(...)
     isbn: str = Field(...)
     title: str = Field(...)
     author: str = Field(...)

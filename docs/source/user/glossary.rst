@@ -133,7 +133,7 @@ Glossary
       team player, to get the best communication between people. The vocabulary used
       to discribe a the business and shared by all the team is named the Ubiquitous
       Language. This is the first step of the :term:`DDD`, following design patterns
-      like unit of work is not enough to practice :term:`DDD`.
+      like unit of work is not enough to practice DDD.
 
    Unit Of Work
       The unit of work is an object which is responsible to represent a transaction

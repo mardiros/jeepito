@@ -1,4 +1,4 @@
-from messagebus import Model, Field
+from messagebus import Field, Model
 
 
 class Book(Model):

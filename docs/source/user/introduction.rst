@@ -28,7 +28,7 @@ Commands and events are versionned, the update of any format, that represent a
 
 :class:`messagebus.Command` and :class:`messagebus.Event` are both
 :class:`messagebus.Message`. And those messages can be listened by a
-:term:`service handler`, in a :class:`messagebus.AsyncMessageRegistry`
+:term:`service handler`, in a :class:`messagebus.AsyncMessageBus`
 using a decorator :func:`messagebus.async_listen`.
 
 .. note::
@@ -38,9 +38,9 @@ using a decorator :func:`messagebus.async_listen`.
 During the startup of the app, all service handlers must be registered
 the message registry by calling the function :func:`messagebus.scan`.
 
-Afterwhat, the :class:`messagebus.AsyncMessageRegistry` is ready to handle
-message using it function :meth:`messagebus.AsyncMessageRegistry.handle`.
-you will have understood it, the :class:`messagebus.AsyncMessageRegistry`
+Afterwhat, the :class:`messagebus.AsyncMessageBus` is ready to handle
+message using it function :meth:`messagebus.AsyncMessageBus.handle`.
+you will have understood it, the :class:`messagebus.AsyncMessageBus`
 is the :term:`message bus` object.
 
 Finally, when the unit of work commit its transaction, the a publisher
