@@ -6,7 +6,7 @@ Message base classes.
 """
 
 from datetime import datetime
-from typing import MutableSequence
+from typing import Any, MutableSequence
 from uuid import uuid1
 
 from pydantic import BaseModel, Field
@@ -33,6 +33,13 @@ class Message(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     metadata: Metadata
 
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, Message):
+            return False
+        slf = self.dict(exclude={"message_id", "created_at"})
+        otr = other.dict(exclude={"message_id", "created_at"})
+        return slf == otr
+
 
 class Command(Message):
     """Baseclass for message of type command."""
@@ -52,3 +59,10 @@ class Model(BaseModel):
     Those message are ephemeral, published by event handler and consumed
     by the unit of work during the process of an original command.
     """
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, Model):
+            return False
+        slf = self.dict(exclude={"messages"})
+        otr = other.dict(exclude={"messages"})
+        return slf == otr

@@ -21,7 +21,7 @@ black:
     poetry run black .
 
 mypy:
-    poetry run mypy src/messagebus/
+    poetry run mypy src/messagebus/ tests/
 
 cov test_suite=default_test_suite:
     rm -f .coverage

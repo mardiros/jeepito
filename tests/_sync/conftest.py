@@ -130,21 +130,11 @@ class DummyCommand(Command):
     id: str = Field(...)
     metadata: Metadata = Metadata(name="dummy", schema_version=1)
 
-    def __eq__(self, other: Any):
-        slf = self.dict(exclude={"message_id", "created_at"})
-        otr = other.dict(exclude={"message_id", "created_at"})
-        return slf == otr
-
 
 class DummyEvent(Event):
     id: str = Field(...)
     increment: int = Field(...)
     metadata: Metadata = Metadata(name="dummied", schema_version=1, published=True)
-
-    def __eq__(self, other: Any):
-        slf = self.dict(exclude={"message_id", "created_at"})
-        otr = other.dict(exclude={"message_id", "created_at"})
-        return slf == otr
 
 
 @pytest.fixture
