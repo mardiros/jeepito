@@ -1,4 +1,4 @@
-from reading_club.domain.messages import RegisterBook
+from reading_club.domain.messages import BookRegistered, RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.handlers.book import register_book
 from reading_club.service.repositories import BookRepositoryError
@@ -19,6 +19,14 @@ async def test_register_book(register_book_cmd: RegisterBook, uow: AbstractUnitO
             author="Eric Evans",
             isbn="0-321-12521-5",
         )
+        assert book.unwrap().messages == [
+            BookRegistered(
+                id="x",
+                isbn="0-321-12521-5",
+                title="Domain Driven Design",
+                author="Eric Evans",
+            )
+        ]
         await t.commit()
 
     async with uow as t:
@@ -41,4 +49,5 @@ async def test_bus_handler(
             author="Eric Evans",
             isbn="0-321-12521-5",
         )
+        assert book.unwrap().messages == []
         await trans.commit()

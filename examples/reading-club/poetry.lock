@@ -229,7 +229,7 @@ venusian = "^3.0.0"
 type = "git"
 url = "https://github.com/mardiros/messagebus.git"
 reference = "HEAD"
-resolved_reference = "843a46ea550d34ade29e5e6f111d9e1900c94dd2"
+resolved_reference = "12e70e194a6ba0dc1a0824197945ad02ac3c7a26"
 
 [[package]]
 name = "mypy-extensions"

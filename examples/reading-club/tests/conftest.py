@@ -26,6 +26,7 @@ class InMemoryBookRepository(AbstractBookRepository):
             return Err(BookRepositoryError.integrity_error)
         self.books[model.id] = model
         self.books[model.isbn] = model.id
+        self.seen.append(model)
         return Ok(...)
 
     async def by_id(self, id: str) -> BookRepositoryResult:
