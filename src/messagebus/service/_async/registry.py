@@ -15,6 +15,9 @@ from messagebus.typing import (
     AsyncCommandHandler,
     AsyncEventHandler,
     AsyncMessageHandler,
+    TAsyncUow,
+    TCommand,
+    TEvent,
 )
 
 from .unit_of_work import AsyncUnitOfWorkTransaction, TRepositories
@@ -28,8 +31,8 @@ class ConfigurationError(RuntimeError):
 
 
 def async_listen(
-    wrapped: AsyncMessageHandler[Any, Any, Any]
-) -> AsyncMessageHandler[Any, Any, Any]:
+    wrapped: AsyncMessageHandler[TCommand, TAsyncUow, TEvent]
+) -> AsyncMessageHandler[TCommand, TAsyncUow, TEvent]:
     """
     Decorator to listen for a command or an event.
 
@@ -40,7 +43,7 @@ def async_listen(
     def callback(
         scanner: venusian.Scanner,
         name: str,
-        ob: AsyncMessageHandler[Any, Any, Any],
+        ob: AsyncMessageHandler[TCommand, TAsyncUow, TEvent],
     ) -> None:
         if not hasattr(scanner, VENUSIAN_CATEGORY):
             return  # coverage: ignore

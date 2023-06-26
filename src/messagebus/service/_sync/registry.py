@@ -15,6 +15,9 @@ from messagebus.typing import (
     SyncCommandHandler,
     SyncEventHandler,
     SyncMessageHandler,
+    TSyncUow,
+    TCommand,
+    TEvent,
 )
 
 from .unit_of_work import SyncUnitOfWorkTransaction, TRepositories
@@ -28,8 +31,8 @@ class ConfigurationError(RuntimeError):
 
 
 def sync_listen(
-    wrapped: SyncMessageHandler[Any, Any, Any]
-) -> SyncMessageHandler[Any, Any, Any]:
+    wrapped: SyncMessageHandler[TCommand, TSyncUow, TEvent]
+) -> SyncMessageHandler[TCommand, TSyncUow, TEvent]:
     """
     Decorator to listen for a command or an event.
 
@@ -40,7 +43,7 @@ def sync_listen(
     def callback(
         scanner: venusian.Scanner,
         name: str,
-        ob: SyncMessageHandler[Any, Any, Any],
+        ob: SyncMessageHandler[TCommand, TSyncUow, TEvent],
     ) -> None:
         if not hasattr(scanner, VENUSIAN_CATEGORY):
             return  # coverage: ignore

@@ -10,6 +10,7 @@ unasync.unasync_files(
             "src/messagebus/service/_sync",
             additional_replacements={
                 "_async": "_sync",
+                "TAsyncUow": "TSyncUow",
                 "async_listen": "sync_listen",
             },
         ),
