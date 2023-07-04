@@ -82,7 +82,13 @@ class SyncUnitOfWorkTransaction(Generic[TRepositories]):
 
 
 class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
-    """ """
+    """
+    Abstract unit of work.
+
+    To implement a unit of work, the :meth:`AsyncAbstractUnitOfWork.commit` and
+    :meth:`AsyncAbstractUnitOfWork.rollback` has to be defined, and some repositories
+    has to be declared has attributes.
+    """
 
     eventstore: SyncEventstoreAbstractRepository = SyncSinkholeEventstoreRepository()
 
