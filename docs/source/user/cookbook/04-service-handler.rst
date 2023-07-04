@@ -14,11 +14,7 @@ Here is the signature:
     representing an implementation. This implementation is based on abstract object,
     so it does not care of implementation details.
 
-Before implementing the service, we can create the testing part, to bring the
-:term:`testing goat` inside us to life.
-
-Lets write the test!
-
+Before implementing the service, we will write the testing part.
 
 In the file ``test_service_handler_add_book.py``
 

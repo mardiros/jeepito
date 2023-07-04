@@ -1,16 +1,17 @@
 from reading_club.domain.messages import BookRegistered, RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
-    AbstractBookRepository,
     BookRepositoryOperationResult,
 )
 
-from messagebus import AsyncUnitOfWorkTransaction, async_listen
+from messagebus import async_listen
+
+from reading_club.service.uow import AbstractUnitOfWork
 
 
 @async_listen
 async def register_book(
-    cmd: RegisterBook, uow: AsyncUnitOfWorkTransaction[AbstractBookRepository]
+    cmd: RegisterBook, uow: AbstractUnitOfWork
 ) -> BookRepositoryOperationResult:
     book = Book(id=cmd.id, title=cmd.title, author=cmd.author, isbn=cmd.isbn)
     op = await uow.books.add(book)

@@ -123,9 +123,6 @@ Glossary
       Finally, a Service Handler can also create sub message to process, those message
       will run inside the same transaction of the :term:`Unit Of Work`.
 
-   testing goat
-      An not to the book Test-Driven Development with Python from Harry Percival.
-
    Ubiquitous Language
       In the Domain Driven Design book, Eric introduce the approach by communication
       issue, where stake holder and developper does not share the same language.

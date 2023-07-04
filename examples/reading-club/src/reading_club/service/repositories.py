@@ -8,7 +8,6 @@ from result import Result
 
 from messagebus import AsyncAbstractRepository
 
-
 class BookRepositoryError(enum.Enum):
     integrity_error = "integrity_error"
     not_found = "not_found"

@@ -8,7 +8,7 @@ abstract class. This let the possibility to improve the testability of the appli
 
 Lets define an operation to add a book in the ``service/repositories.py`` module.
 
-.. literalinclude:: 01_model_definition_01.py
+.. literalinclude:: 02_repository_01.py
 
 
 Dealing with errors
@@ -40,7 +40,7 @@ Implementing a repository
 The first implementation of our repository is always the simplest one, we can create
 on in a ``tests/conftest.py`` to get a better view of what it looks like.
 
-.. literalinclude:: 01_model_definition_02.py
+.. literalinclude:: 02_repository_02.py
 
 
 If you plan to store the models in a SQL database, the cool things is that, it

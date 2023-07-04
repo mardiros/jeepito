@@ -16,6 +16,7 @@ Lets run the test to see what happen.
 
 
 ::
+
     $ poetry run pytest -sxv
     ...
     tests/test_service_handler_add_book.py::test_bus_handler FAILED
@@ -52,6 +53,7 @@ Lets fix the service/handlers/book.py file
 .. literalinclude:: 05_message_bus_03.py
 
 ::
+
     $ poetry run pytest -sxv
     ========================== test session starts ==========================
     collected 2 items
