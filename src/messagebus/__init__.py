@@ -15,6 +15,7 @@ from .service._async.registry import AsyncMessageBus, async_listen
 from .service._async.repository import AsyncAbstractRepository
 from .service._async.unit_of_work import (
     AsyncAbstractUnitOfWork,
+    AsyncSinkholeEventstoreRepository,
     AsyncUnitOfWorkTransaction,
 )
 from .service._sync.eventstream import (
@@ -25,6 +26,7 @@ from .service._sync.registry import SyncMessageBus, sync_listen
 from .service._sync.repository import SyncAbstractRepository
 from .service._sync.unit_of_work import (
     SyncAbstractUnitOfWork,
+    SyncSinkholeEventstoreRepository,
     SyncUnitOfWorkTransaction,
 )
 from .service.eventstream import AbstractMessageSerializer
@@ -47,6 +49,8 @@ __all__ = [
     "AsyncUnitOfWorkTransaction",
     "SyncAbstractUnitOfWork",
     "SyncUnitOfWorkTransaction",
+    "AsyncSinkholeEventstoreRepository",
+    "SyncSinkholeEventstoreRepository",
     # Registry
     "async_listen",
     "sync_listen",

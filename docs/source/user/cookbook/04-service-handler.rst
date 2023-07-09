@@ -21,16 +21,27 @@ In the file ``test_service_handler_add_book.py``
 .. literalinclude:: 04_service_handler_02.py
 
 we have imagine a tests where we ensure we can add the book in the repository
-properly, and then, that the book cannot be added twive due to an integrity error.
+properly, and then, that the book cannot be added twice due to an integrity error.
 
-This probably should be splitted in two tests but we can live with that.
+This should be splitted in two tests but this is not a test driven course here,
+and we can live with that at the moment.
 
 The tests requires pytest fixtures, so we been to update our ``conftest.py`` now.
 
 Lets write our fixtures:
 
 .. literalinclude:: 04_service_handler_03.py
+   :emphasize-lines: 47,57
 
+We have two fixtures here, ``register_book_cmd`` is a dummy command to register a book,
+using a fixture instead of hardcoding it in the test make it reusable and make the test
+clear on its assertion. Using command as fixture can also be reused by other fixtures
+in order to initialize a domain model state using service handlers, and it avoid update
+if the core domain model has been updated.
+The ``uow`` fixture is our reusable unit of work, which run in memory, so we don't have
+hard dependency on any SQL Engine. This add more code to maintaine, but it is highly
+flexible code. Not taht its states is cleared avec every tests in order to make sure
+every tests are decoupled.
 
 We are ready to starts our test:
 
@@ -66,6 +77,7 @@ We are ready to starts our test:
 Now, that our tests is working, and properly failing, we can implement our service handler:
 
 .. literalinclude:: 04_service_handler_04.py
+   :emphasize-lines: 11-13
 
 ::
 
@@ -88,4 +100,4 @@ Now, that our tests is working, and properly failing, we can implement our servi
     with more confidence.
 
     By the way, those code are not that much hard to write and maintain, I personnaly
-    find the fixture part, one of the funniest part of the code.
+    find the fixture part, one of the funniest part to code.

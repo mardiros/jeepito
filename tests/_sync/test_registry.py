@@ -2,13 +2,13 @@ from typing import Any
 
 import pytest
 
-from messagebus.service._sync.registry import SyncMessageBus, ConfigurationError
+from messagebus.service._sync.registry import ConfigurationError, SyncMessageBus
 from tests._sync.conftest import (
-    SyncUnitOfWorkTransaction,
     DummyCommand,
     DummyEvent,
     DummyModel,
     Repositories,
+    SyncUnitOfWorkTransaction,
 )
 
 conftest_mod = __name__.replace("test_registry", "conftest")
@@ -24,9 +24,7 @@ def listen_command(
     return foo
 
 
-def listen_event(
-    cmd: DummyEvent, uow: SyncUnitOfWorkTransaction[Repositories]
-) -> None:
+def listen_event(cmd: DummyEvent, uow: SyncUnitOfWorkTransaction[Repositories]) -> None:
     """This event is indented to be fire by the message bus."""
     rfoo = uow.foos.get(cmd.id)
     foo = rfoo.unwrap()

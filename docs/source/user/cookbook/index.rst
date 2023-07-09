@@ -15,3 +15,4 @@ using the messagebus library.
    03-unit-of-work
    04-service-handler
    05-message-bus
+   06-eventstream

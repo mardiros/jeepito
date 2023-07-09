@@ -57,5 +57,7 @@ class AsyncEventstoreAbstractRepository(abc.ABC):
 
 
 class AsyncSinkholeEventstoreRepository(AsyncEventstoreAbstractRepository):
+    """An eventstore that drop all the message."""
+
     async def _add(self, message: Message) -> None:
         ...

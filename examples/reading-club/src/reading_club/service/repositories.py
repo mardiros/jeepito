@@ -8,6 +8,7 @@ from result import Result
 
 from messagebus import AsyncAbstractRepository
 
+
 class BookRepositoryError(enum.Enum):
     integrity_error = "integrity_error"
     not_found = "not_found"
@@ -29,6 +30,10 @@ ReviewRepositoryOperationResult = Result[EllipsisType, ReviewRepositoryError]
 
 
 class AbstractBookRepository(AsyncAbstractRepository[Book]):
+    def __init__(self) -> None:
+        super().__init__()
+        self.seen = []
+
     @abc.abstractmethod
     async def add(self, model: Book) -> BookRepositoryOperationResult:
         ...

@@ -3,8 +3,9 @@ from reading_club.service.uow import AbstractUnitOfWork
 
 
 class InMemoryBookRepository(AbstractBookRepository):
-    # see chapter repository for the content f the class
+    # see chapter repository for the content of the class
     ...
+
 
 class InMemoryUnitOfWork(AbstractUnitOfWork):
     def __init__(self):

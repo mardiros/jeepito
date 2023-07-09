@@ -4,9 +4,6 @@ from reading_club.service.handlers.book import register_book
 from reading_club.service.repositories import BookRepositoryError
 from reading_club.service.uow import AbstractUnitOfWork
 
-from messagebus import AsyncMessageBus
-from tests.conftest import EventstreamTransport
-
 
 async def test_register_book(register_book_cmd: RegisterBook, uow: AbstractUnitOfWork):
     async with uow as t:
@@ -37,33 +34,3 @@ async def test_register_book(register_book_cmd: RegisterBook, uow: AbstractUnitO
         assert operation.is_err()
         assert operation.unwrap_err() == BookRepositoryError.integrity_error
         await t.rollback()
-
-
-async def test_bus_handler(
-    bus: AsyncMessageBus,
-    register_book_cmd: RegisterBook,
-    uow: AbstractUnitOfWork,
-    transport: EventstreamTransport,
-):
-    async with uow as trans:
-        await bus.handle(register_book_cmd, trans)
-        book = await trans.books.by_id(register_book_cmd.id)
-        assert book.is_ok()
-        assert book.unwrap() == Book(
-            id="x",
-            title="Domain Driven Design",
-            author="Eric Evans",
-            isbn="0-321-12521-5",
-        )
-        assert book.unwrap().messages == []
-        await trans.commit()
-
-    assert transport.events == [
-        {
-            "id": transport.events[0]["id"],
-            "created_at": transport.events[0]["created_at"],
-            "payload": '{"id": "x", "isbn": "0-321-12521-5", "title": "Domain Driven '
-            'Design", "author": "Eric Evans"}',
-            "type": "register_book_v1",
-        },
-    ]
