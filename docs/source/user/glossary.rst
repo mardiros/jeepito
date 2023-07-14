@@ -3,6 +3,13 @@ Glossary
 
 .. glossary::
 
+   Adapter
+      In :term:`Hexagonal Architecture`, an adapter is a component that connects the
+      application's core (or business logic) to external systems, such as databases,
+      user interfaces, or third-party services.
+      Adapters serve as a bridge between the inner layers of the application and the
+      outside world.
+
    Architecture Patterns With Python
 
       *Architecture Patterns With Python: Enabling Test-Driven Development,

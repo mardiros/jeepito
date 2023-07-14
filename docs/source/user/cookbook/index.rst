@@ -17,3 +17,4 @@ using the messagebus library.
    05-message-bus
    06-eventstream
    07-local-eventstore
+   08-sqlalchemy-uow

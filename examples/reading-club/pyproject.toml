@@ -10,9 +10,11 @@ version = "0.1.0"
 # minimal supported python version
 python = "^3.10"
 # deps
+aiosqlite = "^0.19.0"
 messagebus = {git = "https://github.com/mardiros/messagebus.git"}
 pydantic = "^1.10.9"
 result = "^0.10.0"
+sqlalchemy = "^2.0.18"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
