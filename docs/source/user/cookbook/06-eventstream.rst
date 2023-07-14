@@ -58,8 +58,8 @@ not in a repository. In the real world, we have multiple implementation of our u
 work and this code can't be added anytime we create a repository implementation.
 The messaging part for the bus are handled by the service layers.
 
-Before entering the next subject, note that our initial test ``test_register_book``
-can also be updated to test that the unit of work will received the message before
-processing it. This tests directly call the message bus handler and bypass the bus.
+Lastly, note that our initial test ``test_register_book`` can also be updated to test
+that the unit of work will received the message before processing it.
+This tests directly call the message bus handler and bypass the bus.
 
 .. literalinclude:: 06_eventstream_05.py

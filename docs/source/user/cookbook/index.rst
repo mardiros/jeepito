@@ -16,3 +16,4 @@ using the messagebus library.
    04-service-handler
    05-message-bus
    06-eventstream
+   07-local-eventstore

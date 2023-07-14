@@ -16,8 +16,16 @@ from messagebus import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
     AsyncMessageBus,
-    AsyncSinkholeEventstoreRepository,
+    Message,
 )
+from messagebus.service._async.repository import AsyncEventstoreAbstractRepository
+
+
+class InMemoryEventstoreRepository(AsyncEventstoreAbstractRepository):
+    messages: MutableSequence[Message] = []
+
+    async def _add(self, message: Message) -> None:
+        self.messages.append(message)
 
 
 class EventstreamTransport(AsyncAbstractEventstreamTransport):
@@ -58,7 +66,7 @@ class InMemoryBookRepository(AbstractBookRepository):
 class InMemoryUnitOfWork(AbstractUnitOfWork):
     def __init__(self, transport: AsyncAbstractEventstreamTransport):
         self.books = InMemoryBookRepository()
-        self.eventstore = AsyncSinkholeEventstoreRepository(
+        self.eventstore = InMemoryEventstoreRepository(
             publisher=AsyncEventstreamPublisher(transport)
         )
 
@@ -90,6 +98,7 @@ def uow(transport: AsyncAbstractEventstreamTransport) -> Iterator[InMemoryUnitOf
     yield uow
     uow.books.books.clear()  # type: ignore
     uow.books.ix_books_isbn.clear()  # type: ignore
+    uow.eventstore.messages.clear()  # type: ignore
 
 
 # for performance reason, we reuse the bus here,
