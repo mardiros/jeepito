@@ -82,7 +82,13 @@ class SyncUnitOfWorkTransaction(Generic[TRepositories]):
 
 
 class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
-    """ """
+    """
+    Abstract unit of work.
+
+    To implement a unit of work, the :meth:`AsyncAbstractUnitOfWork.commit` and
+    :meth:`AsyncAbstractUnitOfWork.rollback` has to be defined, and some repositories
+    has to be declared has attributes.
+    """
 
     eventstore: SyncEventstoreAbstractRepository = SyncSinkholeEventstoreRepository()
 
@@ -102,9 +108,9 @@ class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
                 yield member
 
     def __enter__(self) -> SyncUnitOfWorkTransaction[TRepositories]:
-        self.__trans = SyncUnitOfWorkTransaction(self)
-        self.__trans.__enter__()
-        return self.__trans
+        self.__transaction = SyncUnitOfWorkTransaction(self)
+        self.__transaction.__enter__()
+        return self.__transaction
 
     def __exit__(
         self,
@@ -113,7 +119,7 @@ class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
         tb: Optional[TracebackType],
     ) -> None:
         # AsyncUnitOfWorkTransaction is making the thing
-        self.__trans.__exit__(exc_type, exc, tb)
+        self.__transaction.__exit__(exc_type, exc, tb)
 
     @abc.abstractmethod
     def commit(self) -> None:

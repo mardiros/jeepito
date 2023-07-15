@@ -1,4 +1,16 @@
+package := 'messagebus'
 default_test_suite := 'tests'
+
+install:
+    poetry install
+
+doc:
+    cd docs && poetry run make html
+    xdg-open docs/build/html/index.html
+
+cleandoc:
+    cd docs && poetry run make clean
+
 
 gensync:
     poetry run python scripts/gen_unasync.py
@@ -26,7 +38,7 @@ mypy:
 cov test_suite=default_test_suite:
     rm -f .coverage
     rm -rf htmlcov
-    poetry run pytest --cov-report=html --cov=messagebus {{test_suite}}
+    poetry run pytest --cov-report=html --cov={{package}} {{test_suite}}
     xdg-open htmlcov/index.html
 
 release major_minor_patch: gensync test && changelog

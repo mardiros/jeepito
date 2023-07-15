@@ -30,8 +30,23 @@ class Message(BaseModel):
     """Base class for messaging."""
 
     message_id: str = Field(default_factory=generate_id)
+    """Unique identifier of the message."""
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    """
+    Timestamp of the message.
+
+    All messages are kept in order for observability, debug and event replay.
+    """
     metadata: Metadata
+    """
+    Define extra fields used at serialization.
+
+    While serializing the message, a name and version must be defined to properly
+    defined the message. Event if the class is renamed, those constants must be kept
+    identically over the time in the codebase.
+
+    metadata are defined statically at the definition of the message.
+    """
 
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, Message):

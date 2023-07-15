@@ -1,4 +1,4 @@
-from typing import Any, Type
+from typing import Type
 
 import pytest
 
@@ -15,19 +15,9 @@ class FooCreated(Event):
     id: str
     metadata: Metadata = Metadata(name="foo_created", schema_version=1, published=True)
 
-    def __eq__(self, other: Any):
-        slf = self.dict(exclude={"message_id", "created_at"})
-        otr = other.dict(exclude={"message_id", "created_at"})
-        return slf == otr
-
 
 class BarCreated(Event):
     metadata: Metadata = Metadata(name="bar_created", schema_version=1, published=True)
-
-    def __eq__(self, other: Any):
-        slf = self.dict(exclude={"message_id", "created_at"})
-        otr = other.dict(exclude={"message_id", "created_at"})
-        return slf == otr
 
 
 def test_collect_new_events(
@@ -85,9 +75,9 @@ def test_transaction_invalid_state(uow: SyncDummyUnitOfWork):
 
 def test_transaction_invalid_usage(uow: SyncDummyUnitOfWork):
     with pytest.raises(TransactionError) as ctx:
-        trans = SyncUnitOfWorkTransaction(uow)
-        trans.status = TransactionStatus.committed
-        with trans:
+        transaction = SyncUnitOfWorkTransaction(uow)
+        transaction.status = TransactionStatus.committed
+        with transaction:
             ...
 
     assert str(ctx.value).endswith("Invalid transaction status.")

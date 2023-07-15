@@ -1,0 +1,34 @@
+[tool.poetry]
+authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
+description = "Review books and rate them"
+name = "reading-club"
+packages = [{include = "reading_club", from = "src"}]
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+# minimal supported python version
+python = "^3.10"
+# deps
+aiosqlite = "^0.19.0"
+messagebus = {git = "https://github.com/mardiros/messagebus.git"}
+pydantic = "^1.10.9"
+result = "^0.10.0"
+sqlalchemy = {extras = ["mypy"], version = "^2.0.18"}
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+isort = "^5.12.0"
+pytest = "^7"
+pytest-asyncio = "^0.21.0"
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
