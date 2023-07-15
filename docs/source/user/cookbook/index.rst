@@ -18,3 +18,4 @@ using the messagebus library.
    06-eventstream
    07-local-eventstore
    08-sqlalchemy-uow
+   09-testing-with-database-state

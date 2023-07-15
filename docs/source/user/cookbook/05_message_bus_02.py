@@ -8,9 +8,9 @@ from messagebus import AsyncMessageBus
 async def test_bus_handler(
     bus: AsyncMessageBus, register_book_cmd: RegisterBook, uow: AbstractUnitOfWork
 ):
-    async with uow as trans:
-        await bus.handle(register_book_cmd, trans)
-        book = await trans.books.by_id(register_book_cmd.id)
+    async with uow as transaction:
+        await bus.handle(register_book_cmd, transaction)
+        book = await transaction.books.by_id(register_book_cmd.id)
         assert book.is_ok()
         assert book.unwrap() == Book(
             id="x",
@@ -18,4 +18,4 @@ async def test_bus_handler(
             author="Eric Evans",
             isbn="0-321-12521-5",
         )
-        await trans.commit()
+        await transaction.commit()

@@ -75,9 +75,9 @@ def test_transaction_invalid_state(uow: SyncDummyUnitOfWork):
 
 def test_transaction_invalid_usage(uow: SyncDummyUnitOfWork):
     with pytest.raises(TransactionError) as ctx:
-        trans = SyncUnitOfWorkTransaction(uow)
-        trans.status = TransactionStatus.committed
-        with trans:
+        transaction = SyncUnitOfWorkTransaction(uow)
+        transaction.status = TransactionStatus.committed
+        with transaction:
             ...
 
     assert str(ctx.value).endswith("Invalid transaction status.")

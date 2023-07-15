@@ -113,8 +113,11 @@ def bus() -> AsyncMessageBus:
 
 
 @pytest.fixture
-async def app_state(uow: AbstractUnitOfWork, bus: AsyncMessageBus, params):
-    async with uow as trans:
+async def uow_with_data(
+    uow: AbstractUnitOfWork, bus: AsyncMessageBus, params
+) -> AbstractUnitOfWork:
+    async with uow as transaction:
         for command in params.get("commands", []):
-            await bus.handle(command, trans)
-        await trans.commit()
+            await bus.handle(command, transaction)
+        await transaction.commit()
+    return uow

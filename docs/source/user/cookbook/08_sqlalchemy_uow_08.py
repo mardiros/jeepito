@@ -1,34 +1,32 @@
-import uuid
-
-from reading_club.adapters.uow_sqla import orm
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
-from reading_club.domain.messages import RegisterBook
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from reading_club.domain.model import Book
+from reading_club.service.repositories import BookRepositoryError
 
 
-async def test_eventstore_add(
-    uow: SQLUnitOfWork, register_book_cmd: RegisterBook, sqla_session: AsyncSession
-):
-    register_book_cmd.id = str(uuid.uuid4())
-    async with uow as trans:
-        await uow.eventstore.add(register_book_cmd)
-        await trans.commit()
+async def test_book_by_id_ok(uow: SQLUnitOfWork, book: Book):
+    # Add a book in the repository
+    async with uow as transaction:
+        res = await uow.books.add(book)
+        assert res.is_ok()
+        await transaction.commit()
+    uow.books.seen.clear()
 
-    row = (
-        await sqla_session.execute(
-            select(orm.messages).where(
-                orm.messages.c.id == register_book_cmd.message_id
-            )
-        )
-    ).first()
-    assert row is not None
-    assert row.id == register_book_cmd.message_id
-    assert row.created_at == register_book_cmd.created_at
-    assert row.metadata == register_book_cmd.metadata
-    assert row.payload == {
-        "id": register_book_cmd.id,
-        "author": "Eric Evans",
-        "isbn": "0-321-12521-5",
-        "title": "Domain Driven Design",
-    }
+    # Now, tests that the book is here
+    async with uow as transaction:
+        res = await uow.books.by_id(book.id)
+        assert res.is_ok()
+        book_from_uow = res.unwrap()
+        await transaction.rollback()
+
+    assert book_from_uow == book
+
+
+async def test_book_by_id_err(uow: SQLUnitOfWork, book: Book):
+    # Now, tests that the book is here
+    async with uow as transaction:
+        res = await uow.books.by_id(book.id)
+        assert res.is_err()
+        err = res.unwrap_err()
+        await transaction.rollback()
+
+    assert err == BookRepositoryError.not_found

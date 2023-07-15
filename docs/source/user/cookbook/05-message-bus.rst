@@ -31,9 +31,9 @@ Lets run the test to see what happen.
         async def test_bus_handler(
             bus: AsyncMessageBus, register_book_cmd: RegisterBook, uow: AbstractUnitOfWork
         ):
-            async with uow as trans:
-                await bus.handle(register_book_cmd, trans)
-                book = await trans.books.by_id(register_book_cmd.id)
+            async with uow as transaction:
+                await bus.handle(register_book_cmd, transaction)
+                book = await transaction.books.by_id(register_book_cmd.id)
     >           assert book.is_ok()
     E           AssertionError: assert False
     E            +  where False = <bound method Err.is_ok of Err(<BookRepositoryError.not_found: 'not_found'>)>()

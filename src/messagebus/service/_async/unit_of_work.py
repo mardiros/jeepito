@@ -108,9 +108,9 @@ class AsyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
                 yield member
 
     async def __aenter__(self) -> AsyncUnitOfWorkTransaction[TRepositories]:
-        self.__trans = AsyncUnitOfWorkTransaction(self)
-        await self.__trans.__aenter__()
-        return self.__trans
+        self.__transaction = AsyncUnitOfWorkTransaction(self)
+        await self.__transaction.__aenter__()
+        return self.__transaction
 
     async def __aexit__(
         self,
@@ -119,7 +119,7 @@ class AsyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
         tb: Optional[TracebackType],
     ) -> None:
         # AsyncUnitOfWorkTransaction is making the thing
-        await self.__trans.__aexit__(exc_type, exc, tb)
+        await self.__transaction.__aexit__(exc_type, exc, tb)
 
     @abc.abstractmethod
     async def commit(self) -> None:

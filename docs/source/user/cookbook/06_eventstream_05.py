@@ -6,11 +6,11 @@ from reading_club.service.uow import AbstractUnitOfWork
 
 
 async def test_register_book(register_book_cmd: RegisterBook, uow: AbstractUnitOfWork):
-    async with uow as t:
-        operation = await register_book(register_book_cmd, t)
+    async with uow as transaction:
+        operation = await register_book(register_book_cmd, transaction)
         assert operation is not None
         assert operation.is_ok()
-        book = await t.books.by_id(register_book_cmd.id)
+        book = await transaction.books.by_id(register_book_cmd.id)
         assert book.is_ok()
         assert book.unwrap() == Book(
             id="x",
@@ -26,11 +26,11 @@ async def test_register_book(register_book_cmd: RegisterBook, uow: AbstractUnitO
                 author="Eric Evans",
             )
         ]
-        await t.commit()
+        await transaction.commit()
 
-    async with uow as t:
-        operation = await register_book(register_book_cmd, t)
+    async with uow as transaction:
+        operation = await register_book(register_book_cmd, transaction)
         assert operation is not None
         assert operation.is_err()
         assert operation.unwrap_err() == BookRepositoryError.integrity_error
-        await t.rollback()
+        await transaction.rollback()

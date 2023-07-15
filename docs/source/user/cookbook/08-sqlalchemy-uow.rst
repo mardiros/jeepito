@@ -113,12 +113,14 @@ If we run our tests now:
 ::
 
     $ poetry run pytest -sxv
-    ... 
+    ========================== test session starts ==========================
+    collected 4 items
+
     tests/test_service_handler_add_book.py::test_register_book PASSED
     tests/test_service_handler_add_book.py::test_bus_handler PASSED
     tests/uow_sqla/test_transaction.py::test_commit PASSED
     tests/uow_sqla/test_transaction.py::test_rollback PASSED
-
+    =========================== 4 passed in 0.04s ===========================
 
 Implement the book repository
 -----------------------------
@@ -144,6 +146,39 @@ Finally the add method implemented using SQLAlchemy
 
 .. literalinclude:: 08_sqlalchemy_uow_07.py
 
+The tests suite should pass.
+
+::
+
+    $ poetry run pytest -sxv
+    ========================== test session starts ==========================
+    collected 6 items
+
+    tests/test_service_handler_add_book.py::test_register_book PASSED
+    tests/test_service_handler_add_book.py::test_bus_handler PASSED
+    tests/uow_sqla/test_repositories.py::test_book_add_ok PASSED
+    tests/uow_sqla/test_repositories.py::test_book_add_err PASSED
+    tests/uow_sqla/test_transaction.py::test_commit PASSED
+    tests/uow_sqla/test_transaction.py::test_rollback PASSED
+    =========================== 4 passed in 0.04s ===========================
+
+
+Lets continue with the ``by_id`` implementation.
+
+here is our test
+
+.. literalinclude:: 08_sqlalchemy_uow_08.py
+
+..note::
+
+    you can see that our tests are a bit ugly, the initialization of the tests
+    is made inside the tests not in our fixtures.
+    Don't be afraid, we will improve that in the next chapter.
+
+And our implmenetation
+
+.. literalinclude:: 08_sqlalchemy_uow_09.py
+   :emphasize-lines: 31-37
 
 Implement the event repository
 ------------------------------
@@ -155,12 +190,44 @@ create books using the message bus directly in our fixtures.
 
 our new tests  in``test_repositories.py``:
 
-.. literalinclude:: 08_sqlalchemy_uow_08.py
+.. literalinclude:: 08_sqlalchemy_uow_10.py
 
 And our implementation.
 
-.. literalinclude:: 08_sqlalchemy_uow_09.py
+.. literalinclude:: 08_sqlalchemy_uow_11.py
 
 There is no much to say here, it take the message and store in in the table.
 Because the messagebus does not rely on results, it does not return a Result object,
 our implementation raise exceptions if it does not works.
+
+
+Before closing this chapter, lets run our tests and conclude
+
+::
+
+    $ poetry run pytest -sxv
+    ========================== test session starts ==========================
+    collected 9 items
+
+    tests/test_service_handler_add_book.py::test_register_book PASSED
+    tests/test_service_handler_add_book.py::test_bus_handler PASSED
+    tests/uow_sqla/test_repositories.py::test_book_add_ok PASSED
+    tests/uow_sqla/test_repositories.py::test_book_add_err PASSED
+    tests/uow_sqla/test_repositories.py::test_book_by_id_ok PASSED
+    tests/uow_sqla/test_repositories.py::test_book_by_id_err PASSED
+    tests/uow_sqla/test_repositories.py::test_eventstore_add PASSED
+    tests/uow_sqla/test_transaction.py::test_commit PASSED
+    tests/uow_sqla/test_transaction.py::test_rollback PASSED
+    =========================== 9 passed in 0.43s ===========================
+
+
+At the moment, our book review model contains the book registration, with commands
+and events used by the messagebus.
+
+But, we have some tests that are not clean, the ``test_book_add_err`` that initialize
+its tests inside them, which will not scale, and more for the ``test_book_by_id_ok``,
+we retrieve a book, but we only have one book here, so, we cannot be sure that it
+is the proper book that could be retrieve in real life.
+
+This is the subject of the next chapter.
+

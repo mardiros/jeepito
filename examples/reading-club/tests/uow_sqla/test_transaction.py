@@ -14,7 +14,7 @@ async def test_commit(
 ):
     book_id = str(uuid.uuid4())
     uow = SQLUnitOfWork(transport, sqla_engine)
-    async with uow as trans:
+    async with uow as transaction:
         await uow.session.execute(
             text(
                 "insert into books(id, title, author, isbn)"
@@ -27,7 +27,7 @@ async def test_commit(
                 "isbn": "0-321-12521-5",
             },
         )
-        await trans.commit()
+        await transaction.commit()
 
     row = (
         await sqla_session.execute(
@@ -45,8 +45,8 @@ async def test_rollback(
 ):
     book_id = str(uuid.uuid4())
     uow = SQLUnitOfWork(transport, sqla_engine)
-    async with uow as trans:
-        await trans.session.execute(
+    async with uow as transaction:
+        await transaction.session.execute(
             text(
                 "insert into books(id, title, author, isbn)"
                 "values (:id, :title, :author, :isbn)"
@@ -58,7 +58,7 @@ async def test_rollback(
                 "isbn": "0-321-12521-5",
             },
         )
-        await trans.rollback()
+        await transaction.rollback()
 
     row = (
         await sqla_session.execute(

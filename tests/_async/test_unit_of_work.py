@@ -75,9 +75,9 @@ async def test_transaction_invalid_state(uow: AsyncDummyUnitOfWork):
 
 async def test_transaction_invalid_usage(uow: AsyncDummyUnitOfWork):
     with pytest.raises(TransactionError) as ctx:
-        trans = AsyncUnitOfWorkTransaction(uow)
-        trans.status = TransactionStatus.committed
-        async with trans:
+        transaction = AsyncUnitOfWorkTransaction(uow)
+        transaction.status = TransactionStatus.committed
+        async with transaction:
             ...
 
     assert str(ctx.value).endswith("Invalid transaction status.")

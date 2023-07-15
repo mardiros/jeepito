@@ -7,9 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def test_book_add_ok(uow: SQLUnitOfWork, book: Book, sqla_session: AsyncSession):
-    async with uow as trans:
+    async with uow as transaction:
         res = await uow.books.add(book)
-        await trans.commit()
+        await transaction.commit()
 
     assert res.is_ok()
 
@@ -22,25 +22,25 @@ async def test_book_add_ok(uow: SQLUnitOfWork, book: Book, sqla_session: AsyncSe
     # ensure the message bus can follow the book messages
     assert uow.books.seen == [book]
 
-    async with uow as trans:
+    async with uow as transaction:
         res = await uow.books.add(book)
-        await trans.rollback()
+        await transaction.rollback()
 
 
 async def test_book_add_err(uow: SQLUnitOfWork, book: Book):
     # Add a book in the repository
-    async with uow as trans:
+    async with uow as transaction:
         res = await uow.books.add(book)
         assert res.is_ok()
-        await trans.commit()
+        await transaction.commit()
     uow.books.seen.clear()
 
     # Now, tests that it wrap the error
-    async with uow as trans:
+    async with uow as transaction:
         res = await uow.books.add(book)
         assert res.is_err()
         assert res.unwrap_err() == BookRepositoryError.integrity_error
-        await trans.rollback()
+        await transaction.rollback()
 
     # Since it does not work, the bus can't see the book messages.
     assert uow.books.seen == []

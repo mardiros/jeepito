@@ -1,31 +1,37 @@
-from sqlalchemy import insert
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from messagebus import (
-    AsyncEventstoreAbstractRepository,
-    AsyncEventstreamPublisher,
-    Message,
+from reading_club.domain.model import Book
+from reading_club.service.repositories import (
+    AbstractBookRepository,
+    BookRepositoryError,
+    BookRepositoryOperationResult,
+    BookRepositoryResult,
 )
+from result import Err, Ok
+from sqlalchemy import insert, select
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import orm
 
 
-class SQLEventstoreRepository(AsyncEventstoreAbstractRepository):
-    def __init__(self, session: AsyncSession, publisher: AsyncEventstreamPublisher):
-        super().__init__(publisher)
+class SQLBookRepository(AbstractBookRepository):
+    def __init__(self, session: AsyncSession):
+        super().__init__()
         self.session = session
 
-    async def _add(self, message: Message) -> None:
-        qry = insert(orm.messages).values(
-            [
-                {
-                    "id": message.message_id,
-                    "created_at": message.created_at,
-                    "metadata": message.metadata.dict(),
-                    "payload": message.dict(
-                        exclude={"message_id", "created_at", "metadata"}
-                    ),
-                }
-            ]
-        )
-        await self.session.execute(qry)
+    async def add(self, model: Book) -> BookRepositoryOperationResult:
+        qry = insert(orm.books).values([model.dict(exclude={"messages"})])
+        try:
+            await self.session.execute(qry)
+        except IntegrityError:
+            return Err(BookRepositoryError.integrity_error)
+
+        self.seen.append(model)
+        return Ok(...)
+
+    async def by_id(self, id: str) -> BookRepositoryResult:
+        qry = select(orm.books).where(orm.books.c.id == id)
+        row = (await self.session.execute(qry)).first()
+        if not row:
+            return Err(BookRepositoryError.not_found)
+        book = Book(**row._asdict())
+        return Ok(book)

@@ -24,7 +24,7 @@ we have imagine a tests where we ensure we can add the book in the repository
 properly, and then, that the book cannot be added twice due to an integrity error.
 
 This should be splitted in two tests but this is not a test driven course here,
-and we can live with that at the moment.
+and we can live with that at the moment. We will do that later.
 
 The tests requires pytest fixtures, so we been to update our ``conftest.py`` now.
 
@@ -54,8 +54,8 @@ We are ready to starts our test:
     uow = <tests.conftest.InMemoryUnitOfWork object at 0x7fb413010710>
 
         async def test_register_book(register_book_cmd: RegisterBook, uow: AbstractUnitOfWork):
-            async with uow as t:
-    >           operation = await register_book(register_book_cmd, t)
+            async with uow as transaction:
+    >           operation = await register_book(register_book_cmd, transaction)
 
     tests/test_service_handler_add_book.py:10:
     _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _

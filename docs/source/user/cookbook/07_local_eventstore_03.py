@@ -12,9 +12,9 @@ async def test_bus_handler(
     uow: AbstractUnitOfWork,
     transport: EventstreamTransport,
 ):
-    async with uow as trans:
-        await bus.handle(register_book_cmd, trans)
-        book = await trans.books.by_id(register_book_cmd.id)
+    async with uow as transaction:
+        await bus.handle(register_book_cmd, transaction)
+        book = await transaction.books.by_id(register_book_cmd.id)
         assert book.is_ok()
         assert book.unwrap() == Book(
             id="x",
@@ -23,7 +23,7 @@ async def test_bus_handler(
             isbn="0-321-12521-5",
         )
         assert book.unwrap().messages == []
-        await trans.commit()
+        await transaction.commit()
 
     assert uow.eventstore.messages == [  # type: ignore
         RegisterBook(

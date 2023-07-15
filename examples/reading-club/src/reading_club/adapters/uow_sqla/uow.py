@@ -10,7 +10,7 @@ from reading_club.service.repositories import (
 )
 from reading_club.service.uow import AbstractUnitOfWork
 from result import Err, Ok
-from sqlalchemy import insert
+from sqlalchemy import insert, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
@@ -62,7 +62,12 @@ class SQLBookRepository(AbstractBookRepository):
         return Ok(...)
 
     async def by_id(self, id: str) -> BookRepositoryResult:
-        raise NotImplementedError
+        qry = select(orm.books).where(orm.books.c.id == id)
+        row = (await self.session.execute(qry)).first()
+        if not row:
+            return Err(BookRepositoryError.not_found)
+        book = Book(**row._asdict())
+        return Ok(book)
 
 
 class SQLUnitOfWork(AbstractUnitOfWork):
