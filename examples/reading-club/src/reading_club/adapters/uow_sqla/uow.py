@@ -4,10 +4,14 @@ from typing import Optional, Type
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
     AbstractBookRepository,
+    BookRepositoryError,
     BookRepositoryOperationResult,
     BookRepositoryResult,
 )
 from reading_club.service.uow import AbstractUnitOfWork
+from result import Err, Ok
+from sqlalchemy import insert
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
 from messagebus import (  # AsyncEventstoreAbstractRepository,
@@ -18,6 +22,8 @@ from messagebus import (  # AsyncEventstoreAbstractRepository,
 )
 from messagebus.service._async.repository import AsyncEventstoreAbstractRepository
 
+from . import orm
+
 
 class SQLEventstoreRepository(AsyncEventstoreAbstractRepository):
     def __init__(self, session: AsyncSession, publisher: AsyncEventstreamPublisher):
@@ -25,7 +31,19 @@ class SQLEventstoreRepository(AsyncEventstoreAbstractRepository):
         self.session = session
 
     async def _add(self, message: Message) -> None:
-        raise NotImplementedError
+        qry = insert(orm.messages).values(
+            [
+                {
+                    "id": message.message_id,
+                    "created_at": message.created_at,
+                    "metadata": message.metadata.dict(),
+                    "payload": message.dict(
+                        exclude={"message_id", "created_at", "metadata"}
+                    ),
+                }
+            ]
+        )
+        await self.session.execute(qry)
 
 
 class SQLBookRepository(AbstractBookRepository):
@@ -34,7 +52,14 @@ class SQLBookRepository(AbstractBookRepository):
         self.session = session
 
     async def add(self, model: Book) -> BookRepositoryOperationResult:
-        raise NotImplementedError
+        qry = insert(orm.books).values([model.dict(exclude={"messages"})])
+        try:
+            await self.session.execute(qry)
+        except IntegrityError:
+            return Err(BookRepositoryError.integrity_error)
+
+        self.seen.append(model)
+        return Ok(...)
 
     async def by_id(self, id: str) -> BookRepositoryResult:
         raise NotImplementedError

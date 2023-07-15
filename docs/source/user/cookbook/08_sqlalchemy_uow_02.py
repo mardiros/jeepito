@@ -31,7 +31,7 @@ async def sqla_engine(
         await conn.run_sync(orm.metadata.drop_all)
 
 
-@pytest.fixture()
+@pytest.fixture
 def sqla_session(sqla_engine: AsyncEngine) -> AsyncSession:
     async_session = async_sessionmaker(sqla_engine, class_=AsyncSession)
     return async_session()

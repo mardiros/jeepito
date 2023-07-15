@@ -10,8 +10,13 @@ We will use sqlite in memory for testing purpose.
 
 ::
 
-    poetry add sqlalchemy aiosqlite
+    poetry add "sqlalchemy[mypy]" aiosqlite
 
+
+.. note::
+
+    we install the mypy extentions here, even if we don't check mypy tests in our
+    example.
 
 Create the sql schema
 ---------------------
@@ -73,14 +78,6 @@ tests to ensure it works.
     touch tests/uow_sqla/test_transaction.py
 
 
-The tests needs some sql fixture from ``uow_sqla/conftest.py``::
-
-.. literalinclude:: 08_sqlalchemy_uow_02.py
-
-we have an engine to bind an in memory database containing our schema, and that
-can be passed to the Unit Of Work, and a session, to retrieve data from the database,
-in order to get some expectation.
-
 Now, lets write the tests in ``uow_sqla/test_transaction.py``::
 
 .. literalinclude:: 08_sqlalchemy_uow_03.py
@@ -89,8 +86,16 @@ Both tests are really similar, they insert a book, using the uow sql connection,
 in the books table, when we commit, we ensure the book is stored, when we rollback,
 we ensure the book is not present.
 
-Now that we have all we need, we can starts our implementation.
 
+The tests needs some sql fixture we can already provide in ``uow_sqla/conftest.py``::
+
+.. literalinclude:: 08_sqlalchemy_uow_02.py
+
+we have an engine to bind an in memory database containing our schema, and that
+can be passed to the Unit Of Work, and a session, to retrieve data from the database,
+used in the tests expectation.
+
+We have all we need, it's time to start our implementation.
 
 Create the sql unit of work
 ---------------------------
@@ -113,3 +118,49 @@ If we run our tests now:
     tests/test_service_handler_add_book.py::test_bus_handler PASSED
     tests/uow_sqla/test_transaction.py::test_commit PASSED
     tests/uow_sqla/test_transaction.py::test_rollback PASSED
+
+
+Implement the book repository
+-----------------------------
+
+We can start with a couple of tests for the Ok and the Error cases in a 
+``test_repositories.py`` file.
+
+.. literalinclude:: 08_sqlalchemy_uow_05.py
+   :emphasize-lines: 14,20,23,41,46
+
+We can see that those tests expect that:
+* the add method will return Ok(...) if its works
+* the stored book saved correspont to what the model contains
+* the seen attribute, is set to let the message bus consume the book messages.
+* integrity error does not raise but are stored in a Err().
+* the seen attribute does not contains models that can't be stored in the repository.
+
+We also see that those new fixtures are required in our ``uow_sqla/conftest.py``:
+
+.. literalinclude:: 08_sqlalchemy_uow_06.py
+
+Finally the add method implemented using SQLAlchemy
+
+.. literalinclude:: 08_sqlalchemy_uow_07.py
+
+
+Implement the event repository
+------------------------------
+
+Before implementing the ``BookRepository.by_id`` we will take the time to implement
+our event repository in order to get our bus working, which will be usefull to
+create books using the message bus directly in our fixtures.
+
+
+our new tests  in``test_repositories.py``:
+
+.. literalinclude:: 08_sqlalchemy_uow_08.py
+
+And our implementation.
+
+.. literalinclude:: 08_sqlalchemy_uow_09.py
+
+There is no much to say here, it take the message and store in in the table.
+Because the messagebus does not rely on results, it does not return a Result object,
+our implementation raise exceptions if it does not works.

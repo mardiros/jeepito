@@ -110,3 +110,11 @@ _bus.scan("reading_club.service.handlers")
 @pytest.fixture
 def bus() -> AsyncMessageBus:
     return _bus
+
+
+@pytest.fixture
+async def app_state(uow: AbstractUnitOfWork, bus: AsyncMessageBus, params):
+    async with uow as trans:
+        for command in params.get("commands", []):
+            await bus.handle(command, trans)
+        await trans.commit()
