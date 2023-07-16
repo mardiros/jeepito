@@ -15,7 +15,7 @@ messagebus = {git = "https://github.com/mardiros/messagebus.git"}
 pydantic = "^1.10.9"
 result = "^0.10.0"
 sqlalchemy = {extras = ["mypy"], version = "^2.0.18"}
-celery = {extras = ["pytest"], version = "^5.3.1"}
+celery = "^5.3.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
