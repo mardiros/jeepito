@@ -19,3 +19,4 @@ using the messagebus library.
    07-local-eventstore
    08-sqlalchemy-uow
    09-testing-with-database-state
+   10-sending-eventstream-using-celery

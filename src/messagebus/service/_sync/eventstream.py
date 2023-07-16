@@ -11,7 +11,7 @@ class SyncAbstractEventstreamTransport(abc.ABC):
     """
 
     @abc.abstractmethod
-    def send_message_serialized(self, event: Mapping[str, Any]) -> None:
+    def send_message_serialized(self, message: Mapping[str, Any]) -> None:
         """Publish a serialized message to the eventstream."""
 
 
@@ -22,7 +22,7 @@ class SyncSinkholeEventstreamTransport(SyncAbstractEventstreamTransport):
     By default, the events are not streamed until it is configured to do so.
     """
 
-    def send_message_serialized(self, event: Mapping[str, Any]) -> None:
+    def send_message_serialized(self, message: Mapping[str, Any]) -> None:
         """Do nothing."""
 
 

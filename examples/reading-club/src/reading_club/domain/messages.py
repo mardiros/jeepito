@@ -15,7 +15,7 @@ class BookRegistered(Event):
     title: str = Field(...)
     author: str = Field(...)
     metadata: Metadata = Metadata(
-        name="register_book", schema_version=1, published=True
+        name="book_registered", schema_version=1, published=True
     )
 
 

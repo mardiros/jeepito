@@ -98,8 +98,8 @@ class AsyncEventstreamTransport(AsyncAbstractEventstreamTransport):
     def __init__(self):
         self.events = []
 
-    async def send_message_serialized(self, event: Mapping[str, Any]) -> None:
-        self.events.append(event)
+    async def send_message_serialized(self, message: Mapping[str, Any]) -> None:
+        self.events.append(message)
 
 
 class AsyncDummyEventStore(AsyncEventstoreAbstractRepository):

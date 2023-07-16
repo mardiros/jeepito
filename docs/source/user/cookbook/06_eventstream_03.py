@@ -30,9 +30,9 @@ class EventstreamTransport(AsyncAbstractEventstreamTransport):
     def __init__(self) -> None:
         self.events = []
 
-    async def send_message_serialized(self, event: Mapping[str, Any]) -> None:
+    async def send_message_serialized(self, message: Mapping[str, Any]) -> None:
         """Publish a serialized message to the eventstream."""
-        self.events.append(event)
+        self.events.append(message)
 
 
 class InMemoryBookRepository(AbstractBookRepository):

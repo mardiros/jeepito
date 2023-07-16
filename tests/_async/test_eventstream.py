@@ -14,8 +14,8 @@ class AsyncDummyEventstreamTransport(AsyncAbstractEventstreamTransport):
     def __init__(self) -> None:
         self.queue = []
 
-    async def send_message_serialized(self, event: Mapping[str, Any]) -> None:
-        self.queue.append(event)
+    async def send_message_serialized(self, message: Mapping[str, Any]) -> None:
+        self.queue.append(message)
 
 
 async def test_send_message(dummy_command: DummyCommand, dummy_event: DummyEvent):

@@ -98,8 +98,8 @@ class SyncEventstreamTransport(SyncAbstractEventstreamTransport):
     def __init__(self):
         self.events = []
 
-    def send_message_serialized(self, event: Mapping[str, Any]) -> None:
-        self.events.append(event)
+    def send_message_serialized(self, message: Mapping[str, Any]) -> None:
+        self.events.append(message)
 
 
 class SyncDummyEventStore(SyncEventstoreAbstractRepository):

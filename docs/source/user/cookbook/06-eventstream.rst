@@ -1,3 +1,5 @@
+.. _`cookbook chapter 6`:
+
 Event stream
 ============
 
