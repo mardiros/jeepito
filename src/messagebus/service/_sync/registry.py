@@ -151,6 +151,8 @@ class SyncMessageBus(Generic[TRepositories]):
         scanner = venusian.Scanner(messagebus=self)
         for modname in mods:
             if modname.startswith("."):
-                raise ValueError(f"{modname}: Relative package unsupported")
+                raise ValueError(
+                    f"scan error: relative package unsupported for {modname}"
+                )
             mod = importlib.import_module(modname)
             scanner.scan(mod, categories=[VENUSIAN_CATEGORY])  # type: ignore

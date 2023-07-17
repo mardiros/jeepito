@@ -154,3 +154,12 @@ def test_scan(bus: SyncMessageBus[Any]):
 
     assert DummyEvent in bus.events_registry
     assert bus.events_registry[DummyEvent] == [dummy.handler_evt1, dummy.handler_evt2]
+
+
+def test_scan_relative(bus: SyncMessageBus[Any]):
+    with pytest.raises(ValueError) as ctx:
+        bus.scan("._async.handlers")
+    assert (
+        str(ctx.value)
+        == "scan error: relative package unsupported for ._async.handlers"
+    )
