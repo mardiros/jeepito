@@ -2,6 +2,14 @@
 messagebus
 ==========
 
+.. image:: https://github.com/mardiros/messagebus/actions/workflows/main.yml/badge.svg
+   :target: https://github.com/mardiros/messagebus/actions/workflows/main.yml
+   :alt: Continuous Integration
+
+.. image:: https://codecov.io/gh/mardiros/messagebus/branch/main/graph/badge.svg?token=BKUM2G3YSR
+   :target: https://codecov.io/gh/mardiros/messagebus
+   :alt: Coverage Report
+
 messagebus is a library to send message in a bus in order to get base classes
 for event driven development and :term:`Domain Driven Design`.
 
