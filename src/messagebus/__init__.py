@@ -1,8 +1,15 @@
 """
 messagebus API.
 """
+try:
+    from importlib.metadata import version
+except ImportError:
+    from pkg_resources import get_distribution  # type: ignore
 
-from importlib.metadata import version
+    # pythond 3.7 fallback
+    def version(distribution_name: str) -> str:
+        return get_distribution(distribution_name).version
+
 
 from pydantic import Field
 
