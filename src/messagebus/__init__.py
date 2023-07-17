@@ -2,7 +2,8 @@
 messagebus API.
 """
 try:
-    from importlib.metadata import version
+    # add an ignore for python 3.7 which does not know this standard library
+    from importlib.metadata import version  # type: ignore
 except ImportError:
     from pkg_resources import get_distribution  # type: ignore
 
