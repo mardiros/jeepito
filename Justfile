@@ -15,7 +15,7 @@ cleandoc:
 gensync:
     poetry run python scripts/gen_unasync.py
     poetry run black src/messagebus/service/_sync/
-    poetry run black tests/unittests/_sync/
+    poetry run black tests/_sync/
 
 test: gensync mypy lint unittest 
 

@@ -24,9 +24,7 @@ def listen_command(
     return foo
 
 
-def listen_event(
-    cmd: DummyEvent, uow: SyncUnitOfWorkTransaction[Repositories]
-) -> None:
+def listen_event(cmd: DummyEvent, uow: SyncUnitOfWorkTransaction[Repositories]) -> None:
     """This event is indented to be fire by the message bus."""
     rfoo = uow.foos.get(cmd.id)
     foo = rfoo.unwrap()
