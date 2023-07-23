@@ -2,6 +2,10 @@
 messagebus
 ==========
 
+.. image:: https://github.com/mardiros/messagebus/actions/workflows/gh-pages.yml/badge.svg
+   :target: https://mardiros.github.io/messagebus/
+   :alt: Doc
+
 .. image:: https://github.com/mardiros/messagebus/actions/workflows/main.yml/badge.svg
    :target: https://github.com/mardiros/messagebus/actions/workflows/main.yml
    :alt: Continuous Integration
