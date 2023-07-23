@@ -11,6 +11,8 @@ doc:
 cleandoc:
     cd docs && poetry run make clean
 
+gh-pages:
+    poetry export --with dev -f requirements.txt -o docs/requirements.txt --without-hashes
 
 gensync:
     poetry run python scripts/gen_unasync.py
@@ -41,7 +43,7 @@ cov test_suite=default_test_suite:
     poetry run pytest --cov-report=html --cov={{package}} {{test_suite}}
     xdg-open htmlcov/index.html
 
-release major_minor_patch: gensync test && changelog
+release major_minor_patch: gensync test gh-pages && changelog
     poetry version {{major_minor_patch}}
     poetry install
 
