@@ -14,9 +14,8 @@ disallow_untyped_defs = true
 module = "messagebus.*"
 
 [tool.poetry.dependencies]
-pydantic = "^1.10.9"
 python = "^3.7"
-importlib-metadata = ">=4"
+pydantic = "^1.10.9"
 typing-extensions = "^4.6.3"
 pytest-cov = "^4.1.0"
 venusian = "^3.0.0"
