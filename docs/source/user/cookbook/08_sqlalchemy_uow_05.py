@@ -17,7 +17,7 @@ async def test_book_add_ok(uow: SQLUnitOfWork, book: Book, sqla_session: AsyncSe
         await sqla_session.execute(select(orm.books).where(orm.books.c.id == book.id))
     ).first()
     assert row is not None
-    assert row._asdict() == book.dict(exclude={"messages"})
+    assert row._asdict() == book.model_dump(exclude={"messages"})
 
     # ensure the message bus can follow the book messages
     assert uow.books.seen == [book]
