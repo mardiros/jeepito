@@ -44,6 +44,9 @@ asyncio_mode = "auto"
 testpaths = ["tests"]
 filterwarnings = [
     "error",
+    # setuptools
+    'ignore:.*pkg_resources is deprecated as an API.*:DeprecationWarning',
+    # venusian
     'ignore:.*find_module\(\) is deprecated.*:DeprecationWarning',
     'ignore:.*FileFinder.find_loader\(\) is deprecated.*:DeprecationWarning',
 ]
