@@ -15,7 +15,7 @@ module = "messagebus.*"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-pydantic = "^1.10.9"
+pydantic = "^2.2.1"
 typing-extensions = "^4.6.3"
 pytest-cov = "^4.1.0"
 venusian = "^3.0.0"
