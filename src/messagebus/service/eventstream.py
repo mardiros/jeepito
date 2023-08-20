@@ -23,5 +23,7 @@ class MessageSerializer(AbstractMessageSerializer):
             "id": message.message_id,
             "created_at": message.created_at.isoformat(),
             "type": f"{message.metadata.name}_v{message.metadata.schema_version}",
-            "payload": message.json(exclude={"message_id", "created_at", "metadata"}),
+            "payload": message.model_dump_json(
+                exclude={"message_id", "created_at", "metadata"}
+            ),
         }
