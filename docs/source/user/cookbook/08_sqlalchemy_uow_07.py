@@ -19,7 +19,7 @@ class SQLBookRepository(AbstractBookRepository):
         self.session = session
 
     async def add(self, model: Book) -> BookRepositoryOperationResult:
-        qry = insert(orm.books).values([model.dict(exclude={"messages"})])
+        qry = insert(orm.books).values([model.model_dump(exclude={"messages"})])
         try:
             await self.session.execute(qry)
         except IntegrityError:

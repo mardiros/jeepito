@@ -21,8 +21,8 @@ class SQLEventstoreRepository(AsyncEventstoreAbstractRepository):
                 {
                     "id": message.message_id,
                     "created_at": message.created_at,
-                    "metadata": message.metadata.dict(),
-                    "payload": message.dict(
+                    "metadata": message.metadata.model_dump(),
+                    "payload": message.model_dump(
                         exclude={"message_id", "created_at", "metadata"}
                     ),
                 }

@@ -36,8 +36,8 @@ class SQLEventstoreRepository(AsyncEventstoreAbstractRepository):
                 {
                     "id": message.message_id,
                     "created_at": message.created_at,
-                    "metadata": message.metadata.dict(),
-                    "payload": message.dict(
+                    "metadata": message.metadata.model_dump(),
+                    "payload": message.model_dump(
                         exclude={"message_id", "created_at", "metadata"}
                     ),
                 }
@@ -52,7 +52,7 @@ class SQLBookRepository(AbstractBookRepository):
         self.session = session
 
     async def add(self, model: Book) -> BookRepositoryOperationResult:
-        qry = insert(orm.books).values([model.dict(exclude={"messages"})])
+        qry = insert(orm.books).values([model.model_dump(exclude={"messages"})])
         try:
             await self.session.execute(qry)
         except IntegrityError:
