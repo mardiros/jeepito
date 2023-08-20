@@ -25,7 +25,7 @@ async def test_eventstore_add(
     assert row is not None
     assert row.id == register_book_cmd.message_id
     assert row.created_at == register_book_cmd.created_at
-    assert row.metadata == register_book_cmd.metadata
+    assert row.metadata == register_book_cmd.metadata.model_dump()
     assert row.payload == {
         "id": register_book_cmd.id,
         "author": "Eric Evans",

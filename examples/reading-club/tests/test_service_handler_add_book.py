@@ -119,8 +119,8 @@ async def test_bus_handler(
         {
             "id": transport.events[0]["id"],
             "created_at": transport.events[0]["created_at"],
-            "payload": '{"id": "x", "isbn": "0-321-12521-5", "title": "Domain Driven '
-            'Design", "author": "Eric Evans"}',
+            "payload": '{"id":"x","isbn":"0-321-12521-5","title":"Domain Driven '
+            'Design","author":"Eric Evans"}',
             "type": "book_registered_v1",
         },
     ]
