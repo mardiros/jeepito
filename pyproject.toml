@@ -46,6 +46,7 @@ filterwarnings = [
     "error",
     # setuptools
     'ignore:.*pkg_resources is deprecated as an API.*:DeprecationWarning',
+    'ignore:.*Deprecated call to `pkg_resources.declare_namespace',
     # venusian
     'ignore:.*find_module\(\) is deprecated.*:DeprecationWarning',
     'ignore:.*FileFinder.find_loader\(\) is deprecated.*:DeprecationWarning',
