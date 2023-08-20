@@ -51,8 +51,8 @@ class Message(BaseModel):
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, Message):
             return False
-        slf = self.dict(exclude={"message_id", "created_at"})
-        otr = other.dict(exclude={"message_id", "created_at"})
+        slf = self.model_dump(exclude={"message_id", "created_at"})
+        otr = other.model_dump(exclude={"message_id", "created_at"})
         return slf == otr
 
 
@@ -78,6 +78,6 @@ class Model(BaseModel):
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, Model):
             return False
-        slf = self.dict(exclude={"messages"})
-        otr = other.dict(exclude={"messages"})
+        slf = self.model_dump(exclude={"messages"})
+        otr = other.model_dump(exclude={"messages"})
         return slf == otr
