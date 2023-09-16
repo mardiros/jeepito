@@ -1,4 +1,4 @@
-from messagebus import Field, Model
+from jeepito import Field, Model
 
 
 class Book(Model):

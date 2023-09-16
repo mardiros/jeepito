@@ -10,29 +10,29 @@ from typing import Any, Dict, Generic, List, Type, cast
 
 import venusian  # type: ignore
 
-from messagebus.domain.model import Command, Event, Message
-from messagebus.typing import (
-    AsyncCommandHandler,
-    AsyncEventHandler,
-    AsyncMessageHandler,
-    TAsyncUow,
+from jeepito.domain.model import Command, Event, Message
+from jeepito.typing import (
+    SyncCommandHandler,
+    SyncEventHandler,
+    SyncMessageHandler,
+    TSyncUow,
     TCommand,
     TEvent,
 )
 
-from .unit_of_work import AsyncUnitOfWorkTransaction, TRepositories
+from .unit_of_work import SyncUnitOfWorkTransaction, TRepositories
 
 log = logging.getLogger(__name__)
-VENUSIAN_CATEGORY = "messagebus"
+VENUSIAN_CATEGORY = "jeepito"
 
 
 class ConfigurationError(RuntimeError):
     """Prevents bad usage of the add_listener."""
 
 
-def async_listen(
-    wrapped: AsyncMessageHandler[TCommand, TAsyncUow, TEvent]
-) -> AsyncMessageHandler[TCommand, TAsyncUow, TEvent]:
+def sync_listen(
+    wrapped: SyncMessageHandler[TCommand, TSyncUow, TEvent]
+) -> SyncMessageHandler[TCommand, TSyncUow, TEvent]:
     """
     Decorator to listen for a command or an event.
 
@@ -43,31 +43,31 @@ def async_listen(
     def callback(
         scanner: venusian.Scanner,
         name: str,
-        ob: AsyncMessageHandler[TCommand, TAsyncUow, TEvent],
+        ob: SyncMessageHandler[TCommand, TSyncUow, TEvent],
     ) -> None:
         if not hasattr(scanner, VENUSIAN_CATEGORY):
             return  # coverage: ignore
         argsspec = inspect.getfullargspec(ob)
         msg_type = argsspec.annotations[argsspec.args[0]]
-        scanner.messagebus.add_listener(msg_type, wrapped)  # type: ignore
+        scanner.jeepito.add_listener(msg_type, wrapped)  # type: ignore
 
     venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
     return wrapped
 
 
-class AsyncMessageBus(Generic[TRepositories]):
+class SyncMessageBus(Generic[TRepositories]):
     """Store all the handlers for commands an events."""
 
     def __init__(self) -> None:
         self.commands_registry: Dict[
-            Type[Command], AsyncCommandHandler[Command, Any]
+            Type[Command], SyncCommandHandler[Command, Any]
         ] = {}
         self.events_registry: Dict[
-            Type[Event], List[AsyncEventHandler[Event, Any]]
+            Type[Event], List[SyncEventHandler[Event, Any]]
         ] = defaultdict(list)
 
     def add_listener(
-        self, msg_type: Type[Message], callback: AsyncMessageHandler[Any, Any, Any]
+        self, msg_type: Type[Message], callback: SyncMessageHandler[Any, Any, Any]
     ) -> None:
         if issubclass(msg_type, Command):
             if msg_type in self.commands_registry:
@@ -75,11 +75,11 @@ class AsyncMessageBus(Generic[TRepositories]):
                     f"{msg_type} command has been registered twice"
                 )
             self.commands_registry[msg_type] = cast(
-                AsyncCommandHandler[Command, Any], callback
+                SyncCommandHandler[Command, Any], callback
             )
         elif issubclass(msg_type, Event):
             self.events_registry[msg_type].append(
-                cast(AsyncEventHandler[Event, Any], callback)
+                cast(SyncEventHandler[Event, Any], callback)
             )
         else:
             raise ConfigurationError(
@@ -88,7 +88,7 @@ class AsyncMessageBus(Generic[TRepositories]):
             )
 
     def remove_listener(
-        self, msg_type: type, callback: AsyncMessageHandler[Any, Any, Any]
+        self, msg_type: type, callback: SyncMessageHandler[Any, Any, Any]
     ) -> None:
         if issubclass(msg_type, Command):
             if msg_type not in self.commands_registry:
@@ -97,7 +97,7 @@ class AsyncMessageBus(Generic[TRepositories]):
         elif issubclass(msg_type, Event):
             try:
                 self.events_registry[msg_type].remove(
-                    cast(AsyncEventHandler[Event, Any], callback)
+                    cast(SyncEventHandler[Event, Any], callback)
                 )
             except ValueError:
                 raise ConfigurationError(f"{msg_type} event has not been registered")
@@ -107,11 +107,11 @@ class AsyncMessageBus(Generic[TRepositories]):
                 f"type {msg_type} should be a command or an event"
             )
 
-    async def handle(
-        self, message: Message, uow: AsyncUnitOfWorkTransaction[TRepositories]
+    def handle(
+        self, message: Message, uow: SyncUnitOfWorkTransaction[TRepositories]
     ) -> Any:
         """
-        Notify listener of that event registered with `messagebus.add_listener`.
+        Notify listener of that event registered with `jeepito.add_listener`.
         Return the first event from the command.
         """
         queue = [message]
@@ -123,7 +123,7 @@ class AsyncMessageBus(Generic[TRepositories]):
                 raise RuntimeError(f"{message} was not an Event or Command")
             msg_type = type(message)
             if msg_type in self.commands_registry:
-                cmdret = await self.commands_registry[cast(Type[Command], msg_type)](
+                cmdret = self.commands_registry[cast(Type[Command], msg_type)](
                     cast(Command, message), uow
                 )
                 if idx == 0:
@@ -131,9 +131,9 @@ class AsyncMessageBus(Generic[TRepositories]):
                 queue.extend(uow.uow.collect_new_events())
             elif msg_type in self.events_registry:
                 for callback in self.events_registry[cast(Type[Event], msg_type)]:
-                    await callback(cast(Event, message), uow)
+                    callback(cast(Event, message), uow)
                     queue.extend(uow.uow.collect_new_events())
-            await uow.eventstore.add(message)
+            uow.eventstore.add(message)
             idx += 1
         return ret
 
@@ -148,7 +148,7 @@ class AsyncMessageBus(Generic[TRepositories]):
         to hook functions, called :term:`Service Handler` that receive the message,
         and a :term:`Unit Of Work` to process it has a business transaction.
         """
-        scanner = venusian.Scanner(messagebus=self)
+        scanner = venusian.Scanner(jeepito=self)
         for modname in mods:
             if modname.startswith("."):
                 raise ValueError(

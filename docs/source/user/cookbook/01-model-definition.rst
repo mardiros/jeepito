@@ -35,7 +35,7 @@ you can't use an ORM to describe your domain model.
 
 .. note::
 
-    Behind the scene, messagebus use pydantic, the `Field` is just a reexport of
+    Behind the scene, jeepito use pydantic, the `Field` is just a reexport of
     the pydantic Field class.
 
 

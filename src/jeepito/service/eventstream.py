@@ -1,7 +1,7 @@
 import abc
 from typing import Any, Mapping
 
-from messagebus.domain.model import Message
+from jeepito.domain.model import Message
 
 
 class AbstractMessageSerializer(abc.ABC):

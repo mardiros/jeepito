@@ -440,7 +440,7 @@ yaml = ["PyYAML (>=3.10)"]
 zookeeper = ["kazoo (>=2.8.0)"]
 
 [[package]]
-name = "messagebus"
+name = "jeepito"
 version = "0.1.0"
 description = ""
 optional = false
@@ -456,7 +456,7 @@ venusian = "^3.0.0"
 
 [package.source]
 type = "git"
-url = "https://github.com/mardiros/messagebus.git"
+url = "https://github.com/mardiros/jeepito.git"
 reference = "HEAD"
 resolved_reference = "457e2b84d84e279e7d5ee53856b83a10326c2efd"
 

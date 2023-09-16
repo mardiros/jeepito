@@ -5,7 +5,7 @@ from types import EllipsisType
 from reading_club.domain.model import Book
 from result import Result
 
-from messagebus import AsyncAbstractRepository
+from jeepito import AsyncAbstractRepository
 
 
 class BookRepositoryError(enum.Enum):

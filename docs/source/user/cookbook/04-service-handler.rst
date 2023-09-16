@@ -61,7 +61,7 @@ We are ready to starts our test:
     _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
     cmd = RegisterBook(message_id='13e01ffe-1363-11ee-be97-5c80b62b9562', created_at=datetime.datetime(2023, 6, 25, 14, 17, 55, ...', schema_version=1, published=False), id='x', isbn='0-321-12521-5', title='Domain Driven Design', author='Eric Evans')
-    uow = <messagebus.service._async.unit_of_work.AsyncUnitOfWorkTransaction object at 0x7fb413010b10>
+    uow = <jeepito.service._async.unit_of_work.AsyncUnitOfWorkTransaction object at 0x7fb413010b10>
 
         async def register_book(
             cmd: RegisterBook, uow: AsyncUnitOfWorkTransaction

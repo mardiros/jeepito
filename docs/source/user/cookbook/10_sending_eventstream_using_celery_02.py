@@ -3,7 +3,7 @@ from typing import Any, Mapping
 
 from celery import Celery
 
-from messagebus import AsyncAbstractEventstreamTransport
+from jeepito import AsyncAbstractEventstreamTransport
 
 
 class EventstreamTransport(AsyncAbstractEventstreamTransport):

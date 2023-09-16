@@ -15,7 +15,7 @@ Dealing with errors
 -------------------
 
 First, we create types that describe results from the repository.
-This is a personal choice to avoid exceptions here to deal with error, the messagebus
+This is a personal choice to avoid exceptions here to deal with error, the jeepito
 is not enforcing this kind of practice.
 
 The ``BookRepositoryError`` describe all kind of errors the repository can encountered,

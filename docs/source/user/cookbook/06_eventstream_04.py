@@ -3,7 +3,7 @@ from reading_club.domain.model import Book
 from reading_club.service.repositories import BookRepositoryOperationResult
 from reading_club.service.uow import AbstractUnitOfWork
 
-from messagebus import async_listen
+from jeepito import async_listen
 
 
 @async_listen

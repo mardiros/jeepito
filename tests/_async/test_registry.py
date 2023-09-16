@@ -2,7 +2,7 @@ from typing import Any
 
 import pytest
 
-from messagebus.service._async.registry import AsyncMessageBus, ConfigurationError
+from jeepito.service._async.registry import AsyncMessageBus, ConfigurationError
 from tests._async.conftest import (
     AsyncUnitOfWorkTransaction,
     DummyCommand,

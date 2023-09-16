@@ -66,8 +66,8 @@ Testing the unit of work
 First, We are going to separate our sql tests from others tests,
 in order to get a conftest that override the ``tests/conftest.py``
 but we also ensure to not use sql in the rest of the tests.
-Then, we have to implement the :meth:`messagebus.AsyncAbstractUnitOfWork.commit`
-and :meth:`messagebus.AsyncAbstractUnitOfWork.rollback` and we have to write transaction
+Then, we have to implement the :meth:`jeepito.AsyncAbstractUnitOfWork.commit`
+and :meth:`jeepito.AsyncAbstractUnitOfWork.rollback` and we have to write transaction
 tests to ensure it works.
 
 ::
@@ -197,7 +197,7 @@ And our implementation.
 .. literalinclude:: 08_sqlalchemy_uow_11.py
 
 There is no much to say here, it take the message and store in in the table.
-Because the messagebus does not rely on results, it does not return a Result object,
+Because the jeepito does not rely on results, it does not return a Result object,
 our implementation raise exceptions if it does not works.
 
 
@@ -222,7 +222,7 @@ Before closing this chapter, lets run our tests and conclude
 
 
 At the moment, our book review model contains the book registration, with commands
-and events used by the messagebus.
+and events used by the jeepito.
 
 But, we have some tests that are not clean, the ``test_book_add_err`` that initialize
 its tests inside them, which will not scale, and more for the ``test_book_by_id_ok``,

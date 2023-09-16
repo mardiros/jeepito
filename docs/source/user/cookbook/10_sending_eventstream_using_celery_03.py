@@ -3,7 +3,7 @@ from typing import Any, MutableSequence
 import pytest
 from reading_club.adapters.eventstream import EventstreamTransport
 
-from messagebus import AsyncAbstractEventstreamTransport
+from jeepito import AsyncAbstractEventstreamTransport
 
 
 class FakeCelery:

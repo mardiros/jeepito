@@ -141,7 +141,7 @@ Glossary
 
    Unit Of Work
       The unit of work is an object which is responsible to represent a transaction
-      at the business layer. The messagebus
+      at the business layer. The jeepito
       https://en.wikipedia.org/wiki/Unit_of_work
 
    Repository

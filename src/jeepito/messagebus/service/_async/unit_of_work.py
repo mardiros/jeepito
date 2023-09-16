@@ -6,8 +6,8 @@ import enum
 from types import TracebackType
 from typing import Any, Generic, Iterator, Optional, Type, TypeVar
 
-from messagebus.domain.model import Message
-from messagebus.service._async.repository import (
+from jeepito.domain.model import Message
+from jeepito.service._async.repository import (
     AsyncAbstractRepository,
     AsyncEventstoreAbstractRepository,
     AsyncSinkholeEventstoreRepository,

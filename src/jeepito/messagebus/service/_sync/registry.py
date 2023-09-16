@@ -10,8 +10,8 @@ from typing import Any, Dict, Generic, List, Type, cast
 
 import venusian  # type: ignore
 
-from messagebus.domain.model import Command, Event, Message
-from messagebus.typing import (
+from jeepito.domain.model import Command, Event, Message
+from jeepito.typing import (
     SyncCommandHandler,
     SyncEventHandler,
     SyncMessageHandler,
@@ -23,7 +23,7 @@ from messagebus.typing import (
 from .unit_of_work import SyncUnitOfWorkTransaction, TRepositories
 
 log = logging.getLogger(__name__)
-VENUSIAN_CATEGORY = "messagebus"
+VENUSIAN_CATEGORY = "jeepito"
 
 
 class ConfigurationError(RuntimeError):
@@ -49,7 +49,7 @@ def sync_listen(
             return  # coverage: ignore
         argsspec = inspect.getfullargspec(ob)
         msg_type = argsspec.annotations[argsspec.args[0]]
-        scanner.messagebus.add_listener(msg_type, wrapped)  # type: ignore
+        scanner.jeepito.add_listener(msg_type, wrapped)  # type: ignore
 
     venusian.attach(wrapped, callback, category=VENUSIAN_CATEGORY)  # type: ignore
     return wrapped
@@ -111,7 +111,7 @@ class SyncMessageBus(Generic[TRepositories]):
         self, message: Message, uow: SyncUnitOfWorkTransaction[TRepositories]
     ) -> Any:
         """
-        Notify listener of that event registered with `messagebus.add_listener`.
+        Notify listener of that event registered with `jeepito.add_listener`.
         Return the first event from the command.
         """
         queue = [message]
@@ -148,7 +148,7 @@ class SyncMessageBus(Generic[TRepositories]):
         to hook functions, called :term:`Service Handler` that receive the message,
         and a :term:`Unit Of Work` to process it has a business transaction.
         """
-        scanner = venusian.Scanner(messagebus=self)
+        scanner = venusian.Scanner(jeepito=self)
         for modname in mods:
             if modname.startswith("."):
                 raise ValueError(

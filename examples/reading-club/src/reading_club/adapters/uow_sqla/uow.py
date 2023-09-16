@@ -14,13 +14,13 @@ from sqlalchemy import insert, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
-from messagebus import (  # AsyncEventstoreAbstractRepository,
+from jeepito import (  # AsyncEventstoreAbstractRepository,
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
     AsyncUnitOfWorkTransaction,
     Message,
 )
-from messagebus.service._async.repository import AsyncEventstoreAbstractRepository
+from jeepito.service._async.repository import AsyncEventstoreAbstractRepository
 
 from . import orm
 

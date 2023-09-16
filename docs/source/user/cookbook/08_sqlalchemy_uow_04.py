@@ -10,7 +10,7 @@ from reading_club.service.repositories import (
 from reading_club.service.uow import AbstractUnitOfWork
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
-from messagebus import (
+from jeepito import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstoreAbstractRepository,
     AsyncEventstreamPublisher,

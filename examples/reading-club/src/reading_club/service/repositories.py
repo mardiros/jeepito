@@ -6,7 +6,7 @@ from typing import Union
 from reading_club.domain.model import Book, Review, Reviewer
 from result import Result
 
-from messagebus import AsyncAbstractRepository
+from jeepito import AsyncAbstractRepository
 
 
 class BookRepositoryError(enum.Enum):

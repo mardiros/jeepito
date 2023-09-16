@@ -1,5 +1,5 @@
 """
-messagebus API.
+jeepito API.
 """
 try:
     # add an ignore for python 3.7 which does not know this standard library
@@ -41,7 +41,7 @@ from .service._sync.unit_of_work import (
 )
 from .service.eventstream import AbstractMessageSerializer
 
-__version__ = version("messagebus")
+__version__ = version("jeepito")
 
 __all__ = [
     # models

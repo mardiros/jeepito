@@ -1,7 +1,7 @@
 """
 Repositories are used to fetch and store domain models.
 
-Anstract repositories derived the :class:`messagebus.AsyncAbstractRepository`
+Anstract repositories derived the :class:`jeepito.AsyncAbstractRepository`
 class to declare every models interface such as CRUD operations,
 and then concrete models implements those abstract methods for a given
 storage.
@@ -9,8 +9,8 @@ storage.
 import abc
 from typing import Generic, MutableSequence, Optional, TypeVar
 
-from messagebus.domain.model import Message, Model
-from messagebus.service._sync.eventstream import SyncEventstreamPublisher
+from jeepito.domain.model import Message, Model
+from jeepito.service._sync.eventstream import SyncEventstreamPublisher
 
 TModel_contra = TypeVar("TModel_contra", bound=Model, contravariant=True)
 

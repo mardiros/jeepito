@@ -8,7 +8,7 @@ from reading_club.service.repositories import BookRepositoryError
 from reading_club.service.uow import AbstractUnitOfWork
 from result import Err, Ok
 
-from messagebus import AsyncMessageBus
+from jeepito import AsyncMessageBus
 from tests.conftest import EventstreamTransport
 
 

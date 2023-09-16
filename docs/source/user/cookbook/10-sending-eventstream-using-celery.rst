@@ -1,8 +1,8 @@
 Eventstream With Celery
 =======================
 
-In the :ref:`chapter 6<cookbook chapter 6>`, we discover how the messagebus library handle eventstream.
-We've implement an :class:`messagebus.AsyncAbstractEventstreamTransport` in order
+In the :ref:`chapter 6<cookbook chapter 6>`, we discover how the jeepito library handle eventstream.
+We've implement an :class:`jeepito.AsyncAbstractEventstreamTransport` in order
 to send events to a stream.
 
 We've done a fake implementation, sending to a python list, it's time to give
@@ -18,7 +18,7 @@ we are going to celery pytest fixtures too, so we can install it now.
 .. important::
 
     Because the library is thin as possible, in term of code and dependencies, the
-    messagebus library does not comes with an implementation, the present documentation
+    jeepito library does not comes with an implementation, the present documentation
     can be reproduce and adapted.
 
 ::

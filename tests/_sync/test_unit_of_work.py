@@ -2,8 +2,8 @@ from typing import Type
 
 import pytest
 
-from messagebus.domain.model import Event, Metadata
-from messagebus.service._sync.unit_of_work import (
+from jeepito.domain.model import Event, Metadata
+from jeepito.service._sync.unit_of_work import (
     SyncUnitOfWorkTransaction,
     TransactionError,
     TransactionStatus,

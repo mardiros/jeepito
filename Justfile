@@ -1,4 +1,4 @@
-package := 'messagebus'
+package := 'jeepito'
 default_test_suite := 'tests'
 
 install:
@@ -16,7 +16,7 @@ gh-pages:
 
 gensync:
     poetry run python scripts/gen_unasync.py
-    poetry run black src/messagebus/service/_sync/
+    poetry run black src/jeepito/service/_sync/
     poetry run black tests/_sync/
 
 test: gensync mypy lint unittest 
@@ -35,7 +35,7 @@ black:
     poetry run black .
 
 mypy:
-    poetry run mypy src/messagebus/ tests/
+    poetry run mypy src/jeepito/ tests/
 
 cov test_suite=default_test_suite:
     rm -f .coverage

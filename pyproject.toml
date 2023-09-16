@@ -1,7 +1,7 @@
 [tool.poetry]
 authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
-description = ""
-name = "messagebus"
+description = "A message bus library"
+name = "Jeepito"
 version = "0.1.0"
 
 [tool.pyright]
@@ -11,11 +11,11 @@ typeCheckingMode = "strict"
 [[tool.mypy.overrides]]
 disallow_any_generics = true
 disallow_untyped_defs = true
-module = "messagebus.*"
+module = "jeepito.*"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-pydantic = "^2.2.1"
+pydantic = "^2.3.0"
 typing-extensions = "^4.6.3"
 pytest-cov = "^4.1.0"
 venusian = "^3.0.0"

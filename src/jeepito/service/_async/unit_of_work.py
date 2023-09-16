@@ -6,11 +6,11 @@ import enum
 from types import TracebackType
 from typing import Any, Generic, Iterator, Optional, Type, TypeVar
 
-from messagebus.domain.model import Message
-from messagebus.service._sync.repository import (
-    SyncAbstractRepository,
-    SyncEventstoreAbstractRepository,
-    SyncSinkholeEventstoreRepository,
+from jeepito.domain.model import Message
+from jeepito.service._async.repository import (
+    AsyncAbstractRepository,
+    AsyncEventstoreAbstractRepository,
+    AsyncSinkholeEventstoreRepository,
 )
 
 
@@ -27,14 +27,14 @@ class TransactionStatus(enum.Enum):
     closed = "closed"
 
 
-TRepositories = TypeVar("TRepositories", bound=SyncAbstractRepository[Any])
+TRepositories = TypeVar("TRepositories", bound=AsyncAbstractRepository[Any])
 
 
-class SyncUnitOfWorkTransaction(Generic[TRepositories]):
-    uow: SyncAbstractUnitOfWork[TRepositories]
+class AsyncUnitOfWorkTransaction(Generic[TRepositories]):
+    uow: AsyncAbstractUnitOfWork[TRepositories]
     status: TransactionStatus
 
-    def __init__(self, uow: "SyncAbstractUnitOfWork[TRepositories]") -> None:
+    def __init__(self, uow: "AsyncAbstractUnitOfWork[TRepositories]") -> None:
         self.status = TransactionStatus.running
         self.uow = uow
 
@@ -42,25 +42,25 @@ class SyncUnitOfWorkTransaction(Generic[TRepositories]):
         return getattr(self.uow, name)
 
     @property
-    def eventstore(self) -> SyncEventstoreAbstractRepository:
+    def eventstore(self) -> AsyncEventstoreAbstractRepository:
         return self.uow.eventstore
 
-    def commit(self) -> None:
+    async def commit(self) -> None:
         if self.status != TransactionStatus.running:
             raise TransactionError(f"Transaction already closed ({self.status.value}).")
-        self.uow.commit()
+        await self.uow.commit()
         self.status = TransactionStatus.committed
 
-    def rollback(self) -> None:
-        self.uow.rollback()
+    async def rollback(self) -> None:
+        await self.uow.rollback()
         self.status = TransactionStatus.rolledback
 
-    def __enter__(self) -> SyncUnitOfWorkTransaction[TRepositories]:
+    async def __aenter__(self) -> AsyncUnitOfWorkTransaction[TRepositories]:
         if self.status != TransactionStatus.running:
             raise TransactionError("Invalid transaction status.")
         return self
 
-    def __exit__(
+    async def __aexit__(
         self,
         exc_type: Optional[Type[BaseException]],
         exc: Optional[BaseException],
@@ -68,7 +68,7 @@ class SyncUnitOfWorkTransaction(Generic[TRepositories]):
     ) -> None:
         """Rollback in case of exception."""
         if exc:
-            self.rollback()
+            await self.rollback()
             return
         if self.status == TransactionStatus.closed:
             raise TransactionError("Transaction is closed.")
@@ -77,11 +77,11 @@ class SyncUnitOfWorkTransaction(Generic[TRepositories]):
                 "Transaction must be explicitly close. Missing commit/rollback call."
             )
         if self.status == TransactionStatus.committed:
-            self.uow.eventstore.publish_eventstream()
+            await self.uow.eventstore.publish_eventstream()
         self.status = TransactionStatus.closed
 
 
-class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
+class AsyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
     """
     Abstract unit of work.
 
@@ -90,7 +90,7 @@ class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
     has to be declared has attributes.
     """
 
-    eventstore: SyncEventstoreAbstractRepository = SyncSinkholeEventstoreRepository()
+    eventstore: AsyncEventstoreAbstractRepository = AsyncSinkholeEventstoreRepository()
 
     def collect_new_events(self) -> Iterator[Message]:
         for repo in self._iter_repositories():
@@ -101,30 +101,30 @@ class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
 
     def _iter_repositories(
         self,
-    ) -> Iterator[SyncAbstractRepository[Any]]:
+    ) -> Iterator[AsyncAbstractRepository[Any]]:
         for member_name in self.__dict__.keys():
             member = getattr(self, member_name)
-            if isinstance(member, SyncAbstractRepository):
+            if isinstance(member, AsyncAbstractRepository):
                 yield member
 
-    def __enter__(self) -> SyncUnitOfWorkTransaction[TRepositories]:
-        self.__transaction = SyncUnitOfWorkTransaction(self)
-        self.__transaction.__enter__()
+    async def __aenter__(self) -> AsyncUnitOfWorkTransaction[TRepositories]:
+        self.__transaction = AsyncUnitOfWorkTransaction(self)
+        await self.__transaction.__aenter__()
         return self.__transaction
 
-    def __exit__(
+    async def __aexit__(
         self,
         exc_type: Optional[Type[BaseException]],
         exc: Optional[BaseException],
         tb: Optional[TracebackType],
     ) -> None:
         # AsyncUnitOfWorkTransaction is making the thing
-        self.__transaction.__exit__(exc_type, exc, tb)
+        await self.__transaction.__aexit__(exc_type, exc, tb)
 
     @abc.abstractmethod
-    def commit(self) -> None:
+    async def commit(self) -> None:
         """Commit the transation."""
 
     @abc.abstractmethod
-    def rollback(self) -> None:
+    async def rollback(self) -> None:
         """Rollback the transation."""

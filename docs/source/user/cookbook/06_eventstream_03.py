@@ -12,7 +12,7 @@ from reading_club.service.repositories import (
 from reading_club.service.uow import AbstractUnitOfWork
 from result import Err, Ok
 
-from messagebus import (
+from jeepito import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
     AsyncMessageBus,

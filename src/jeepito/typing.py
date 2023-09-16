@@ -5,7 +5,7 @@ Propagate commands and events to every registered handles.
 import logging
 from typing import Any, Callable, Coroutine, TypeVar, Union
 
-from messagebus.domain.model import Command, Event
+from jeepito.domain.model import Command, Event
 
 from .service._async.unit_of_work import AsyncUnitOfWorkTransaction
 from .service._sync.unit_of_work import SyncUnitOfWorkTransaction

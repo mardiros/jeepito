@@ -37,7 +37,7 @@ jobs:
         with:
           poetry-version: ${{ matrix.poetry-version }}
 
-      - name: Install messagebus
+      - name: Install jeepito
         run: poetry install
 
       - name: Check lint
@@ -46,11 +46,11 @@ jobs:
 
       - name: Check types
         run: |
-          poetry run mypy src/messagebus/
+          poetry run mypy src/jeepito/
 
       - name: Run tests
         run: |
-          poetry run pytest tests  --junitxml=junit/test-results-${{ matrix.python-version }}.xml --cov=messagebus --cov-report=xml --cov-report=html
+          poetry run pytest tests  --junitxml=junit/test-results-${{ matrix.python-version }}.xml --cov=jeepito --cov-report=xml --cov-report=html
 
       - name: Upload pytest test results
         uses: actions/upload-artifact@v2

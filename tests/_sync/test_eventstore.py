@@ -1,6 +1,6 @@
-from messagebus.domain.model import Metadata
-from messagebus.service._sync.registry import SyncMessageBus
-from messagebus.service._sync.unit_of_work import SyncUnitOfWorkTransaction
+from jeepito.domain.model import Metadata
+from jeepito.service._sync.registry import SyncMessageBus
+from jeepito.service._sync.unit_of_work import SyncUnitOfWorkTransaction
 from tests._sync.conftest import (
     SyncDummyUnitOfWorkWithEvents,
     SyncEventstreamTransport,

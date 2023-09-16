@@ -2,7 +2,7 @@ from reading_club.domain.messages import RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.uow import AbstractUnitOfWork
 
-from messagebus import AsyncMessageBus
+from jeepito import AsyncMessageBus
 
 
 async def test_bus_handler(

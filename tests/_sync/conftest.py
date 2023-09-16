@@ -14,17 +14,17 @@ import pytest
 from pydantic import Field
 from result import Err, Ok, Result
 
-from messagebus.domain.model import Command, Event, Message, Metadata, Model
-from messagebus.service._sync.eventstream import (
+from jeepito.domain.model import Command, Event, Message, Metadata, Model
+from jeepito.service._sync.eventstream import (
     SyncAbstractEventstreamTransport,
     SyncEventstreamPublisher,
 )
-from messagebus.service._sync.registry import SyncMessageBus
-from messagebus.service._sync.repository import (
+from jeepito.service._sync.registry import SyncMessageBus
+from jeepito.service._sync.repository import (
     SyncAbstractRepository,
     SyncEventstoreAbstractRepository,
 )
-from messagebus.service._sync.unit_of_work import (
+from jeepito.service._sync.unit_of_work import (
     SyncAbstractUnitOfWork,
     SyncUnitOfWorkTransaction,
 )

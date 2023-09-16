@@ -2,7 +2,7 @@ from typing import Any
 
 import pytest
 
-from messagebus import AsyncMessageBus
+from jeepito import AsyncMessageBus
 
 # ... previous content not repeated here
 

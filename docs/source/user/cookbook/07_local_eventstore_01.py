@@ -1,6 +1,6 @@
 from typing import MutableSequence
 
-from messagebus import AsyncEventstoreAbstractRepository, Message
+from jeepito import AsyncEventstoreAbstractRepository, Message
 
 
 class InMemoryEventstoreRepository(AsyncEventstoreAbstractRepository):

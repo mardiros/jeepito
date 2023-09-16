@@ -5,7 +5,7 @@ from reading_club.service.repositories import (
     Repositories,
 )
 
-from messagebus import AsyncAbstractUnitOfWork
+from jeepito import AsyncAbstractUnitOfWork
 
 
 class AbstractUnitOfWork(AsyncAbstractUnitOfWork[Repositories]):

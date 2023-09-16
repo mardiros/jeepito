@@ -1,4 +1,4 @@
-from messagebus import Command, Field, Metadata
+from jeepito import Command, Field, Metadata
 
 
 class RegisterBookV1(Command):
