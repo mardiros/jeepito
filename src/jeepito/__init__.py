@@ -1,5 +1,5 @@
 """
-jeepito API.
+Jeepito API.
 """
 try:
     # add an ignore for python 3.7 which does not know this standard library
