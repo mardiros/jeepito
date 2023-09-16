@@ -41,7 +41,7 @@ from .service._sync.unit_of_work import (
 )
 from .service.eventstream import AbstractMessageSerializer
 
-__version__ = version("jeepito")
+__version__ = version("Jeepito")
 
 __all__ = [
     # models
