@@ -30,10 +30,6 @@ ReviewRepositoryOperationResult = Result[EllipsisType, ReviewRepositoryError]
 
 
 class AbstractBookRepository(AsyncAbstractRepository[Book]):
-    def __init__(self) -> None:
-        super().__init__()
-        self.seen = []
-
     @abc.abstractmethod
     async def add(self, model: Book) -> BookRepositoryOperationResult:
         ...

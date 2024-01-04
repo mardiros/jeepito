@@ -18,6 +18,9 @@ TModel_contra = TypeVar("TModel_contra", bound=Model, contravariant=True)
 class SyncAbstractRepository(abc.ABC, Generic[TModel_contra]):
     """Abstract Base Classe for Repository pattern."""
 
+    def __init__(self) -> None:
+        self.seen = []
+
     seen: MutableSequence[TModel_contra]
 
 
