@@ -8,7 +8,7 @@ from jeepito.service._sync.unit_of_work import (
     TransactionError,
     TransactionStatus,
 )
-from tests._sync.conftest import SyncDummyUnitOfWork, DummyModel
+from tests._sync.conftest import DummyModel, SyncDummyUnitOfWork
 
 
 class FooCreated(Event):

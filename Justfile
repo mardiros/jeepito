@@ -16,7 +16,9 @@ gh-pages:
 
 gensync:
     poetry run python scripts/gen_unasync.py
+    poetry run isort src/jeepito/service/_sync/
     poetry run black src/jeepito/service/_sync/
+    poetry run isort tests/_sync/
     poetry run black tests/_sync/
 
 test: gensync mypy lint unittest 

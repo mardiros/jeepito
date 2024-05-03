@@ -2,13 +2,13 @@ from typing import Any
 
 import pytest
 
-from jeepito.service._sync.registry import SyncMessageBus, ConfigurationError
+from jeepito.service._sync.registry import ConfigurationError, SyncMessageBus
 from tests._sync.conftest import (
-    SyncUnitOfWorkTransaction,
     DummyCommand,
     DummyEvent,
     DummyModel,
     Repositories,
+    SyncUnitOfWorkTransaction,
 )
 
 conftest_mod = __name__.replace("test_registry", "conftest")

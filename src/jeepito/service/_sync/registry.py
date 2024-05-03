@@ -15,9 +15,9 @@ from jeepito.typing import (
     SyncCommandHandler,
     SyncEventHandler,
     SyncMessageHandler,
-    TSyncUow,
     TCommand,
     TEvent,
+    TSyncUow,
 )
 
 from .unit_of_work import SyncUnitOfWorkTransaction, TRepositories
