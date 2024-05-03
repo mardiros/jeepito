@@ -17,8 +17,8 @@ from pydantic import Field
 from .domain.model import Command, Event, Message, Metadata, Model
 from .service._async.eventstream import (
     AsyncAbstractEventstreamTransport,
-    AsyncSinkholeEventstreamTransport,
     AsyncEventstreamPublisher,
+    AsyncSinkholeEventstreamTransport,
 )
 from .service._async.registry import AsyncMessageBus, async_listen
 from .service._async.repository import AsyncAbstractRepository
@@ -30,8 +30,8 @@ from .service._async.unit_of_work import (
 )
 from .service._sync.eventstream import (
     SyncAbstractEventstreamTransport,
-    SyncSinkholeEventstreamTransport,
     SyncEventstreamPublisher,
+    SyncSinkholeEventstreamTransport,
 )
 from .service._sync.registry import SyncMessageBus, sync_listen
 from .service._sync.repository import SyncAbstractRepository

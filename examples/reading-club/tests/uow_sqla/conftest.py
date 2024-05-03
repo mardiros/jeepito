@@ -2,7 +2,6 @@ import uuid
 from typing import AsyncIterator
 
 import pytest
-from jeepito import AsyncAbstractEventstreamTransport
 from reading_club.adapters.uow_sqla import orm
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
 from reading_club.domain.model import Book
@@ -12,6 +11,8 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+
+from jeepito import AsyncAbstractEventstreamTransport
 
 DATABASE_URL = "sqlite+aiosqlite:///"
 
@@ -42,7 +43,9 @@ def sqla_session(sqla_engine: AsyncEngine) -> AsyncSession:
 
 
 @pytest.fixture
-def uow(transport: AsyncAbstractEventstreamTransport, sqla_engine: AsyncEngine) -> SQLUnitOfWork:
+def uow(
+    transport: AsyncAbstractEventstreamTransport, sqla_engine: AsyncEngine
+) -> SQLUnitOfWork:
     return SQLUnitOfWork(transport, sqla_engine)
 
 
