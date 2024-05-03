@@ -78,7 +78,7 @@ tests to ensure it works.
     touch tests/uow_sqla/test_transaction.py
 
 
-Now, lets write the tests in ``uow_sqla/test_transaction.py``::
+Now, lets write the tests in ``uow_sqla/test_transaction.py``
 
 .. literalinclude:: 08_sqlalchemy_uow_03.py
 
@@ -87,7 +87,7 @@ in the books table, when we commit, we ensure the book is stored, when we rollba
 we ensure the book is not present.
 
 
-The tests needs some sql fixture we can already provide in ``uow_sqla/conftest.py``::
+The tests needs some sql fixture we can already provide in ``uow_sqla/conftest.py``
 
 .. literalinclude:: 08_sqlalchemy_uow_02.py
 
