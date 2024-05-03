@@ -1,13 +1,17 @@
 import uuid
 
 import pytest
+from jeepito import AsyncAbstractEventstreamTransport
+from sqlalchemy.ext.asyncio import AsyncEngine
+
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
 from reading_club.domain.model import Book
-from sqlalchemy.ext.asyncio import AsyncEngine
 
 
 @pytest.fixture
-def uow(transport, sqla_engine: AsyncEngine) -> SQLUnitOfWork:
+def uow(
+    transport: AsyncAbstractEventstreamTransport, sqla_engine: AsyncEngine
+) -> SQLUnitOfWork:
     return SQLUnitOfWork(transport, sqla_engine)
 
 

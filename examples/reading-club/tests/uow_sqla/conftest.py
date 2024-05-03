@@ -2,6 +2,7 @@ import uuid
 from typing import AsyncIterator
 
 import pytest
+from jeepito import AsyncAbstractEventstreamTransport
 from reading_club.adapters.uow_sqla import orm
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
 from reading_club.domain.model import Book
@@ -41,7 +42,7 @@ def sqla_session(sqla_engine: AsyncEngine) -> AsyncSession:
 
 
 @pytest.fixture
-def uow(transport, sqla_engine: AsyncEngine) -> SQLUnitOfWork:
+def uow(transport: AsyncAbstractEventstreamTransport, sqla_engine: AsyncEngine) -> SQLUnitOfWork:
     return SQLUnitOfWork(transport, sqla_engine)
 
 
