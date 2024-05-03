@@ -22,10 +22,6 @@ async def test_book_add_ok(uow: SQLUnitOfWork, book: Book, sqla_session: AsyncSe
     # ensure the message bus can follow the book messages
     assert uow.books.seen == [book]
 
-    async with uow as transaction:
-        res = await uow.books.add(book)
-        await transaction.rollback()
-
 
 async def test_book_add_err(uow: SQLUnitOfWork, book: Book):
     # Add a book in the repository
