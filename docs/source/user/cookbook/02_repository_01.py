@@ -23,5 +23,5 @@ class AbstractBookRepository(AsyncAbstractRepository[Book]):
         ...
 
     @abc.abstractmethod
-    async def get(self, id: str) -> BookRepositoryResult:
+    async def by_id(self, id: str) -> BookRepositoryResult:
         ...
