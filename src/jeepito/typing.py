@@ -3,29 +3,18 @@ Propagate commands and events to every registered handles.
 
 """
 import logging
-from typing import Any, Callable, Coroutine, TypeVar, Union
+from typing import Any, Callable, Coroutine, TypeVar
 
-from jeepito.domain.model import Command, Event
+from jeepito.domain.model import Message
 
-from .service._async.unit_of_work import AsyncUnitOfWorkTransaction
-from .service._sync.unit_of_work import SyncUnitOfWorkTransaction
+from .service._async.unit_of_work import AsyncAbstractUnitOfWork
+from .service._sync.unit_of_work import SyncAbstractUnitOfWork
 
 log = logging.getLogger(__name__)
 
-TAsyncUow = TypeVar("TAsyncUow", bound=AsyncUnitOfWorkTransaction[Any])
-TSyncUow = TypeVar("TSyncUow", bound=SyncUnitOfWorkTransaction[Any])
-TCommand = TypeVar("TCommand", bound=Command)
-TEvent = TypeVar("TEvent", bound=Event)
+TAsyncUow = TypeVar("TAsyncUow", bound=AsyncAbstractUnitOfWork[Any])
+TSyncUow = TypeVar("TSyncUow", bound=SyncAbstractUnitOfWork[Any])
+TMessage = TypeVar("TMessage", bound=Message)
 
-AsyncCommandHandler = Callable[[TCommand, TAsyncUow], Coroutine[Any, Any, Any]]
-AsyncEventHandler = Callable[[TEvent, TAsyncUow], Coroutine[Any, Any, None]]
-AsyncMessageHandler = Union[
-    AsyncCommandHandler[TCommand, TAsyncUow], AsyncEventHandler[TEvent, TAsyncUow]
-]
-
-
-SyncCommandHandler = Callable[[TCommand, TSyncUow], Any]
-SyncEventHandler = Callable[[TEvent, TSyncUow], None]
-SyncMessageHandler = Union[
-    SyncCommandHandler[TCommand, TSyncUow], SyncEventHandler[TEvent, TSyncUow]
-]
+AsyncMessageHandler = Callable[[TMessage, TAsyncUow], Coroutine[Any, Any, Any]]
+SyncMessageHandler = Callable[[TMessage, TSyncUow], Any]
