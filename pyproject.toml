@@ -43,6 +43,8 @@ asyncio_mode = "auto"
 testpaths = ["tests"]
 filterwarnings = [
     "error",
+    # standard lib
+    'ignore:.*datetime.datetime.utcnow\(\) is deprecated and scheduled for removal',
     # setuptools
     'ignore:.*pkg_resources is deprecated as an API.*:DeprecationWarning',
     'ignore:.*Deprecated call to `pkg_resources.declare_namespace:DeprecationWarning',

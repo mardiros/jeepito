@@ -2,6 +2,7 @@
 Propagate commands and events to every registered handles.
 
 """
+
 import importlib
 import inspect
 import logging
@@ -11,14 +12,7 @@ from typing import Any, Dict, Generic, List, Type, cast
 import venusian  # type: ignore
 
 from jeepito.domain.model import Command, Event, Message
-from jeepito.typing import (
-    SyncCommandHandler,
-    SyncEventHandler,
-    SyncMessageHandler,
-    TCommand,
-    TEvent,
-    TSyncUow,
-)
+from jeepito.typing import SyncMessageHandler, TMessage, TSyncUow
 
 from .unit_of_work import SyncUnitOfWorkTransaction, TRepositories
 
@@ -31,8 +25,8 @@ class ConfigurationError(RuntimeError):
 
 
 def sync_listen(
-    wrapped: SyncMessageHandler[TCommand, TSyncUow, TEvent]
-) -> SyncMessageHandler[TCommand, TSyncUow, TEvent]:
+    wrapped: SyncMessageHandler[TMessage, TSyncUow],
+) -> SyncMessageHandler[TMessage, TSyncUow]:
     """
     Decorator to listen for a command or an event.
 
@@ -43,7 +37,7 @@ def sync_listen(
     def callback(
         scanner: venusian.Scanner,
         name: str,
-        ob: SyncMessageHandler[TCommand, TSyncUow, TEvent],
+        ob: SyncMessageHandler[TMessage, TSyncUow],
     ) -> None:
         if not hasattr(scanner, VENUSIAN_CATEGORY):
             return  # coverage: ignore
@@ -60,27 +54,23 @@ class SyncMessageBus(Generic[TRepositories]):
 
     def __init__(self) -> None:
         self.commands_registry: Dict[
-            Type[Command], SyncCommandHandler[Command, Any]
+            Type[Command], SyncMessageHandler[Command, Any]
         ] = {}
         self.events_registry: Dict[
-            Type[Event], List[SyncEventHandler[Event, Any]]
+            Type[Event], List[SyncMessageHandler[Event, Any]]
         ] = defaultdict(list)
 
     def add_listener(
-        self, msg_type: Type[Message], callback: SyncMessageHandler[Any, Any, Any]
+        self, msg_type: Type[Message], callback: SyncMessageHandler[Any, Any]
     ) -> None:
         if issubclass(msg_type, Command):
             if msg_type in self.commands_registry:
                 raise ConfigurationError(
                     f"{msg_type} command has been registered twice"
                 )
-            self.commands_registry[msg_type] = cast(
-                SyncCommandHandler[Command, Any], callback
-            )
+            self.commands_registry[msg_type] = callback
         elif issubclass(msg_type, Event):
-            self.events_registry[msg_type].append(
-                cast(SyncEventHandler[Event, Any], callback)
-            )
+            self.events_registry[msg_type].append(callback)
         else:
             raise ConfigurationError(
                 f"Invalid usage of the listen decorator: "
@@ -88,7 +78,7 @@ class SyncMessageBus(Generic[TRepositories]):
             )
 
     def remove_listener(
-        self, msg_type: type, callback: SyncMessageHandler[Any, Any, Any]
+        self, msg_type: type, callback: SyncMessageHandler[Any, Any]
     ) -> None:
         if issubclass(msg_type, Command):
             if msg_type not in self.commands_registry:
@@ -96,9 +86,7 @@ class SyncMessageBus(Generic[TRepositories]):
             del self.commands_registry[msg_type]
         elif issubclass(msg_type, Event):
             try:
-                self.events_registry[msg_type].remove(
-                    cast(SyncEventHandler[Event, Any], callback)
-                )
+                self.events_registry[msg_type].remove(callback)
             except ValueError:
                 raise ConfigurationError(f"{msg_type} event has not been registered")
         else:
@@ -123,14 +111,14 @@ class SyncMessageBus(Generic[TRepositories]):
                 raise RuntimeError(f"{message} was not an Event or Command")
             msg_type = type(message)
             if msg_type in self.commands_registry:
-                cmdret = self.commands_registry[cast(Type[Command], msg_type)](
+                cmdret = self.commands_registry[msg_type](  # type: ignore
                     cast(Command, message), uow
                 )
                 if idx == 0:
                     ret = cmdret
                 queue.extend(uow.uow.collect_new_events())
             elif msg_type in self.events_registry:
-                for callback in self.events_registry[cast(Type[Event], msg_type)]:
+                for callback in self.events_registry[msg_type]:  # type: ignore
                     callback(cast(Event, message), uow)
                     queue.extend(uow.uow.collect_new_events())
             uow.eventstore.add(message)
