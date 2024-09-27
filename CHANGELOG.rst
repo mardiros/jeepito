@@ -1,3 +1,7 @@
+0.2.2  - Released on 2024-09-27
+-------------------------------
+* Update for typing purpose 
+
 0.2.1  - Released on 2024-05-04
 -------------------------------
 * Remove files copy/pasted after rename of the package 

@@ -2,7 +2,7 @@
 authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
 description = "A message bus library"
 name = "Jeepito"
-version = "0.2.1"
+version = "0.2.2"
 
 [tool.pyright]
 include = ["src"]
