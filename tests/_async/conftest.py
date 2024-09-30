@@ -41,7 +41,7 @@ class DummyError(enum.Enum):
     not_found = "not_found"
 
 
-class DummyModel(Model):
+class DummyModel(Model[Metadata]):
     id: str = Field()
     counter: int = Field(0)
 
@@ -103,13 +103,13 @@ class AsyncEventstreamTransport(AsyncAbstractEventstreamTransport):
 
 
 class AsyncDummyEventStore(AsyncEventstoreAbstractRepository):
-    messages: MutableSequence[Message]
+    messages: MutableSequence[Message[Metadata]]
 
     def __init__(self, publisher: Optional[AsyncEventstreamPublisher]):
         super().__init__(publisher=publisher)
         self.messages = []
 
-    async def _add(self, message: Message) -> None:
+    async def _add(self, message: Message[Metadata]) -> None:
         self.messages.append(message)
 
 
@@ -126,12 +126,12 @@ class AsyncDummyUnitOfWorkWithEvents(AsyncAbstractUnitOfWork[Repositories]):
         ...
 
 
-class DummyCommand(Command):
+class DummyCommand(Command[Metadata]):
     id: str = Field(...)
     metadata: Metadata = Metadata(name="dummy", schema_version=1)
 
 
-class DummyEvent(Event):
+class DummyEvent(Event[Metadata]):
     id: str = Field(...)
     increment: int = Field(...)
     metadata: Metadata = Metadata(name="dummied", schema_version=1, published=True)

@@ -6,13 +6,14 @@ class to declare every models interface such as CRUD operations,
 and then concrete models implements those abstract methods for a given
 storage.
 """
+
 import abc
-from typing import Generic, MutableSequence, Optional, TypeVar
+from typing import Any, Generic, MutableSequence, Optional, TypeVar
 
 from jeepito.domain.model import Message, Model
 from jeepito.service._sync.eventstream import SyncEventstreamPublisher
 
-TModel_contra = TypeVar("TModel_contra", bound=Model, contravariant=True)
+TModel_contra = TypeVar("TModel_contra", bound=Model[Any], contravariant=True)
 
 
 class SyncAbstractRepository(abc.ABC, Generic[TModel_contra]):
@@ -27,15 +28,15 @@ class SyncAbstractRepository(abc.ABC, Generic[TModel_contra]):
 class SyncEventstoreAbstractRepository(abc.ABC):
     def __init__(self, publisher: Optional[SyncEventstreamPublisher] = None) -> None:
         self.publisher = publisher
-        self.stream_buffer: MutableSequence[Message] = []
+        self.stream_buffer: MutableSequence[Message[Any]] = []
 
     @abc.abstractmethod
-    def _add(self, message: Message) -> None:
+    def _add(self, message: Message[Any]) -> None:
         """
         Add a message to the storage backend of event repository.
         """
 
-    def add(self, message: Message) -> None:
+    def add(self, message: Message[Any]) -> None:
         """
         Add the message to the storage backend and mark as seen
 
@@ -62,5 +63,5 @@ class SyncEventstoreAbstractRepository(abc.ABC):
 class SyncSinkholeEventstoreRepository(SyncEventstoreAbstractRepository):
     """An eventstore that drop all the message."""
 
-    def _add(self, message: Message) -> None:
-        ...
+    def _add(self, message: Message[Any]) -> None:
+        """Do nothing. The sinkhole drop every message."""

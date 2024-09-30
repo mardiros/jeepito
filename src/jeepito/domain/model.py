@@ -6,7 +6,7 @@ Message base classes.
 """
 
 from datetime import datetime
-from typing import Any, MutableSequence
+from typing import Any, Generic, MutableSequence, TypeVar
 from uuid import uuid1
 
 from pydantic import BaseModel, Field
@@ -26,7 +26,10 @@ class Metadata(BaseModel):
     """Publish the event to an eventstream."""
 
 
-class Message(BaseModel):
+TMetadata = TypeVar("TMetadata", bound=Metadata)
+
+
+class Message(BaseModel, Generic[TMetadata]):
     """Base class for messaging."""
 
     message_id: str = Field(default_factory=generate_id)
@@ -37,7 +40,7 @@ class Message(BaseModel):
 
     All messages are kept in order for observability, debug and event replay.
     """
-    metadata: Metadata
+    metadata: TMetadata
     """
     Define extra fields used at serialization.
 
@@ -56,18 +59,18 @@ class Message(BaseModel):
         return slf == otr
 
 
-class Command(Message):
+class Command(Message[TMetadata]):
     """Baseclass for message of type command."""
 
 
-class Event(Message):
+class Event(Message[TMetadata]):
     """Baseclass for message of type event."""
 
 
-class Model(BaseModel):
+class Model(BaseModel, Generic[TMetadata]):
     """Base class for model."""
 
-    messages: MutableSequence[Message] = Field(default_factory=list)
+    messages: MutableSequence[Message[TMetadata]] = Field(default_factory=list)
     """
     List of messages consumed by the unit of work to mutate the repository.
 

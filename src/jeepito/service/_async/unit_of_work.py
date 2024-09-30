@@ -92,7 +92,7 @@ class AsyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
 
     eventstore: AsyncEventstoreAbstractRepository = AsyncSinkholeEventstoreRepository()
 
-    def collect_new_events(self) -> Iterator[Message]:
+    def collect_new_events(self) -> Iterator[Message[Any]]:
         for repo in self._iter_repositories():
             while repo.seen:
                 model = repo.seen.pop(0)
