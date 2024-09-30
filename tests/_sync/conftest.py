@@ -36,12 +36,16 @@ except ImportError:
     EllipsisType = Any  # type:ignore
 
 
+class MyMetadata(Metadata):
+    custom_field: str
+
+
 class DummyError(enum.Enum):
     integrity_error = "integrity_error"
     not_found = "not_found"
 
 
-class DummyModel(Model[Metadata]):
+class DummyModel(Model[MyMetadata]):
     id: str = Field()
     counter: int = Field(0)
 
@@ -103,13 +107,13 @@ class SyncEventstreamTransport(SyncAbstractEventstreamTransport):
 
 
 class SyncDummyEventStore(SyncEventstoreAbstractRepository):
-    messages: MutableSequence[Message[Metadata]]
+    messages: MutableSequence[Message[MyMetadata]]
 
     def __init__(self, publisher: Optional[SyncEventstreamPublisher]):
         super().__init__(publisher=publisher)
         self.messages = []
 
-    def _add(self, message: Message[Metadata]) -> None:
+    def _add(self, message: Message[MyMetadata]) -> None:
         self.messages.append(message)
 
 
@@ -126,15 +130,19 @@ class SyncDummyUnitOfWorkWithEvents(SyncAbstractUnitOfWork[Repositories]):
         ...
 
 
-class DummyCommand(Command[Metadata]):
+class DummyCommand(Command[MyMetadata]):
     id: str = Field(...)
-    metadata: Metadata = Metadata(name="dummy", schema_version=1)
+    metadata: MyMetadata = MyMetadata(
+        name="dummy", schema_version=1, custom_field="foo"
+    )
 
 
-class DummyEvent(Event[Metadata]):
+class DummyEvent(Event[MyMetadata]):
     id: str = Field(...)
     increment: int = Field(...)
-    metadata: Metadata = Metadata(name="dummied", schema_version=1, published=True)
+    metadata: MyMetadata = MyMetadata(
+        name="dummied", schema_version=1, published=True, custom_field="foo"
+    )
 
 
 @pytest.fixture

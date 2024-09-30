@@ -1,10 +1,10 @@
-from jeepito.domain.model import Metadata
 from jeepito.service._sync.registry import SyncMessageBus
 from jeepito.service._sync.unit_of_work import SyncUnitOfWorkTransaction
 from tests._sync.conftest import (
     DummyCommand,
     DummyEvent,
     DummyModel,
+    MyMetadata,
     Repositories,
     SyncDummyUnitOfWorkWithEvents,
     SyncEventstreamTransport,
@@ -34,11 +34,15 @@ def test_store_events_and_publish(
 
     assert uow_with_eventstore.eventstore.messages == [  # type: ignore
         DummyCommand(
-            metadata=Metadata(name="dummy", schema_version=1, published=False),
+            metadata=MyMetadata(
+                name="dummy", schema_version=1, published=False, custom_field="foo"
+            ),
             id="dummy_cmd",
         ),
         DummyEvent(
-            metadata=Metadata(name="dummied", schema_version=1, published=True),
+            metadata=MyMetadata(
+                name="dummied", schema_version=1, published=True, custom_field="foo"
+            ),
             id="dummy_cmd",
             increment=10,
         ),
