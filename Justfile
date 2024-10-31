@@ -21,7 +21,7 @@ gensync:
     poetry run isort tests/_sync/
     poetry run black tests/_sync/
 
-test: gensync mypy lint unittest 
+test: gensync mypy lint unittest
 
 lf:
     poetry run pytest -sxvvv --lf
@@ -30,11 +30,15 @@ unittest test_suite=default_test_suite:
     poetry run pytest -sxv {{test_suite}}
 
 lint:
-    poetry run flake8
+    poetry run ruff check .
 
-black:
-    poetry run isort .
-    poetry run black .
+
+fmt:
+    poetry run ruff check --fix .
+    poetry run ruff format src tests
+
+black: fmt
+    echo "$(tput setaf 3)Warning: Use 'just fmt' instead$(tput setaf 7)"
 
 mypy:
     poetry run mypy src/jeepito/ tests/

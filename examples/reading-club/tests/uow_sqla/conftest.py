@@ -1,5 +1,5 @@
 import uuid
-from typing import AsyncIterator
+from collections.abc import AsyncIterator
 
 import pytest
 from reading_club.adapters.uow_sqla import orm

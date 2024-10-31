@@ -1,12 +1,8 @@
 import enum
+from collections.abc import AsyncIterator, Mapping, MutableMapping, MutableSequence
 from typing import (
     Any,
-    AsyncIterator,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
     Optional,
-    Type,
     Union,
 )
 
@@ -143,7 +139,7 @@ class DummyEvent(Event[MyMetadata]):
 
 
 @pytest.fixture
-def foo_factory() -> Type[DummyModel]:
+def foo_factory() -> type[DummyModel]:
     return DummyModel
 
 

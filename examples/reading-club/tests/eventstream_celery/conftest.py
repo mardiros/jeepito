@@ -1,4 +1,5 @@
-from typing import Any, Mapping, MutableSequence
+from collections.abc import Mapping, MutableSequence
+from typing import Any
 
 import pytest
 from reading_club.adapters.eventstream import EventstreamTransport

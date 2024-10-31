@@ -19,11 +19,8 @@ pydantic = "^2.3.0"
 venusian = "^3.0.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.0.0"
 esbonio = "^0.16.1"
-flake8 = "^7.1.1"
 furo = "^2024.8.6"
-isort = "^5"
 mypy = "^1.4.0"
 pytest = "^8"
 pytest-asyncio = "^0.24.0"
@@ -33,6 +30,19 @@ sphinx = "^7.0.0"
 tomlkit = "^0.11.5"
 unasync = "^0.6.0"
 
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "B",   # bug bear security warning
+    "I",   # isort import order
+    "F",   # pyflakes
+    "UP",  # alter when better syntax is available
+    "RUF", #  the ruff devleoper's own rules
+]
+ignore = ["UP007"]  # py39 !
 
 [tool.isort]
 profile = "black"
@@ -53,9 +63,7 @@ filterwarnings = [
 ]
 
 [tool.coverage.report]
-exclude_lines = [
-  "# coverage: ignore",
-]
+exclude_lines = ["# coverage: ignore"]
 
 
 [build-system]

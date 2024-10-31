@@ -5,8 +5,9 @@ Message base classes.
 
 """
 
+from collections.abc import MutableSequence
 from datetime import datetime
-from typing import Any, Generic, MutableSequence, TypeVar
+from typing import Any, Generic, TypeVar
 from uuid import uuid1
 
 from pydantic import BaseModel, Field

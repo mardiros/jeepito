@@ -1,4 +1,5 @@
-from typing import Any, Mapping, MutableSequence
+from collections.abc import Mapping, MutableSequence
+from typing import Any
 
 from jeepito.service._sync.eventstream import (
     SyncAbstractEventstreamTransport,

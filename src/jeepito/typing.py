@@ -4,7 +4,8 @@ Propagate commands and events to every registered handles.
 """
 
 import logging
-from typing import Any, Callable, Coroutine, TypeVar
+from collections.abc import Callable, Coroutine
+from typing import Any, TypeVar
 
 from jeepito.domain.model import Message
 

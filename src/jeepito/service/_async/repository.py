@@ -8,7 +8,8 @@ storage.
 """
 
 import abc
-from typing import Any, Generic, MutableSequence, Optional, TypeVar
+from collections.abc import MutableSequence
+from typing import Any, Generic, Optional, TypeVar
 
 from jeepito.domain.model import Message, Model
 from jeepito.service._async.eventstream import AsyncEventstreamPublisher

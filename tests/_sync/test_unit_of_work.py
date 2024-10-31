@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Any
 
 import pytest
 
@@ -11,16 +11,16 @@ from jeepito.service._sync.unit_of_work import (
 from tests._sync.conftest import DummyModel, SyncDummyUnitOfWork
 
 
-class FooCreated(Event):
+class FooCreated(Event[Any]):
     id: str
     metadata: Metadata = Metadata(name="foo_created", schema_version=1, published=True)
 
 
-class BarCreated(Event):
+class BarCreated(Event[Any]):
     metadata: Metadata = Metadata(name="bar_created", schema_version=1, published=True)
 
 
-def test_collect_new_events(uow: SyncDummyUnitOfWork, foo_factory: Type[DummyModel]):
+def test_collect_new_events(uow: SyncDummyUnitOfWork, foo_factory: type[DummyModel]):
     foo = foo_factory(id="1", counter=0)
     foo.messages.append(FooCreated(id="1"))
     bar = foo_factory(id="1", counter=0)
@@ -56,7 +56,7 @@ def test_transaction_rollback_on_error(uow: SyncDummyUnitOfWork):
 def test_transaction_rollback_explicit_commit(uow: SyncDummyUnitOfWork):
     with pytest.raises(TransactionError) as ctx:
         with uow as tuow:
-            tuow.foos
+            tuow.foos  # noqa B018
 
     assert str(ctx.value).endswith(
         "Transaction must be explicitly close. Missing commit/rollback call."

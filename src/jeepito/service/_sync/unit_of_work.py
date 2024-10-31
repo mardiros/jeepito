@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import abc
 import enum
+from collections.abc import Iterator
 from types import TracebackType
-from typing import Any, Generic, Iterator, Optional, Type, TypeVar
+from typing import Any, Generic, Optional, TypeVar
 
 from jeepito.domain.model import Message
 from jeepito.service._sync.repository import (
@@ -35,7 +36,7 @@ class SyncUnitOfWorkTransaction(Generic[TRepositories]):
     uow: SyncAbstractUnitOfWork[TRepositories]
     status: TransactionStatus
 
-    def __init__(self, uow: "SyncAbstractUnitOfWork[TRepositories]") -> None:
+    def __init__(self, uow: SyncAbstractUnitOfWork[TRepositories]) -> None:
         self.status = TransactionStatus.running
         self.uow = uow
 
@@ -63,7 +64,7 @@ class SyncUnitOfWorkTransaction(Generic[TRepositories]):
 
     def __exit__(
         self,
-        exc_type: Optional[Type[BaseException]],
+        exc_type: Optional[type[BaseException]],
         exc: Optional[BaseException],
         tb: Optional[TracebackType],
     ) -> None:
@@ -115,7 +116,7 @@ class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
 
     def __exit__(
         self,
-        exc_type: Optional[Type[BaseException]],
+        exc_type: Optional[type[BaseException]],
         exc: Optional[BaseException],
         tb: Optional[TracebackType],
     ) -> None:

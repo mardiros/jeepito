@@ -1,12 +1,11 @@
 import abc
 import enum
 from types import EllipsisType
-from typing import Union
 
-from reading_club.domain.model import Book, Review, Reviewer
 from result import Result
 
 from jeepito import AsyncAbstractRepository
+from reading_club.domain.model import Book, Review, Reviewer
 
 
 class BookRepositoryError(enum.Enum):
@@ -47,6 +46,6 @@ class AbstractReviewRepository(AsyncAbstractRepository[Review]):
     async def add(self, model: Review) -> ReviewRepositoryOperationResult: ...
 
 
-Repositories = Union[
-    AbstractBookRepository, AbstractReviewerRepository, AbstractReviewRepository
-]
+Repositories = (
+    AbstractBookRepository | AbstractReviewerRepository | AbstractReviewRepository
+)

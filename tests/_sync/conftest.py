@@ -1,14 +1,6 @@
 import enum
-from typing import (
-    Any,
-    Iterator,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Type,
-    Union,
-)
+from collections.abc import Iterator, Mapping, MutableMapping, MutableSequence
+from typing import Any, Optional, Union
 
 import pytest
 from pydantic import Field
@@ -143,7 +135,7 @@ class DummyEvent(Event[MyMetadata]):
 
 
 @pytest.fixture
-def foo_factory() -> Type[DummyModel]:
+def foo_factory() -> type[DummyModel]:
     return DummyModel
 
 
