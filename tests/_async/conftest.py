@@ -2,7 +2,6 @@ import enum
 from collections.abc import AsyncIterator, Mapping, MutableMapping, MutableSequence
 from typing import (
     Any,
-    Union,
 )
 
 import pytest
@@ -73,7 +72,7 @@ class AsyncDummyRepository(AsyncAbstractRepository[DummyModel]):
 class AsyncFooRepository(AsyncDummyRepository): ...
 
 
-Repositories = Union[AsyncDummyRepository, AsyncFooRepository]
+Repositories = AsyncDummyRepository | AsyncFooRepository
 
 
 class AsyncDummyUnitOfWork(AsyncAbstractUnitOfWork[Repositories]):

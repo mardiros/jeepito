@@ -27,6 +27,9 @@ class AsyncSinkholeEventstreamTransport(AsyncAbstractEventstreamTransport):
         """Do nothing."""
 
 
+default_serializer = MessageSerializer()
+
+
 class AsyncEventstreamPublisher:
     """
     Publish a message to the event stream.
@@ -38,7 +41,7 @@ class AsyncEventstreamPublisher:
     def __init__(
         self,
         transport: AsyncAbstractEventstreamTransport,
-        serializer: AbstractMessageSerializer = MessageSerializer(),
+        serializer: AbstractMessageSerializer = default_serializer,
     ) -> None:
         """Publish a message to the eventstream."""
         self.transport = transport

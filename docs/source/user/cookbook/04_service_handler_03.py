@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from typing import ClassVar
 
 import pytest
 from reading_club.domain.messages import RegisterBook
@@ -14,8 +15,8 @@ from result import Err, Ok
 
 
 class InMemoryBookRepository(AbstractBookRepository):
-    books = {}
-    ix_books_isbn = {}
+    books: ClassVar[dict[str, Book]] = {}
+    ix_books_isbn: ClassVar[dict[str, str]] = {}
 
     async def add(self, model: Book) -> BookRepositoryOperationResult:
         if model.id in self.books:

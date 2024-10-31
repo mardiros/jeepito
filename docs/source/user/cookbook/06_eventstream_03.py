@@ -1,5 +1,5 @@
 from collections.abc import Iterator, Mapping, MutableSequence
-from typing import Any
+from typing import Any, ClassVar
 
 import pytest
 from reading_club.domain.messages import RegisterBook
@@ -37,8 +37,8 @@ class EventstreamTransport(AsyncAbstractEventstreamTransport):
 
 
 class InMemoryBookRepository(AbstractBookRepository):
-    books = {}
-    ix_books_isbn = {}
+    books: ClassVar[dict[str, Book]] = {}
+    ix_books_isbn: ClassVar[dict[str, str]] = {}
 
     async def add(self, model: Book) -> BookRepositoryOperationResult:
         if model.id in self.books:

@@ -87,8 +87,10 @@ class SyncMessageBus(Generic[TRepositories]):
         elif issubclass(msg_type, Event):
             try:
                 self.events_registry[msg_type].remove(callback)
-            except ValueError:
-                raise ConfigurationError(f"{msg_type} event has not been registered")
+            except ValueError as exc:
+                raise ConfigurationError(
+                    f"{msg_type} event has not been registered"
+                ) from exc
         else:
             raise ConfigurationError(
                 f"Invalid usage of the listen decorator: "
@@ -107,7 +109,7 @@ class SyncMessageBus(Generic[TRepositories]):
         ret = None
         while queue:
             message = queue.pop(0)
-            if not isinstance(message, (Command, Event)):
+            if not isinstance(message, Command | Event):
                 raise RuntimeError(f"{message} was not an Event or Command")
             msg_type = type(message)
             if msg_type in self.commands_registry:

@@ -1,4 +1,5 @@
 from collections.abc import Iterator, MutableSequence
+from typing import Any, ClassVar
 
 import pytest
 from reading_club.domain.model import Book
@@ -20,15 +21,15 @@ from jeepito import (
 
 
 class InMemoryEventstoreRepository(AsyncEventstoreAbstractRepository):
-    messages: MutableSequence[Message] = []
+    messages: ClassVar[MutableSequence[Message[Any]]] = []
 
-    async def _add(self, message: Message) -> None:
+    async def _add(self, message: Message[Any]) -> None:
         self.messages.append(message)
 
 
 class InMemoryBookRepository(AbstractBookRepository):
-    books = {}
-    ix_books_isbn = {}
+    books: ClassVar[dict[str, Book]] = {}
+    ix_books_isbn: ClassVar[dict[str, str]] = {}
 
     async def add(self, model: Book) -> BookRepositoryOperationResult:
         if model.id in self.books:

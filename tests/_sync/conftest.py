@@ -1,9 +1,6 @@
 import enum
 from collections.abc import Iterator, Mapping, MutableMapping, MutableSequence
-from typing import (
-    Any,
-    Union,
-)
+from typing import Any
 
 import pytest
 from pydantic import Field
@@ -73,7 +70,7 @@ class SyncDummyRepository(SyncAbstractRepository[DummyModel]):
 class SyncFooRepository(SyncDummyRepository): ...
 
 
-Repositories = Union[SyncDummyRepository, SyncFooRepository]
+Repositories = SyncDummyRepository | SyncFooRepository
 
 
 class SyncDummyUnitOfWork(SyncAbstractUnitOfWork[Repositories]):

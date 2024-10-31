@@ -1,7 +1,6 @@
 import abc
 import enum
 from types import EllipsisType
-from typing import Union
 
 from result import Result
 
@@ -47,6 +46,6 @@ class AbstractReviewRepository(AsyncAbstractRepository[Review]):
     async def add(self, model: Review) -> ReviewRepositoryOperationResult: ...
 
 
-Repositories = Union[
-    AbstractBookRepository, AbstractReviewerRepository, AbstractReviewRepository
-]
+Repositories = (
+    AbstractBookRepository | AbstractReviewerRepository | AbstractReviewRepository
+)

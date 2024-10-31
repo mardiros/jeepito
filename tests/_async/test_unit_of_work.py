@@ -1,3 +1,4 @@
+from typing import Any
 
 import pytest
 
@@ -10,12 +11,12 @@ from jeepito.service._async.unit_of_work import (
 from tests._async.conftest import AsyncDummyUnitOfWork, DummyModel
 
 
-class FooCreated(Event):
+class FooCreated(Event[Any]):
     id: str
     metadata: Metadata = Metadata(name="foo_created", schema_version=1, published=True)
 
 
-class BarCreated(Event):
+class BarCreated(Event[Any]):
     metadata: Metadata = Metadata(name="bar_created", schema_version=1, published=True)
 
 
@@ -57,7 +58,7 @@ async def test_transaction_rollback_on_error(uow: AsyncDummyUnitOfWork):
 async def test_transaction_rollback_explicit_commit(uow: AsyncDummyUnitOfWork):
     with pytest.raises(TransactionError) as ctx:
         async with uow as tuow:
-            tuow.foos
+            tuow.foos  # noqa B018
 
     assert str(ctx.value).endswith(
         "Transaction must be explicitly close. Missing commit/rollback call."
