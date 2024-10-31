@@ -75,8 +75,7 @@ class SyncDummyRepository(SyncAbstractRepository[DummyModel]):
             return Err(DummyError.not_found)
 
 
-class SyncFooRepository(SyncDummyRepository):
-    ...
+class SyncFooRepository(SyncDummyRepository): ...
 
 
 Repositories = Union[SyncDummyRepository, SyncFooRepository]
@@ -123,11 +122,9 @@ class SyncDummyUnitOfWorkWithEvents(SyncAbstractUnitOfWork[Repositories]):
         self.bars = SyncDummyRepository()
         self.eventstore = SyncDummyEventStore(publisher=publisher)
 
-    def commit(self) -> None:
-        ...
+    def commit(self) -> None: ...
 
-    def rollback(self) -> None:
-        ...
+    def rollback(self) -> None: ...
 
 
 class DummyCommand(Command[MyMetadata]):
