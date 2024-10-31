@@ -2,6 +2,8 @@ import enum
 from collections.abc import AsyncIterator, Mapping, MutableMapping, MutableSequence
 from typing import (
     Any,
+    Optional,
+    Union,
 )
 
 import pytest
@@ -72,7 +74,7 @@ class AsyncDummyRepository(AsyncAbstractRepository[DummyModel]):
 class AsyncFooRepository(AsyncDummyRepository): ...
 
 
-Repositories = AsyncDummyRepository | AsyncFooRepository
+Repositories = Union[AsyncDummyRepository, AsyncFooRepository]
 
 
 class AsyncDummyUnitOfWork(AsyncAbstractUnitOfWork[Repositories]):
@@ -102,7 +104,7 @@ class AsyncEventstreamTransport(AsyncAbstractEventstreamTransport):
 class AsyncDummyEventStore(AsyncEventstoreAbstractRepository):
     messages: MutableSequence[Message[MyMetadata]]
 
-    def __init__(self, publisher: AsyncEventstreamPublisher | None):
+    def __init__(self, publisher: Optional[AsyncEventstreamPublisher]):
         super().__init__(publisher=publisher)
         self.messages = []
 
@@ -111,7 +113,7 @@ class AsyncDummyEventStore(AsyncEventstoreAbstractRepository):
 
 
 class AsyncDummyUnitOfWorkWithEvents(AsyncAbstractUnitOfWork[Repositories]):
-    def __init__(self, publisher: AsyncEventstreamPublisher | None) -> None:
+    def __init__(self, publisher: Optional[AsyncEventstreamPublisher]) -> None:
         self.foos = AsyncFooRepository()
         self.bars = AsyncDummyRepository()
         self.eventstore = AsyncDummyEventStore(publisher=publisher)

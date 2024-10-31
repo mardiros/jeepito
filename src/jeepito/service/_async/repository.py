@@ -9,7 +9,7 @@ storage.
 
 import abc
 from collections.abc import MutableSequence
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, Optional, TypeVar
 
 from jeepito.domain.model import Message, Model
 from jeepito.service._async.eventstream import AsyncEventstreamPublisher
@@ -27,7 +27,7 @@ class AsyncAbstractRepository(abc.ABC, Generic[TModel_contra]):
 
 
 class AsyncEventstoreAbstractRepository(abc.ABC):
-    def __init__(self, publisher: AsyncEventstreamPublisher | None = None) -> None:
+    def __init__(self, publisher: Optional[AsyncEventstreamPublisher] = None) -> None:
         self.publisher = publisher
         self.stream_buffer: MutableSequence[Message[Any]] = []
 

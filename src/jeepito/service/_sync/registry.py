@@ -109,7 +109,7 @@ class SyncMessageBus(Generic[TRepositories]):
         ret = None
         while queue:
             message = queue.pop(0)
-            if not isinstance(message, Command | Event):
+            if not isinstance(message, (Command, Event)):
                 raise RuntimeError(f"{message} was not an Event or Command")
             msg_type = type(message)
             if msg_type in self.commands_registry:

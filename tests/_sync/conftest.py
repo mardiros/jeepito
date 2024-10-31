@@ -1,6 +1,6 @@
 import enum
 from collections.abc import Iterator, Mapping, MutableMapping, MutableSequence
-from typing import Any
+from typing import Any, Optional, Union
 
 import pytest
 from pydantic import Field
@@ -70,7 +70,7 @@ class SyncDummyRepository(SyncAbstractRepository[DummyModel]):
 class SyncFooRepository(SyncDummyRepository): ...
 
 
-Repositories = SyncDummyRepository | SyncFooRepository
+Repositories = Union[SyncDummyRepository, SyncFooRepository]
 
 
 class SyncDummyUnitOfWork(SyncAbstractUnitOfWork[Repositories]):
@@ -100,7 +100,7 @@ class SyncEventstreamTransport(SyncAbstractEventstreamTransport):
 class SyncDummyEventStore(SyncEventstoreAbstractRepository):
     messages: MutableSequence[Message[MyMetadata]]
 
-    def __init__(self, publisher: SyncEventstreamPublisher | None):
+    def __init__(self, publisher: Optional[SyncEventstreamPublisher]):
         super().__init__(publisher=publisher)
         self.messages = []
 
@@ -109,7 +109,7 @@ class SyncDummyEventStore(SyncEventstoreAbstractRepository):
 
 
 class SyncDummyUnitOfWorkWithEvents(SyncAbstractUnitOfWork[Repositories]):
-    def __init__(self, publisher: SyncEventstreamPublisher | None) -> None:
+    def __init__(self, publisher: Optional[SyncEventstreamPublisher]) -> None:
         self.foos = SyncFooRepository()
         self.bars = SyncDummyRepository()
         self.eventstore = SyncDummyEventStore(publisher=publisher)

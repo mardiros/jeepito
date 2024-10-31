@@ -6,7 +6,7 @@ import abc
 import enum
 from collections.abc import Iterator
 from types import TracebackType
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, Optional, TypeVar
 
 from jeepito.domain.model import Message
 from jeepito.service._sync.repository import (
@@ -64,9 +64,9 @@ class SyncUnitOfWorkTransaction(Generic[TRepositories]):
 
     def __exit__(
         self,
-        exc_type: type[BaseException] | None,
-        exc: BaseException | None,
-        tb: TracebackType | None,
+        exc_type: Optional[type[BaseException]],
+        exc: Optional[BaseException],
+        tb: Optional[TracebackType],
     ) -> None:
         """Rollback in case of exception."""
         if exc:
@@ -116,9 +116,9 @@ class SyncAbstractUnitOfWork(abc.ABC, Generic[TRepositories]):
 
     def __exit__(
         self,
-        exc_type: type[BaseException] | None,
-        exc: BaseException | None,
-        tb: TracebackType | None,
+        exc_type: Optional[type[BaseException]],
+        exc: Optional[BaseException],
+        tb: Optional[TracebackType],
     ) -> None:
         # AsyncUnitOfWorkTransaction is making the thing
         self.__transaction.__exit__(exc_type, exc, tb)
