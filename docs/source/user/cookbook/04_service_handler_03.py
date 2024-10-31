@@ -36,11 +36,9 @@ class InMemoryUnitOfWork(AbstractUnitOfWork):
     def __init__(self):
         self.books = InMemoryBookRepository()
 
-    async def commit(self) -> None:
-        ...
+    async def commit(self) -> None: ...
 
-    async def rollback(self) -> None:
-        ...
+    async def rollback(self) -> None: ...
 
 
 @pytest.fixture

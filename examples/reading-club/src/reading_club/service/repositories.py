@@ -31,24 +31,20 @@ ReviewRepositoryOperationResult = Result[EllipsisType, ReviewRepositoryError]
 
 class AbstractBookRepository(AsyncAbstractRepository[Book]):
     @abc.abstractmethod
-    async def add(self, model: Book) -> BookRepositoryOperationResult:
-        ...
+    async def add(self, model: Book) -> BookRepositoryOperationResult: ...
 
     @abc.abstractmethod
-    async def by_id(self, id: str) -> BookRepositoryResult:
-        ...
+    async def by_id(self, id: str) -> BookRepositoryResult: ...
 
 
 class AbstractReviewerRepository(AsyncAbstractRepository[Reviewer]):
     @abc.abstractmethod
-    async def add(self, model: Reviewer) -> ReviewerRepositoryOperationResult:
-        ...
+    async def add(self, model: Reviewer) -> ReviewerRepositoryOperationResult: ...
 
 
 class AbstractReviewRepository(AsyncAbstractRepository[Review]):
     @abc.abstractmethod
-    async def add(self, model: Review) -> ReviewRepositoryOperationResult:
-        ...
+    async def add(self, model: Review) -> ReviewRepositoryOperationResult: ...
 
 
 Repositories = Union[

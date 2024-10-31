@@ -1,6 +1,7 @@
 """
 Jeepito API.
 """
+
 try:
     # add an ignore for python 3.7 which does not know this standard library
     from importlib.metadata import version  # type: ignore
