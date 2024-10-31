@@ -43,7 +43,7 @@ class AsyncEventstreamPublisher:
         self.transport = transport
         self.serializer = serializer
 
-    async def send_message(self, message: Message) -> None:
+    async def send_message(self, message: Message[Any]) -> None:
         """
         Publish a message to the eventstream.
 

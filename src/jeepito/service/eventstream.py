@@ -10,14 +10,14 @@ class AbstractMessageSerializer(abc.ABC):
     """
 
     @abc.abstractmethod
-    def serialize_message(self, message: Message) -> Mapping[str, Any]:
+    def serialize_message(self, message: Message[Any]) -> Mapping[str, Any]:
         """Publish a message to the eventstream."""
 
 
 class MessageSerializer(AbstractMessageSerializer):
     """Default message serializer"""
 
-    def serialize_message(self, message: Message) -> Mapping[str, Any]:
+    def serialize_message(self, message: Message[Any]) -> Mapping[str, Any]:
         """Publish a message to the eventstream."""
         return {
             "id": message.message_id,

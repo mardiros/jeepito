@@ -2,6 +2,7 @@
 Propagate commands and events to every registered handles.
 
 """
+
 import logging
 from typing import Any, Callable, Coroutine, TypeVar
 
@@ -14,7 +15,7 @@ log = logging.getLogger(__name__)
 
 TAsyncUow = TypeVar("TAsyncUow", bound=AsyncAbstractUnitOfWork[Any])
 TSyncUow = TypeVar("TSyncUow", bound=SyncAbstractUnitOfWork[Any])
-TMessage = TypeVar("TMessage", bound=Message)
+TMessage = TypeVar("TMessage", bound=Message[Any])
 
 AsyncMessageHandler = Callable[[TMessage, TAsyncUow], Coroutine[Any, Any, Any]]
 SyncMessageHandler = Callable[[TMessage, TSyncUow], Any]

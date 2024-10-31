@@ -54,14 +54,14 @@ class SyncMessageBus(Generic[TRepositories]):
 
     def __init__(self) -> None:
         self.commands_registry: Dict[
-            Type[Command], SyncMessageHandler[Command, Any]
+            Type[Command[Any]], SyncMessageHandler[Command[Any], Any]
         ] = {}
         self.events_registry: Dict[
-            Type[Event], List[SyncMessageHandler[Event, Any]]
+            Type[Event[Any]], List[SyncMessageHandler[Event[Any], Any]]
         ] = defaultdict(list)
 
     def add_listener(
-        self, msg_type: Type[Message], callback: SyncMessageHandler[Any, Any]
+        self, msg_type: Type[Message[Any]], callback: SyncMessageHandler[Any, Any]
     ) -> None:
         if issubclass(msg_type, Command):
             if msg_type in self.commands_registry:
@@ -96,7 +96,7 @@ class SyncMessageBus(Generic[TRepositories]):
             )
 
     def handle(
-        self, message: Message, uow: SyncUnitOfWorkTransaction[TRepositories]
+        self, message: Message[Any], uow: SyncUnitOfWorkTransaction[TRepositories]
     ) -> Any:
         """
         Notify listener of that event registered with `jeepito.add_listener`.
@@ -112,14 +112,14 @@ class SyncMessageBus(Generic[TRepositories]):
             msg_type = type(message)
             if msg_type in self.commands_registry:
                 cmdret = self.commands_registry[msg_type](  # type: ignore
-                    cast(Command, message), uow
+                    cast(Command[Any], message), uow
                 )
                 if idx == 0:
                     ret = cmdret
                 queue.extend(uow.uow.collect_new_events())
             elif msg_type in self.events_registry:
                 for callback in self.events_registry[msg_type]:  # type: ignore
-                    callback(cast(Event, message), uow)
+                    callback(cast(Event[Any], message), uow)
                     queue.extend(uow.uow.collect_new_events())
             uow.eventstore.add(message)
             idx += 1

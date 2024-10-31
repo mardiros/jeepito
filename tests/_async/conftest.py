@@ -36,12 +36,16 @@ except ImportError:
     EllipsisType = Any  # type:ignore
 
 
+class MyMetadata(Metadata):
+    custom_field: str
+
+
 class DummyError(enum.Enum):
     integrity_error = "integrity_error"
     not_found = "not_found"
 
 
-class DummyModel(Model):
+class DummyModel(Model[MyMetadata]):
     id: str = Field()
     counter: int = Field(0)
 
@@ -71,8 +75,7 @@ class AsyncDummyRepository(AsyncAbstractRepository[DummyModel]):
             return Err(DummyError.not_found)
 
 
-class AsyncFooRepository(AsyncDummyRepository):
-    ...
+class AsyncFooRepository(AsyncDummyRepository): ...
 
 
 Repositories = Union[AsyncDummyRepository, AsyncFooRepository]
@@ -103,13 +106,13 @@ class AsyncEventstreamTransport(AsyncAbstractEventstreamTransport):
 
 
 class AsyncDummyEventStore(AsyncEventstoreAbstractRepository):
-    messages: MutableSequence[Message]
+    messages: MutableSequence[Message[MyMetadata]]
 
     def __init__(self, publisher: Optional[AsyncEventstreamPublisher]):
         super().__init__(publisher=publisher)
         self.messages = []
 
-    async def _add(self, message: Message) -> None:
+    async def _add(self, message: Message[MyMetadata]) -> None:
         self.messages.append(message)
 
 
@@ -119,22 +122,24 @@ class AsyncDummyUnitOfWorkWithEvents(AsyncAbstractUnitOfWork[Repositories]):
         self.bars = AsyncDummyRepository()
         self.eventstore = AsyncDummyEventStore(publisher=publisher)
 
-    async def commit(self) -> None:
-        ...
+    async def commit(self) -> None: ...
 
-    async def rollback(self) -> None:
-        ...
+    async def rollback(self) -> None: ...
 
 
-class DummyCommand(Command):
+class DummyCommand(Command[MyMetadata]):
     id: str = Field(...)
-    metadata: Metadata = Metadata(name="dummy", schema_version=1)
+    metadata: MyMetadata = MyMetadata(
+        name="dummy", schema_version=1, custom_field="foo"
+    )
 
 
-class DummyEvent(Event):
+class DummyEvent(Event[MyMetadata]):
     id: str = Field(...)
     increment: int = Field(...)
-    metadata: Metadata = Metadata(name="dummied", schema_version=1, published=True)
+    metadata: MyMetadata = MyMetadata(
+        name="dummied", schema_version=1, published=True, custom_field="foo"
+    )
 
 
 @pytest.fixture
