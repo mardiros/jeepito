@@ -16,7 +16,6 @@ module = "jeepito.*"
 [tool.poetry.dependencies]
 python = "^3.9"
 pydantic = "^2.3.0"
-typing-extensions = "^4.6.3"
 venusian = "^3.0.0"
 
 [tool.poetry.group.dev.dependencies]
