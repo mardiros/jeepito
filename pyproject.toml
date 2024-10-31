@@ -31,8 +31,8 @@ tomlkit = "^0.11.5"
 unasync = "^0.6.0"
 
 [tool.ruff]
-line-length = 88
 target-version = "py39"
+line-length = 88
 
 [tool.ruff.lint]
 select = [
@@ -42,6 +42,7 @@ select = [
     "UP",  # alter when better syntax is available
     "RUF", #  the ruff devleoper's own rules
 ]
+ignore = ["UP007"]  # py39 !
 
 [tool.isort]
 profile = "black"
