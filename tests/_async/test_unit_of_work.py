@@ -1,4 +1,3 @@
-from typing import Type
 
 import pytest
 
@@ -21,7 +20,7 @@ class BarCreated(Event):
 
 
 async def test_collect_new_events(
-    uow: AsyncDummyUnitOfWork, foo_factory: Type[DummyModel]
+    uow: AsyncDummyUnitOfWork, foo_factory: type[DummyModel]
 ):
     foo = foo_factory(id="1", counter=0)
     foo.messages.append(FooCreated(id="1"))

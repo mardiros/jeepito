@@ -1,12 +1,7 @@
 import enum
+from collections.abc import AsyncIterator, Mapping, MutableMapping, MutableSequence
 from typing import (
     Any,
-    AsyncIterator,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Type,
     Union,
 )
 
@@ -108,7 +103,7 @@ class AsyncEventstreamTransport(AsyncAbstractEventstreamTransport):
 class AsyncDummyEventStore(AsyncEventstoreAbstractRepository):
     messages: MutableSequence[Message[MyMetadata]]
 
-    def __init__(self, publisher: Optional[AsyncEventstreamPublisher]):
+    def __init__(self, publisher: AsyncEventstreamPublisher | None):
         super().__init__(publisher=publisher)
         self.messages = []
 
@@ -117,7 +112,7 @@ class AsyncDummyEventStore(AsyncEventstoreAbstractRepository):
 
 
 class AsyncDummyUnitOfWorkWithEvents(AsyncAbstractUnitOfWork[Repositories]):
-    def __init__(self, publisher: Optional[AsyncEventstreamPublisher]) -> None:
+    def __init__(self, publisher: AsyncEventstreamPublisher | None) -> None:
         self.foos = AsyncFooRepository()
         self.bars = AsyncDummyRepository()
         self.eventstore = AsyncDummyEventStore(publisher=publisher)
@@ -143,7 +138,7 @@ class DummyEvent(Event[MyMetadata]):
 
 
 @pytest.fixture
-def foo_factory() -> Type[DummyModel]:
+def foo_factory() -> type[DummyModel]:
     return DummyModel
 
 

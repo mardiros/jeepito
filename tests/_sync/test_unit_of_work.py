@@ -1,4 +1,3 @@
-from typing import Type
 
 import pytest
 
@@ -20,7 +19,7 @@ class BarCreated(Event):
     metadata: Metadata = Metadata(name="bar_created", schema_version=1, published=True)
 
 
-def test_collect_new_events(uow: SyncDummyUnitOfWork, foo_factory: Type[DummyModel]):
+def test_collect_new_events(uow: SyncDummyUnitOfWork, foo_factory: type[DummyModel]):
     foo = foo_factory(id="1", counter=0)
     foo.messages.append(FooCreated(id="1"))
     bar = foo_factory(id="1", counter=0)

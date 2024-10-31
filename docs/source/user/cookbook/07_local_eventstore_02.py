@@ -1,4 +1,4 @@
-from typing import Iterator, MutableSequence
+from collections.abc import Iterator, MutableSequence
 
 import pytest
 from reading_club.domain.model import Book

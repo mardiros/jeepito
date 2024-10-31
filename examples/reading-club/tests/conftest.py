@@ -1,4 +1,5 @@
-from typing import Any, Iterator, Mapping, MutableSequence
+from collections.abc import Iterator, Mapping, MutableSequence
+from typing import Any
 
 import pytest
 from reading_club.domain.messages import RegisterBook

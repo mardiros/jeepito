@@ -1,5 +1,6 @@
 import uuid
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 import pytest
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork

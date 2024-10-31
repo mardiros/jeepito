@@ -1,4 +1,4 @@
-from typing import Iterator
+from collections.abc import Iterator
 
 import pytest
 from reading_club.domain.messages import RegisterBook

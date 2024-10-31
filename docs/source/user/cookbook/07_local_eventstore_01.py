@@ -1,4 +1,4 @@
-from typing import MutableSequence
+from collections.abc import MutableSequence
 
 from jeepito import AsyncEventstoreAbstractRepository, Message
 

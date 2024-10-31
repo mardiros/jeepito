@@ -3,10 +3,10 @@ import enum
 from types import EllipsisType
 from typing import Union
 
-from reading_club.domain.model import Book, Review, Reviewer
 from result import Result
 
 from jeepito import AsyncAbstractRepository
+from reading_club.domain.model import Book, Review, Reviewer
 
 
 class BookRepositoryError(enum.Enum):

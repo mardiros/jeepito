@@ -1,14 +1,5 @@
 from types import TracebackType
-from typing import Optional, Type
 
-from reading_club.domain.model import Book
-from reading_club.service.repositories import (
-    AbstractBookRepository,
-    BookRepositoryError,
-    BookRepositoryOperationResult,
-    BookRepositoryResult,
-)
-from reading_club.service.uow import AbstractUnitOfWork
 from result import Err, Ok
 from sqlalchemy import insert, select
 from sqlalchemy.exc import IntegrityError
@@ -21,6 +12,14 @@ from jeepito import (  # AsyncEventstoreAbstractRepository,
     Message,
 )
 from jeepito.service._async.repository import AsyncEventstoreAbstractRepository
+from reading_club.domain.model import Book
+from reading_club.service.repositories import (
+    AbstractBookRepository,
+    BookRepositoryError,
+    BookRepositoryOperationResult,
+    BookRepositoryResult,
+)
+from reading_club.service.uow import AbstractUnitOfWork
 
 from . import orm
 
@@ -96,9 +95,9 @@ class SQLUnitOfWork(AbstractUnitOfWork):
 
     async def __aexit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        exc: Optional[BaseException],
-        tb: Optional[TracebackType],
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
     ) -> None:
         try:
             await super().__aexit__(exc_type, exc, tb)

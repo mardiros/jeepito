@@ -1,5 +1,4 @@
 from types import TracebackType
-from typing import Optional, Type
 
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
@@ -66,9 +65,9 @@ class SQLUnitOfWork(AbstractUnitOfWork):
 
     async def __aexit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        exc: Optional[BaseException],
-        tb: Optional[TracebackType],
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
     ) -> None:
         try:
             await super().__aexit__(exc_type, exc, tb)

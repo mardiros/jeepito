@@ -1,5 +1,6 @@
 import abc
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 from jeepito.domain.model import Message
 from jeepito.service.eventstream import AbstractMessageSerializer, MessageSerializer

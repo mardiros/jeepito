@@ -7,7 +7,7 @@ import importlib
 import inspect
 import logging
 from collections import defaultdict
-from typing import Any, Dict, Generic, List, Type, cast
+from typing import Any, Generic, cast
 
 import venusian  # type: ignore
 
@@ -53,15 +53,15 @@ class SyncMessageBus(Generic[TRepositories]):
     """Store all the handlers for commands an events."""
 
     def __init__(self) -> None:
-        self.commands_registry: Dict[
-            Type[Command[Any]], SyncMessageHandler[Command[Any], Any]
+        self.commands_registry: dict[
+            type[Command[Any]], SyncMessageHandler[Command[Any], Any]
         ] = {}
-        self.events_registry: Dict[
-            Type[Event[Any]], List[SyncMessageHandler[Event[Any], Any]]
+        self.events_registry: dict[
+            type[Event[Any]], list[SyncMessageHandler[Event[Any], Any]]
         ] = defaultdict(list)
 
     def add_listener(
-        self, msg_type: Type[Message[Any]], callback: SyncMessageHandler[Any, Any]
+        self, msg_type: type[Message[Any]], callback: SyncMessageHandler[Any, Any]
     ) -> None:
         if issubclass(msg_type, Command):
             if msg_type in self.commands_registry:
