@@ -2,11 +2,11 @@
 Jeepito
 =======
 
-.. image:: https://github.com/mardiros/jeepito/actions/workflows/gh-pages.yml/badge.svg
+.. image:: https://github.com/mardiros/jeepito/actions/workflows/publish-doc.yml/badge.svg
    :target: https://mardiros.github.io/jeepito/
    :alt: Doc
 
-.. image:: https://github.com/mardiros/jeepito/actions/workflows/main.yml/badge.svg
+.. image:: https://github.com/mardiros/jeepito/actions/workflows/tests.yml/badge.svg
    :target: https://github.com/mardiros/jeepito/actions/workflows/main.yml
    :alt: Continuous Integration
 
