@@ -17,6 +17,9 @@ on:
 env:
   PYTHON_VERSION: "3.12"
 
+permissions:
+  id-token: write
+  pages: write
 
 jobs:
   plan:
