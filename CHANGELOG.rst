@@ -3,6 +3,7 @@
 * Make the Message metadata a generic in order to inject custom metadata
 * Drop support of python 3.7 and 3.8
 * Switch packaging to uv / pdm
+* Change license to MIT
 
 0.2.2  - Released on 2024-09-27
 -------------------------------
