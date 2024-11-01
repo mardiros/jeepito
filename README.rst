@@ -7,7 +7,7 @@ Jeepito
    :alt: Doc
 
 .. image:: https://github.com/mardiros/jeepito/actions/workflows/tests.yml/badge.svg
-   :target: https://github.com/mardiros/jeepito/actions/workflows/main.yml
+   :target: https://github.com/mardiros/jeepito/actions/workflows/tests.yml
    :alt: Continuous Integration
 
 .. image:: https://codecov.io/gh/mardiros/jeepito/branch/main/graph/badge.svg?token=BKUM2G3YSR
