@@ -14,9 +14,8 @@ cleandoc:
 gh-pages:
     uv export --group doc -o docs/requirements.txt --no-hashes
 
-gensync:
+gensync: && fmt
     uv run python scripts/gen_unasync.py
-    uv run ruff format src tests
 
 test: gensync mypy lint unittest
 
@@ -47,8 +46,10 @@ cov test_suite=default_test_suite:
     xdg-open htmlcov/index.html
 
 release major_minor_patch: gensync test gh-pages && changelog
-    poetry version {{major_minor_patch}}
-    poetry install
+    # uvx pdm self add pdm-bump
+    uvx pdm bump {{major_minor_patch}}
+    uv sync
+
 
 changelog:
     uv run python scripts/write_changelog.py
@@ -58,9 +59,7 @@ changelog:
     $EDITOR CHANGELOG.rst
 
 publish:
-    git commit -am "Release $(poetry version -s --no-ansi)"
-    poetry build
-    poetry publish
+    git commit -am "Release $(uv run scripts/get_version.py)"
     git push
-    git tag "$(poetry version -s --no-ansi)"
-    git push origin "$(poetry version -s --no-ansi)"
+    git tag "v$(uv run scripts/get_version.py)"
+    git push origin "v$(uv run scripts/get_version.py)"

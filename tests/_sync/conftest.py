@@ -1,6 +1,10 @@
 import enum
 from collections.abc import Iterator, Mapping, MutableMapping, MutableSequence
-from typing import Any, Optional, Union
+from typing import (
+    Any,
+    Optional,
+    Union,
+)
 
 import pytest
 from pydantic import Field
