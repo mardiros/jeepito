@@ -1,3 +1,7 @@
+0.3.1  - Released on 2024-11-01
+-------------------------------
+* Cosmetic fix of the README 
+
 0.3.0  - Released on 2024-11-01
 -------------------------------
 * Make the Message metadata a generic in order to inject custom metadata

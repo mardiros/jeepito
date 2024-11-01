@@ -46,6 +46,7 @@ cov test_suite=default_test_suite:
     xdg-open htmlcov/index.html
 
 release major_minor_patch: gensync test gh-pages && changelog
+    #! /bin/bash
     # Try to bump the version first
     if ! uvx pdm bump {{major_minor_patch}}; then
         # If it fails, check if pdm-bump is installed
