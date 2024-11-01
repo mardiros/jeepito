@@ -18,6 +18,7 @@ env:
   PYTHON_VERSION: "3.12"
 
 permissions:
+  contents: read
   id-token: write
   pages: write
 
@@ -85,6 +86,9 @@ jobs:
     with:
       release-version: ${{ needs.plan.outputs.release_version }}
       dry-run: ${{ needs.plan.outputs.dry-run == 'true' }}
+    permissions:
+      contents: read
+      id-token: write
 
   publish-doc:
     needs:
