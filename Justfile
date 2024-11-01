@@ -46,8 +46,7 @@ cov test_suite=default_test_suite:
     xdg-open htmlcov/index.html
 
 release major_minor_patch: gensync test gh-pages && changelog
-    # uvx pdm self add pdm-bump
-    uvx pdm bump {{major_minor_patch}}
+    uvx pdm bump {{major_minor_patch}} || uvx pdm self add pdm-bump && uvx pdm bump {{major_minor_patch}}
     uv sync
 
 
