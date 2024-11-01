@@ -52,7 +52,6 @@ sphinxcontrib-qthelp==2.0.0
 sphinxcontrib-serializinghtml==2.0.0
 tokenize-rt==6.1.0
 tomli==2.0.2 ; python_full_version <= '3.11'
-tomlkit==0.13.2
 typing-extensions==4.12.2
 unasync==0.6.0
 urllib3==2.2.3

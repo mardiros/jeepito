@@ -17,7 +17,7 @@ dev = [
     "result>=0.17.0,<0.18.0",
     "unasync>=0.6.0,<0.7.0",
 ]
-doc = ["esbonio>=0.16.1", "sphinx>=7.0.0", "tomlkit>=0.11.5", "furo>=2024.8.6"]
+doc = ["esbonio>=0.16.1", "sphinx>=7.0.0", "furo>=2024.8.6"]
 
 
 [tool.pdm.build]
