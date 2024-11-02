@@ -28,7 +28,6 @@ unittest test_suite=default_test_suite:
 lint:
     uv run ruff check .
 
-
 fmt:
     uv run ruff check --fix .
     uv run ruff format src tests
@@ -36,7 +35,7 @@ fmt:
 black: fmt
     echo "$(tput setaf 3)Warning: Use 'just fmt' instead$(tput setaf 7)"
 
-mypy:
+typecheck:
     uv run mypy src/jeepito/ tests/
 
 cov test_suite=default_test_suite:
