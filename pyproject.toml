@@ -4,7 +4,7 @@ description = "A message bus library"
 name = "Jeepito"
 version = "0.3.1"
 requires-python = ">=3.9"
-license = {text = "MIT"}
+license = { text = "MIT" }
 
 dependencies = ["pydantic>=2.5.0,<3", "venusian>=3.0.0,<4"]
 
@@ -15,6 +15,13 @@ Repository = "https://github.com/mardiros/jeepito.git"
 Issues = "https://github.com/mardiros/jeepito/issues"
 Changelog = "https://mardiros.github.io/jeepito/user/changelog.html"
 
+[project.optional-dependencies]
+docs = [
+    "sphinx>=7.0.0",
+    "sphinx-autodoc-typehints>=1.12.0,<2",
+    "furo>=2024.8.6",
+]
+
 [dependency-groups]
 dev = [
     "mypy>=1.4.0,<2",
@@ -24,11 +31,16 @@ dev = [
     "result>=0.17.0,<0.18.0",
     "unasync>=0.6.0,<0.7.0",
 ]
-doc = ["esbonio>=0.16.1", "sphinx>=7.0.0", "furo>=2024.8.6"]
+doc = [
+    "esbonio>=0.16.1",
+    "sphinx>=7.0.0",
+    "sphinx-autodoc-typehints>=1.12.0,<2",
+    "furo>=2024.8.6",
+]
 
 
 [tool.pdm.build]
-includes = ["src", "CHANGELOG.md"]
+includes = ["src", "CHANGELOG.rst"]
 excludes = ["tests"]
 
 [tool.ruff]
