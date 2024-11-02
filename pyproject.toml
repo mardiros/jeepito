@@ -8,6 +8,13 @@ license = {text = "MIT"}
 
 dependencies = ["pydantic>=2.5.0,<3", "venusian>=3.0.0,<4"]
 
+[project.urls]
+Homepage = "https://github.com/mardiros/jeepito"
+Documentation = "https://mardiros.github.io/jeepito"
+Repository = "https://github.com/mardiros/jeepito.git"
+Issues = "https://github.com/mardiros/jeepito/issues"
+Changelog = "https://mardiros.github.io/jeepito/user/changelog.html"
+
 [dependency-groups]
 dev = [
     "mypy>=1.4.0,<2",
