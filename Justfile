@@ -14,7 +14,7 @@ cleandoc:
 gensync: && fmt
     uv run python scripts/gen_unasync.py
 
-test: gensync mypy lint unittest
+test: gensync typecheck lint unittest
 
 lf:
     uv run pytest -sxvvv --lf
