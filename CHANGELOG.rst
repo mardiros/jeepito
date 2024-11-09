@@ -1,3 +1,7 @@
+0.3.2  - Released on 2024-11-09
+-------------------------------
+* Cleanup documentation and CI 
+
 0.3.1  - Released on 2024-11-01
 -------------------------------
 * Cosmetic fix of the README
