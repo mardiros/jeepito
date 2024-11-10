@@ -1,5 +1,5 @@
-from uuid import UUID
 from types import TracebackType
+from uuid import UUID
 
 from result import Err, Ok
 from sqlalchemy import insert, select

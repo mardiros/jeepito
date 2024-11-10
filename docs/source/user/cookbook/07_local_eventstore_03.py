@@ -1,3 +1,4 @@
+from lastuuid.dummies import uuidgen
 from reading_club.domain.messages import BookRegistered, RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.uow import AbstractUnitOfWork
@@ -17,7 +18,7 @@ async def test_bus_handler(
         book = await transaction.books.by_id(register_book_cmd.id)
         assert book.is_ok()
         assert book.unwrap() == Book(
-            id="x",
+            id=uuidgen(1),
             title="Domain Driven Design",
             author="Eric Evans",
             isbn="0-321-12521-5",
@@ -27,13 +28,13 @@ async def test_bus_handler(
 
     assert uow.eventstore.messages == [  # type: ignore
         RegisterBook(
-            id="x",
+            id=uuidgen(1),
             isbn="0-321-12521-5",
             title="Domain Driven Design",
             author="Eric Evans",
         ),
         BookRegistered(
-            id="x",
+            id=uuidgen(1),
             isbn="0-321-12521-5",
             title="Domain Driven Design",
             author="Eric Evans",
@@ -43,7 +44,8 @@ async def test_bus_handler(
         {
             "id": transport.events[0]["id"],
             "created_at": transport.events[0]["created_at"],
-            "payload": '{"id": "x", "isbn": "0-321-12521-5", "title": "Domain Driven '
+            "payload": f'{{"id": "{uuidgen(1)}", "isbn": "0-321-12521-5", '
+            '"title": "Domain Driven '
             'Design", "author": "Eric Evans"}',
             "type": "register_book_v1",
         },

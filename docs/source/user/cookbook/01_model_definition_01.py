@@ -1,8 +1,10 @@
+from uuid import UUID
+
 from jeepito import Field, Model
 
 
 class Book(Model):
-    id: str = Field(...)
+    id: UUID = Field(...)
     title: str = Field(...)
     author: str = Field(...)
     isbn: str = Field(...)

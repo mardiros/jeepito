@@ -1,5 +1,4 @@
-import uuid
-
+from lastuuid.dummies import uuidgen
 from reading_club.adapters.uow_sqla import orm
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
 from reading_club.domain.messages import RegisterBook
@@ -10,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 async def test_eventstore_add(
     uow: SQLUnitOfWork, register_book_cmd: RegisterBook, sqla_session: AsyncSession
 ):
-    register_book_cmd.id = str(uuid.uuid4())
+    register_book_cmd.id = uuidgen()
     async with uow as transaction:
         await uow.eventstore.add(register_book_cmd)
         await transaction.commit()

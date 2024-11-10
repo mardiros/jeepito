@@ -23,7 +23,8 @@ class SQLEventstoreRepository(AsyncEventstoreAbstractRepository):
                     "created_at": message.created_at,
                     "metadata": message.metadata.model_dump(),
                     "payload": message.model_dump(
-                        exclude={"message_id", "created_at", "metadata"}
+                        mode="json",
+                        exclude={"message_id", "created_at", "metadata"},
                     ),
                 }
             ]

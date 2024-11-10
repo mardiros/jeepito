@@ -1,8 +1,8 @@
-import uuid
 from collections.abc import Mapping
 from typing import Any
 
 import pytest
+from lastuuid.dummies import uuidgen
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
 from reading_club.domain.messages import RegisterBook
 from reading_club.domain.model import Book
@@ -16,7 +16,7 @@ from result import Err, Ok
         {
             "commands": [
                 RegisterBook(
-                    id=str(uuid.uuid4()),
+                    id=uuidgen(),
                     title="Domain Driven Design",
                     author="Eric Evans",
                     isbn="0-321-12521-5",
@@ -45,16 +45,16 @@ async def test_book_add_err(
     [
         pytest.param(
             {
-                "book_id": "00000001-0000-0000-0000-000000000000",
+                "book_id": uuidgen(1),
                 "commands": [
                     RegisterBook(
-                        id="00000001-0000-0000-0000-000000000000",
+                        id=uuidgen(1),
                         title="Domain Driven Design",
                         author="Eric Evans",
                         isbn="0-321-12521-5",
                     ),
                     RegisterBook(
-                        id=str(uuid.uuid4()),
+                        id=uuidgen(2),
                         title="Architecture Patterns With Python",
                         author="Harry Percival and Bob Gregory",
                         isbn="978-1492052203",
@@ -62,7 +62,7 @@ async def test_book_add_err(
                 ],
                 "expected_result": Ok(
                     Book(
-                        id="00000001-0000-0000-0000-000000000000",
+                        id=uuidgen(1),
                         title="Domain Driven Design",
                         author="Eric Evans",
                         isbn="0-321-12521-5",
@@ -73,16 +73,16 @@ async def test_book_add_err(
         ),
         pytest.param(
             {
-                "book_id": uuid.uuid4(),
+                "book_id": uuidgen(),
                 "commands": [
                     RegisterBook(
-                        id=uuid.uuid4(),
+                        id=uuidgen(),
                         title="Domain Driven Design",
                         author="Eric Evans",
                         isbn="0-321-12521-5",
                     ),
                     RegisterBook(
-                        id=uuid.uuid4(),
+                        id=uuidgen(),
                         title="Architecture Patterns With Python",
                         author="Harry Percival and Bob Gregory",
                         isbn="978-1492052203",

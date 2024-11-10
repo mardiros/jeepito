@@ -1,4 +1,5 @@
 from typing import ClassVar
+from uuid import UUID
 
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
@@ -11,8 +12,8 @@ from result import Err, Ok
 
 
 class InMemoryBookRepository(AbstractBookRepository):
-    books: ClassVar[dict[str, Book]] = {}
-    ix_books_isbn: ClassVar[dict[str, str]] = {}
+    books: ClassVar[dict[UUID, Book]] = {}
+    ix_books_isbn: ClassVar[dict[UUID, str]] = {}
 
     async def add(self, model: Book) -> BookRepositoryOperationResult:
         if model.id in self.books:
@@ -23,7 +24,7 @@ class InMemoryBookRepository(AbstractBookRepository):
         self.books[model.isbn] = model.id
         return Ok(...)
 
-    async def by_id(self, id: str) -> BookRepositoryResult:
+    async def by_id(self, id: UUID) -> BookRepositoryResult:
         if id not in self.books:
             return Err(BookRepositoryError.not_found)
         return Ok(self.books[id])

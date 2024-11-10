@@ -2,6 +2,7 @@ from collections.abc import Mapping
 from typing import Any
 
 import pytest
+from lastuuid.dummies import uuidgen
 from reading_club.domain.messages import BookRegistered, RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.handlers.book import register_book
@@ -18,7 +19,7 @@ from result import Err, Ok
                 "expected_result": Ok(...),
                 "expected_book": Ok(
                     Book(
-                        id="x",
+                        id=uuidgen(1),
                         title="Domain Driven Design",
                         author="Eric Evans",
                         isbn="0-321-12521-5",
@@ -26,7 +27,7 @@ from result import Err, Ok
                 ),
                 "expected_messages": [
                     BookRegistered(
-                        id="x",
+                        id=uuidgen(1),
                         isbn="0-321-12521-5",
                         title="Domain Driven Design",
                         author="Eric Evans",
@@ -39,7 +40,7 @@ from result import Err, Ok
             {
                 "commands": [
                     RegisterBook(
-                        id="x",
+                        id=uuidgen(1),
                         title="Architecture Patterns With Python",
                         author="Harry Percival and Bob Gregory",
                         isbn="978-1492052203",
@@ -48,7 +49,7 @@ from result import Err, Ok
                 "expected_result": Err(BookRepositoryError.integrity_error),
                 "expected_book": Ok(
                     Book(
-                        id="x",
+                        id=uuidgen(1),
                         title="Architecture Patterns With Python",
                         author="Harry Percival and Bob Gregory",
                         isbn="978-1492052203",

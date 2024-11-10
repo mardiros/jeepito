@@ -1,8 +1,10 @@
+from uuid import UUID
+
 from jeepito import Command, Field, Metadata
 
 
 class RegisterBook(Command):
-    id: str = Field(...)
+    id: UUID = Field(...)
     isbn: str = Field(...)
     title: str = Field(...)
     author: str = Field(...)
