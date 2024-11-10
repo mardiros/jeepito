@@ -15,7 +15,7 @@ except ImportError:  # coverage: ignore
 
 from pydantic import Field
 
-from .domain.model import Command, Event, Message, Metadata, Model
+from .domain.model import Command, Event, GenericModel, Message, Metadata, Model
 from .service._async.eventstream import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
@@ -48,6 +48,7 @@ __version__ = version("Jeepito")
 
 __all__ = [
     # models
+    "GenericModel",
     "Model",
     "Field",
     "Message",

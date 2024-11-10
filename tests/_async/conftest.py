@@ -10,7 +10,7 @@ import pytest
 from pydantic import Field
 from result import Err, Ok, Result
 
-from jeepito.domain.model import Command, Event, Message, Metadata, Model
+from jeepito.domain.model import Command, Event, GenericModel, Message, Metadata
 from jeepito.service._async.eventstream import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
@@ -41,7 +41,7 @@ class DummyError(enum.Enum):
     not_found = "not_found"
 
 
-class DummyModel(Model[MyMetadata]):
+class DummyModel(GenericModel[MyMetadata]):
     id: str = Field()
     counter: int = Field(0)
 

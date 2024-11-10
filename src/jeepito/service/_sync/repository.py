@@ -11,10 +11,10 @@ import abc
 from collections.abc import MutableSequence
 from typing import Any, Generic, Optional, TypeVar
 
-from jeepito.domain.model import Message, Model
+from jeepito.domain.model import GenericModel, Message
 from jeepito.service._sync.eventstream import SyncEventstreamPublisher
 
-TModel_contra = TypeVar("TModel_contra", bound=Model[Any], contravariant=True)
+TModel_contra = TypeVar("TModel_contra", bound=GenericModel[Any], contravariant=True)
 
 
 class SyncAbstractRepository(abc.ABC, Generic[TModel_contra]):
