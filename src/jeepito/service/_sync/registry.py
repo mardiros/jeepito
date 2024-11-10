@@ -11,7 +11,7 @@ from typing import Any, Generic, cast
 
 import venusian  # type: ignore
 
-from jeepito.domain.model import Command, Event, Message
+from jeepito.domain.model import GenericCommand, GenericEvent, Message
 from jeepito.typing import SyncMessageHandler, TMessage, TSyncUow
 
 from .unit_of_work import SyncUnitOfWorkTransaction, TRepositories
@@ -54,22 +54,22 @@ class SyncMessageBus(Generic[TRepositories]):
 
     def __init__(self) -> None:
         self.commands_registry: dict[
-            type[Command[Any]], SyncMessageHandler[Command[Any], Any]
+            type[GenericCommand[Any]], SyncMessageHandler[GenericCommand[Any], Any]
         ] = {}
         self.events_registry: dict[
-            type[Event[Any]], list[SyncMessageHandler[Event[Any], Any]]
+            type[GenericEvent[Any]], list[SyncMessageHandler[GenericEvent[Any], Any]]
         ] = defaultdict(list)
 
     def add_listener(
         self, msg_type: type[Message[Any]], callback: SyncMessageHandler[Any, Any]
     ) -> None:
-        if issubclass(msg_type, Command):
+        if issubclass(msg_type, GenericCommand):
             if msg_type in self.commands_registry:
                 raise ConfigurationError(
                     f"{msg_type} command has been registered twice"
                 )
             self.commands_registry[msg_type] = callback
-        elif issubclass(msg_type, Event):
+        elif issubclass(msg_type, GenericEvent):
             self.events_registry[msg_type].append(callback)
         else:
             raise ConfigurationError(
@@ -80,11 +80,11 @@ class SyncMessageBus(Generic[TRepositories]):
     def remove_listener(
         self, msg_type: type, callback: SyncMessageHandler[Any, Any]
     ) -> None:
-        if issubclass(msg_type, Command):
+        if issubclass(msg_type, GenericCommand):
             if msg_type not in self.commands_registry:
                 raise ConfigurationError(f"{msg_type} command has not been registered")
             del self.commands_registry[msg_type]
-        elif issubclass(msg_type, Event):
+        elif issubclass(msg_type, GenericEvent):
             try:
                 self.events_registry[msg_type].remove(callback)
             except ValueError as exc:
@@ -109,19 +109,19 @@ class SyncMessageBus(Generic[TRepositories]):
         ret = None
         while queue:
             message = queue.pop(0)
-            if not isinstance(message, (Command, Event)):
+            if not isinstance(message, (GenericCommand, GenericEvent)):
                 raise RuntimeError(f"{message} was not an Event or Command")
             msg_type = type(message)
             if msg_type in self.commands_registry:
                 cmdret = self.commands_registry[msg_type](  # type: ignore
-                    cast(Command[Any], message), uow
+                    cast(GenericCommand[Any], message), uow
                 )
                 if idx == 0:
                     ret = cmdret
                 queue.extend(uow.uow.collect_new_events())
             elif msg_type in self.events_registry:
                 for callback in self.events_registry[msg_type]:  # type: ignore
-                    callback(cast(Event[Any], message), uow)
+                    callback(cast(GenericEvent[Any], message), uow)
                     queue.extend(uow.uow.collect_new_events())
             uow.eventstore.add(message)
             idx += 1

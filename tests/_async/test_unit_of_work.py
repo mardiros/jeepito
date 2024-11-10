@@ -1,23 +1,31 @@
-from typing import Any
-
 import pytest
 
-from jeepito.domain.model import Event, Metadata
+from jeepito.domain.model import GenericEvent
 from jeepito.service._async.unit_of_work import (
     AsyncUnitOfWorkTransaction,
     TransactionError,
     TransactionStatus,
 )
-from tests._async.conftest import AsyncDummyUnitOfWork, DummyModel
+from tests._async.conftest import AsyncDummyUnitOfWork, DummyModel, MyMetadata
 
 
-class FooCreated(Event[Any]):
+class FooCreated(GenericEvent[MyMetadata]):
     id: str
-    metadata: Metadata = Metadata(name="foo_created", schema_version=1, published=True)
+    metadata: MyMetadata = MyMetadata(
+        name="foo_created",
+        schema_version=1,
+        published=True,
+        custom_field="",
+    )
 
 
-class BarCreated(Event[Any]):
-    metadata: Metadata = Metadata(name="bar_created", schema_version=1, published=True)
+class BarCreated(GenericEvent[MyMetadata]):
+    metadata: MyMetadata = MyMetadata(
+        name="bar_created",
+        schema_version=1,
+        published=True,
+        custom_field="",
+    )
 
 
 async def test_collect_new_events(

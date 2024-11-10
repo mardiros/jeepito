@@ -1,23 +1,31 @@
-from typing import Any
-
 import pytest
 
-from jeepito.domain.model import Event, Metadata
+from jeepito.domain.model import GenericEvent
 from jeepito.service._sync.unit_of_work import (
     SyncUnitOfWorkTransaction,
     TransactionError,
     TransactionStatus,
 )
-from tests._sync.conftest import DummyModel, SyncDummyUnitOfWork
+from tests._sync.conftest import DummyModel, MyMetadata, SyncDummyUnitOfWork
 
 
-class FooCreated(Event[Any]):
+class FooCreated(GenericEvent[MyMetadata]):
     id: str
-    metadata: Metadata = Metadata(name="foo_created", schema_version=1, published=True)
+    metadata: MyMetadata = MyMetadata(
+        name="foo_created",
+        schema_version=1,
+        published=True,
+        custom_field="",
+    )
 
 
-class BarCreated(Event[Any]):
-    metadata: Metadata = Metadata(name="bar_created", schema_version=1, published=True)
+class BarCreated(GenericEvent[MyMetadata]):
+    metadata: MyMetadata = MyMetadata(
+        name="bar_created",
+        schema_version=1,
+        published=True,
+        custom_field="",
+    )
 
 
 def test_collect_new_events(uow: SyncDummyUnitOfWork, foo_factory: type[DummyModel]):

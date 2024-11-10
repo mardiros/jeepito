@@ -60,11 +60,11 @@ class Message(BaseModel, Generic[TMetadata]):
         return slf == otr
 
 
-class Command(Message[TMetadata]):
+class GenericCommand(Message[TMetadata]):
     """Baseclass for message of type command."""
 
 
-class Event(Message[TMetadata]):
+class GenericEvent(Message[TMetadata]):
     """Baseclass for message of type event."""
 
 
@@ -88,3 +88,5 @@ class GenericModel(BaseModel, Generic[TMetadata]):
 
 
 Model = GenericModel[Metadata]
+Command = GenericCommand[Metadata]
+Event = GenericEvent[Metadata]

@@ -10,7 +10,13 @@ import pytest
 from pydantic import Field
 from result import Err, Ok, Result
 
-from jeepito.domain.model import Command, Event, GenericModel, Message, Metadata
+from jeepito.domain.model import (
+    GenericCommand,
+    GenericEvent,
+    GenericModel,
+    Message,
+    Metadata,
+)
 from jeepito.service._async.eventstream import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
@@ -123,14 +129,14 @@ class AsyncDummyUnitOfWorkWithEvents(AsyncAbstractUnitOfWork[Repositories]):
     async def rollback(self) -> None: ...
 
 
-class DummyCommand(Command[MyMetadata]):
+class DummyCommand(GenericCommand[MyMetadata]):
     id: str = Field(...)
     metadata: MyMetadata = MyMetadata(
         name="dummy", schema_version=1, custom_field="foo"
     )
 
 
-class DummyEvent(Event[MyMetadata]):
+class DummyEvent(GenericEvent[MyMetadata]):
     id: str = Field(...)
     increment: int = Field(...)
     metadata: MyMetadata = MyMetadata(
