@@ -73,16 +73,16 @@ async def test_book_add_err(
         ),
         pytest.param(
             {
-                "book_id": str(uuid.uuid4()),
+                "book_id": uuid.uuid4(),
                 "commands": [
                     RegisterBook(
-                        id=str(uuid.uuid4()),
+                        id=uuid.uuid4(),
                         title="Domain Driven Design",
                         author="Eric Evans",
                         isbn="0-321-12521-5",
                     ),
                     RegisterBook(
-                        id=str(uuid.uuid4()),
+                        id=uuid.uuid4(),
                         title="Architecture Patterns With Python",
                         author="Harry Percival and Bob Gregory",
                         isbn="978-1492052203",

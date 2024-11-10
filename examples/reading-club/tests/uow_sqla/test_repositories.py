@@ -3,6 +3,7 @@ from collections.abc import Mapping
 from typing import Any
 
 import pytest
+from lastuuid.dummies import uuidgen
 from reading_club.adapters.uow_sqla import orm
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
 from reading_club.domain.messages import RegisterBook
@@ -36,7 +37,7 @@ async def test_book_add_ok(uow: SQLUnitOfWork, book: Book, sqla_session: AsyncSe
         {
             "commands": [
                 RegisterBook(
-                    id=str(uuid.uuid4()),
+                    id=uuid.uuid4(),
                     title="Domain Driven Design",
                     author="Eric Evans",
                     isbn="0-321-12521-5",
@@ -65,16 +66,16 @@ async def test_book_add_err(
     [
         pytest.param(
             {
-                "book_id": "00000001-0000-0000-0000-000000000000",
+                "book_id": uuidgen(1),
                 "commands": [
                     RegisterBook(
-                        id="00000001-0000-0000-0000-000000000000",
+                        id=uuidgen(1),
                         title="Domain Driven Design",
                         author="Eric Evans",
                         isbn="0-321-12521-5",
                     ),
                     RegisterBook(
-                        id=str(uuid.uuid4()),
+                        id=uuidgen(2),
                         title="Architecture Patterns With Python",
                         author="Harry Percival and Bob Gregory",
                         isbn="978-1492052203",
@@ -82,7 +83,7 @@ async def test_book_add_err(
                 ],
                 "expected_result": Ok(
                     Book(
-                        id="00000001-0000-0000-0000-000000000000",
+                        id=uuidgen(1),
                         title="Domain Driven Design",
                         author="Eric Evans",
                         isbn="0-321-12521-5",
@@ -93,16 +94,16 @@ async def test_book_add_err(
         ),
         pytest.param(
             {
-                "book_id": str(uuid.uuid4()),
+                "book_id": uuidgen(),
                 "commands": [
                     RegisterBook(
-                        id=str(uuid.uuid4()),
+                        id=uuidgen(),
                         title="Domain Driven Design",
                         author="Eric Evans",
                         isbn="0-321-12521-5",
                     ),
                     RegisterBook(
-                        id=str(uuid.uuid4()),
+                        id=uuidgen(),
                         title="Architecture Patterns With Python",
                         author="Harry Percival and Bob Gregory",
                         isbn="978-1492052203",
@@ -127,7 +128,7 @@ async def test_book_by_id(params: Mapping[str, Any], uow_with_data: SQLUnitOfWor
 async def test_eventstore_add(
     uow: SQLUnitOfWork, register_book_cmd: RegisterBook, sqla_session: AsyncSession
 ):
-    register_book_cmd.id = str(uuid.uuid4())
+    register_book_cmd.id = uuidgen()
     async with uow as transaction:
         await uow.eventstore.add(register_book_cmd)
         await transaction.commit()
@@ -144,7 +145,7 @@ async def test_eventstore_add(
     assert row.created_at == register_book_cmd.created_at
     assert row.metadata == register_book_cmd.metadata.model_dump()
     assert row.payload == {
-        "id": register_book_cmd.id,
+        "id": str(register_book_cmd.id),
         "author": "Eric Evans",
         "isbn": "0-321-12521-5",
         "title": "Domain Driven Design",

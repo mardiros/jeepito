@@ -1,3 +1,4 @@
+from uuid import UUID
 from types import TracebackType
 
 from result import Err, Ok
@@ -37,7 +38,7 @@ class SQLEventstoreRepository(AsyncEventstoreAbstractRepository):
                     "created_at": message.created_at,
                     "metadata": message.metadata.model_dump(),
                     "payload": message.model_dump(
-                        exclude={"message_id", "created_at", "metadata"}
+                        mode="json", exclude={"message_id", "created_at", "metadata"}
                     ),
                 }
             ]
@@ -51,7 +52,8 @@ class SQLBookRepository(AbstractBookRepository):
         self.session = session
 
     async def add(self, model: Book) -> BookRepositoryOperationResult:
-        qry = insert(orm.books).values([model.model_dump(exclude={"messages"})])
+        mdl = model.model_dump(exclude={"messages"})
+        qry = insert(orm.books).values([mdl])
         try:
             await self.session.execute(qry)
         except IntegrityError:
@@ -60,7 +62,7 @@ class SQLBookRepository(AbstractBookRepository):
         self.seen.append(model)
         return Ok(...)
 
-    async def by_id(self, id: str) -> BookRepositoryResult:
+    async def by_id(self, id: UUID) -> BookRepositoryResult:
         qry = select(orm.books).where(orm.books.c.id == id)
         row = (await self.session.execute(qry)).first()
         if not row:

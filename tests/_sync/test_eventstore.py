@@ -51,7 +51,7 @@ def test_store_events_and_publish(
     assert eventstream_transport.events == [
         {
             "created_at": evt.created_at.isoformat(),
-            "id": evt.message_id,
+            "id": str(evt.message_id),
             "payload": '{"id":"dummy_cmd","increment":10}',
             "type": "dummied_v1",
         },

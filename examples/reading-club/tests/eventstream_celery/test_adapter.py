@@ -1,5 +1,6 @@
 import json
 
+from lastuuid.dummies import uuidgen
 from reading_club.domain.messages import RegisterBook
 
 
@@ -7,7 +8,7 @@ async def test_eventstream(uow, bus, celery_queue):
     async with uow as transaction:
         await bus.handle(
             RegisterBook(
-                id="y",
+                id=uuidgen(1),
                 title="Architecture Patterns With Python",
                 author="Harry Percival and Bob Gregory",
                 isbn="978-1492052203",
@@ -26,9 +27,9 @@ async def test_eventstream(uow, bus, celery_queue):
             {
                 "message": {
                     "created_at": message["created_at"],
-                    "id": message["id"],
+                    "id": str(message["id"]),
                     "payload": {
-                        "id": "y",
+                        "id": str(uuidgen(1)),
                         "isbn": "978-1492052203",
                         "title": "Architecture Patterns With Python",
                         "author": "Harry Percival and Bob Gregory",

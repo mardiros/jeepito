@@ -21,7 +21,7 @@ class MessageSerializer(AbstractMessageSerializer):
     def serialize_message(self, message: Message[Any]) -> Mapping[str, Any]:
         """Publish a message to the eventstream."""
         return {
-            "id": message.message_id,
+            "id": str(message.message_id),
             "created_at": message.created_at.isoformat(),
             "type": f"{message.metadata.name}_v{message.metadata.schema_version}",
             "payload": message.model_dump_json(
