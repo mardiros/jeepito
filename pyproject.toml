@@ -6,7 +6,11 @@ version = "0.4.0"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 
-dependencies = ["pydantic>=2.5.0,<3", "venusian>=3.0.0,<4"]
+dependencies = [
+    "lastuuid>=0.1.1",
+    "pydantic>=2.5.0,<3",
+    "venusian>=3.0.0,<4",
+]
 
 [project.urls]
 Homepage = "https://github.com/mardiros/jeepito"
@@ -58,8 +62,16 @@ select = [
 ignore = ["UP007"] # py39 !
 
 [tool.pyright]
-include = ["src"]
+ignore = ["examples"]
+include = ["src", "tests"]
+reportPrivateUsage = false
+reportUnknownMemberType = false
+reportUnknownParameterType = false
+reportUnknownVariableType = false
+reportShadowedImports = false
 typeCheckingMode = "strict"
+venvPath = ".venv"
+
 
 [[tool.mypy.overrides]]
 disallow_any_generics = true

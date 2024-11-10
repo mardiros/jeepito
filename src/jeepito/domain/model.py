@@ -8,14 +8,14 @@ Message base classes.
 from collections.abc import MutableSequence
 from datetime import datetime
 from typing import Any, Generic, TypeVar
-from uuid import uuid1
 
+from lastuuid import uuid7
 from pydantic import BaseModel, Field
 
 
 def generate_id() -> str:
     """Generate a unique identifier."""
-    return str(uuid1())
+    return str(uuid7)
 
 
 class Metadata(BaseModel):
