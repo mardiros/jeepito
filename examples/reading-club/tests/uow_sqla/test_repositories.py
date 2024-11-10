@@ -1,4 +1,3 @@
-import uuid
 from collections.abc import Mapping
 from typing import Any
 
@@ -37,7 +36,7 @@ async def test_book_add_ok(uow: SQLUnitOfWork, book: Book, sqla_session: AsyncSe
         {
             "commands": [
                 RegisterBook(
-                    id=uuid.uuid4(),
+                    id=uuidgen(),
                     title="Domain Driven Design",
                     author="Eric Evans",
                     isbn="0-321-12521-5",
