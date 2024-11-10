@@ -8,14 +8,10 @@ Message base classes.
 from collections.abc import MutableSequence
 from datetime import datetime
 from typing import Any, Generic, TypeVar
+from uuid import UUID
 
 from lastuuid import uuid7
 from pydantic import BaseModel, Field
-
-
-def generate_id() -> str:
-    """Generate a unique identifier."""
-    return str(uuid7)
 
 
 class Metadata(BaseModel):
@@ -33,7 +29,7 @@ TMetadata = TypeVar("TMetadata", bound=Metadata)
 class Message(BaseModel, Generic[TMetadata]):
     """Base class for messaging."""
 
-    message_id: str = Field(default_factory=generate_id)
+    message_id: UUID = Field(default_factory=uuid7)
     """Unique identifier of the message."""
     created_at: datetime = Field(default_factory=datetime.utcnow)
     """
