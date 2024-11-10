@@ -2,7 +2,7 @@
 authors = [{ name = "Guillaume Gauvrit", email = "guillaume@gauvr.it" }]
 description = "A message bus library"
 name = "Jeepito"
-version = "0.3.2"
+version = "0.4.0"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 

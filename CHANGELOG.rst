@@ -1,3 +1,8 @@
+0.4.0  - Released on 2024-11-10
+-------------------------------
+* Reset base type Command, Event and Model as in 0.2
+* New type GenericCommand, GenericEvent and GenericModel added as in 0.3
+
 0.3.2  - Released on 2024-11-09
 -------------------------------
 * Cleanup documentation and CI 
