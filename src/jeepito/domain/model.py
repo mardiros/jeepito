@@ -60,15 +60,15 @@ class Message(BaseModel, Generic[TMetadata]):
         return slf == otr
 
 
-class Command(Message[TMetadata]):
+class GenericCommand(Message[TMetadata]):
     """Baseclass for message of type command."""
 
 
-class Event(Message[TMetadata]):
+class GenericEvent(Message[TMetadata]):
     """Baseclass for message of type event."""
 
 
-class Model(BaseModel, Generic[TMetadata]):
+class GenericModel(BaseModel, Generic[TMetadata]):
     """Base class for model."""
 
     messages: MutableSequence[Message[TMetadata]] = Field(default_factory=list)
@@ -80,8 +80,13 @@ class Model(BaseModel, Generic[TMetadata]):
     """
 
     def __eq__(self, other: Any) -> bool:
-        if not isinstance(other, Model):
+        if not isinstance(other, GenericModel):
             return False
         slf = self.model_dump(exclude={"messages"})
         otr = other.model_dump(exclude={"messages"})
         return slf == otr
+
+
+Model = GenericModel[Metadata]
+Command = GenericCommand[Metadata]
+Event = GenericEvent[Metadata]
