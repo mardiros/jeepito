@@ -1,3 +1,8 @@
+0.5.0  - Released on 2024-11-11
+-------------------------------
+* API Break: Use UUID type for the message_id
+* Introduce a new dependency to use uuid7 format to improve database indexes
+
 0.4.0  - Released on 2024-11-10
 -------------------------------
 * Reset base type Command, Event and Model as in 0.2
