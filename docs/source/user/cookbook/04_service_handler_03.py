@@ -2,6 +2,7 @@ from collections.abc import Iterator
 from typing import ClassVar
 
 import pytest
+from lastuuid.dummies import uuidgen
 from reading_club.domain.messages import RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
@@ -45,7 +46,7 @@ class InMemoryUnitOfWork(AbstractUnitOfWork):
 @pytest.fixture
 def register_book_cmd():
     return RegisterBook(
-        id="x",
+        id=uuidgen(2),
         title="Domain Driven Design",
         author="Eric Evans",
         isbn="0-321-12521-5",

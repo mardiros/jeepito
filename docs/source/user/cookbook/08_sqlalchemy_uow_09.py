@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
     AbstractBookRepository,
@@ -28,7 +30,7 @@ class SQLBookRepository(AbstractBookRepository):
         self.seen.append(model)
         return Ok(...)
 
-    async def by_id(self, id: str) -> BookRepositoryResult:
+    async def by_id(self, id: UUID) -> BookRepositoryResult:
         qry = select(orm.books).where(orm.books.c.id == id)
         row = (await self.session.execute(qry)).first()
         if not row:

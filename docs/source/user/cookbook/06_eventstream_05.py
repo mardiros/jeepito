@@ -1,3 +1,4 @@
+from lastuuid.dummies import uuidgen
 from reading_club.domain.messages import BookRegistered, RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.handlers.book import register_book
@@ -13,14 +14,14 @@ async def test_register_book(register_book_cmd: RegisterBook, uow: AbstractUnitO
         book = await transaction.books.by_id(register_book_cmd.id)
         assert book.is_ok()
         assert book.unwrap() == Book(
-            id="x",
+            id=uuidgen(1),
             title="Domain Driven Design",
             author="Eric Evans",
             isbn="0-321-12521-5",
         )
         assert book.unwrap().messages == [
             BookRegistered(
-                id="x",
+                id=uuidgen(1),
                 isbn="0-321-12521-5",
                 title="Domain Driven Design",
                 author="Eric Evans",

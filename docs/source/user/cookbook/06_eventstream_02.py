@@ -1,3 +1,4 @@
+from lastuuid.dummies import uuidgen
 from reading_club.domain.messages import RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.uow import AbstractUnitOfWork
@@ -17,7 +18,7 @@ async def test_bus_handler(
         book = await transaction.books.by_id(register_book_cmd.id)
         assert book.is_ok()
         assert book.unwrap() == Book(
-            id="x",
+            id=uuidgen(1),
             title="Domain Driven Design",
             author="Eric Evans",
             isbn="0-321-12521-5",

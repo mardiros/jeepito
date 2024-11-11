@@ -1,6 +1,7 @@
 import abc
 import enum
 from types import EllipsisType
+from uuid import UUID
 
 from reading_club.domain.model import Book
 from result import Result
@@ -22,4 +23,4 @@ class AbstractBookRepository(AsyncAbstractRepository[Book]):
     async def add(self, model: Book) -> BookRepositoryOperationResult: ...
 
     @abc.abstractmethod
-    async def by_id(self, id: str) -> BookRepositoryResult: ...
+    async def by_id(self, id: UUID) -> BookRepositoryResult: ...

@@ -1,10 +1,12 @@
+from uuid import UUID
+
 from jeepito import Command, Field, Metadata
 
 
 class RegisterBookV1(Command):
     """Initial version of the command authorize only one author per book."""
 
-    id: str = Field(...)
+    id: UUID = Field(...)
     isbn: str = Field(...)
     title: str = Field(...)
     author: str = Field(...)
@@ -12,7 +14,7 @@ class RegisterBookV1(Command):
 
 
 class RegisterBookV2(Command):
-    id: str = Field(...)
+    id: UUID = Field(...)
     isbn: str = Field(...)
     title: str = Field(...)
     authors: list[str] = Field(...)

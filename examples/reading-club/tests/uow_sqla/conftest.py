@@ -1,7 +1,7 @@
-import uuid
 from collections.abc import AsyncIterator
 
 import pytest
+from lastuuid.dummies import uuidgen
 from reading_club.adapters.uow_sqla import orm
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
 from reading_club.domain.model import Book
@@ -52,7 +52,7 @@ def uow(
 @pytest.fixture
 def book():
     return Book(
-        id=str(uuid.uuid4()),
+        id=uuidgen(),
         title="Domain Driven Design",
         author="Eric Evans",
         isbn="0-321-12521-5",

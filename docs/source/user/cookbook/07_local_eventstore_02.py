@@ -1,5 +1,6 @@
 from collections.abc import Iterator, MutableSequence
 from typing import Any, ClassVar
+from uuid import UUID
 
 import pytest
 from reading_club.domain.model import Book
@@ -28,8 +29,8 @@ class InMemoryEventstoreRepository(AsyncEventstoreAbstractRepository):
 
 
 class InMemoryBookRepository(AbstractBookRepository):
-    books: ClassVar[dict[str, Book]] = {}
-    ix_books_isbn: ClassVar[dict[str, str]] = {}
+    books: ClassVar[dict[UUID, Book]] = {}
+    ix_books_isbn: ClassVar[dict[str, UUID]] = {}
 
     async def add(self, model: Book) -> BookRepositoryOperationResult:
         if model.id in self.books:
@@ -37,11 +38,11 @@ class InMemoryBookRepository(AbstractBookRepository):
         if model.isbn in self.ix_books_isbn:
             return Err(BookRepositoryError.integrity_error)
         self.books[model.id] = model
-        self.books[model.isbn] = model.id
+        self.ix_books_isbn[model.isbn] = model.id
         self.seen.append(model)
         return Ok(...)
 
-    async def by_id(self, id: str) -> BookRepositoryResult:
+    async def by_id(self, id: UUID) -> BookRepositoryResult:
         if id not in self.books:
             return Err(BookRepositoryError.not_found)
         return Ok(self.books[id])

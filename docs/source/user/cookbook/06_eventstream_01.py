@@ -1,8 +1,10 @@
+from uuid import UUID
+
 from jeepito import Event, Field, Metadata
 
 
 class BookRegistered(Event):
-    id: str = Field(...)
+    id: UUID = Field(...)
     isbn: str = Field(...)
     title: str = Field(...)
     author: str = Field(...)

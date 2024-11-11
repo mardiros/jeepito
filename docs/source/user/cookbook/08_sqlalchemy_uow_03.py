@@ -1,5 +1,4 @@
-import uuid
-
+from lastuuid.dummies import uuidgen
 from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
@@ -12,7 +11,7 @@ async def test_commit(
     sqla_session: AsyncSession,
     transport: AsyncAbstractEventstreamTransport,
 ):
-    book_id = str(uuid.uuid4())
+    book_id = uuidgen()
     uow = SQLUnitOfWork(transport, sqla_engine)
     async with uow as transaction:
         await uow.session.execute(
@@ -43,7 +42,7 @@ async def test_rollback(
     sqla_session: AsyncSession,
     transport: AsyncAbstractEventstreamTransport,
 ):
-    book_id = str(uuid.uuid4())
+    book_id = uuidgen()
     uow = SQLUnitOfWork(transport, sqla_engine)
     async with uow as transaction:
         await transaction.session.execute(

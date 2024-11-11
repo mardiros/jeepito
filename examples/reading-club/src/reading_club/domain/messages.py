@@ -1,8 +1,10 @@
+from uuid import UUID
+
 from jeepito import Command, Event, Field, Metadata
 
 
 class RegisterBook(Command):
-    id: str = Field(...)
+    id: UUID = Field(...)
     isbn: str = Field(...)
     title: str = Field(...)
     author: str = Field(...)
@@ -10,7 +12,7 @@ class RegisterBook(Command):
 
 
 class BookRegistered(Event):
-    id: str = Field(...)
+    id: UUID = Field(...)
     isbn: str = Field(...)
     title: str = Field(...)
     author: str = Field(...)
@@ -20,13 +22,13 @@ class BookRegistered(Event):
 
 
 class CreateReviewer(Command):
-    id: str = Field(...)
+    id: UUID = Field(...)
     nickname: str = Field(...)
     metadata: Metadata = Metadata(name="create_review", schema_version=1)
 
 
 class ReviewerCreated(Command):
-    id: str = Field(...)
+    id: UUID = Field(...)
     nickname: str = Field(...)
     metadata: Metadata = Metadata(
         name="reviewer_created", schema_version=1, published=True
@@ -34,18 +36,18 @@ class ReviewerCreated(Command):
 
 
 class CreateReview(Command):
-    id: str = Field(...)
-    reviewer_id: str = Field(...)
-    book_id: str = Field(...)
+    id: UUID = Field(...)
+    reviewer_id: UUID = Field(...)
+    book_id: UUID = Field(...)
     rate: int = Field(...)
     comment: str = Field(...)
     metadata: Metadata = Metadata(name="create_review", schema_version=1)
 
 
 class ReviewCreated(Command):
-    id: str = Field(...)
-    reviewer_id: str = Field(...)
-    book_id: str = Field(...)
+    id: UUID = Field(...)
+    reviewer_id: UUID = Field(...)
+    book_id: UUID = Field(...)
     rate: int = Field(...)
     comment: str = Field(...)
     metadata: Metadata = Metadata(
