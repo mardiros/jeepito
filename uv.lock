@@ -348,67 +348,6 @@ wheels = [
 ]
 
 [[package]]
-name = "messagebus"
-version = "0.5.1"
-source = { editable = "." }
-dependencies = [
-    { name = "lastuuid" },
-    { name = "pydantic" },
-    { name = "venusian" },
-]
-
-[package.optional-dependencies]
-docs = [
-    { name = "furo" },
-    { name = "sphinx", version = "7.4.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13'" },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13'" },
-    { name = "sphinx-autodoc-typehints" },
-]
-
-[package.dependency-groups]
-dev = [
-    { name = "mypy" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "result" },
-    { name = "unasync" },
-]
-doc = [
-    { name = "esbonio" },
-    { name = "furo" },
-    { name = "sphinx", version = "7.4.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13'" },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13'" },
-    { name = "sphinx-autodoc-typehints" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "furo", marker = "extra == 'docs'", specifier = ">=2024.8.6" },
-    { name = "lastuuid", specifier = ">=0.1.1" },
-    { name = "pydantic", specifier = ">=2.5.0,<3" },
-    { name = "sphinx", marker = "extra == 'docs'", specifier = ">=7.0.0" },
-    { name = "sphinx-autodoc-typehints", marker = "extra == 'docs'", specifier = ">=1.12.0,<2" },
-    { name = "venusian", specifier = ">=3.0.0,<4" },
-]
-
-[package.metadata.dependency-groups]
-dev = [
-    { name = "mypy", specifier = ">=1.4.0,<2" },
-    { name = "pytest", specifier = ">=8,<9" },
-    { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "pytest-cov", specifier = ">=6.0.0,<7" },
-    { name = "result", specifier = ">=0.17.0,<0.18.0" },
-    { name = "unasync", specifier = ">=0.6.0,<0.7.0" },
-]
-doc = [
-    { name = "esbonio", specifier = ">=0.16.1" },
-    { name = "furo", specifier = ">=2024.8.6" },
-    { name = "sphinx", specifier = ">=7.0.0" },
-    { name = "sphinx-autodoc-typehints", specifier = ">=1.12.0,<2" },
-]
-
-[[package]]
 name = "jinja2"
 version = "3.1.4"
 source = { registry = "https://pypi.org/simple" }
@@ -580,6 +519,67 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/17/d8/5811082f85bb88410ad7e452263af048d685669bbbfb7b595e8689152498/MarkupSafe-3.0.2-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:eb7972a85c54febfb25b5c4b4f3af4dcc731994c7da0d8a0b4a6eb0640e1d178", size = 20946 },
     { url = "https://files.pythonhosted.org/packages/7c/31/bd635fb5989440d9365c5e3c47556cfea121c7803f5034ac843e8f37c2f2/MarkupSafe-3.0.2-cp39-cp39-win32.whl", hash = "sha256:8c4e8c3ce11e1f92f6536ff07154f9d49677ebaaafc32db9db4620bc11ed480f", size = 15063 },
     { url = "https://files.pythonhosted.org/packages/b3/73/085399401383ce949f727afec55ec3abd76648d04b9f22e1c0e99cb4bec3/MarkupSafe-3.0.2-cp39-cp39-win_amd64.whl", hash = "sha256:6e296a513ca3d94054c2c881cc913116e90fd030ad1c656b3869762b754f5f8a", size = 15506 },
+]
+
+[[package]]
+name = "messagebus"
+version = "0.6.0"
+source = { editable = "." }
+dependencies = [
+    { name = "lastuuid" },
+    { name = "pydantic" },
+    { name = "venusian" },
+]
+
+[package.optional-dependencies]
+docs = [
+    { name = "furo" },
+    { name = "sphinx", version = "7.4.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13'" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13'" },
+    { name = "sphinx-autodoc-typehints" },
+]
+
+[package.dependency-groups]
+dev = [
+    { name = "mypy" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+    { name = "result" },
+    { name = "unasync" },
+]
+doc = [
+    { name = "esbonio" },
+    { name = "furo" },
+    { name = "sphinx", version = "7.4.7", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13'" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13'" },
+    { name = "sphinx-autodoc-typehints" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "furo", marker = "extra == 'docs'", specifier = ">=2024.8.6" },
+    { name = "lastuuid", specifier = ">=0.1.1" },
+    { name = "pydantic", specifier = ">=2.5.0,<3" },
+    { name = "sphinx", marker = "extra == 'docs'", specifier = ">=7.0.0" },
+    { name = "sphinx-autodoc-typehints", marker = "extra == 'docs'", specifier = ">=1.12.0,<2" },
+    { name = "venusian", specifier = ">=3.0.0,<4" },
+]
+
+[package.metadata.dependency-groups]
+dev = [
+    { name = "mypy", specifier = ">=1.4.0,<2" },
+    { name = "pytest", specifier = ">=8,<9" },
+    { name = "pytest-asyncio", specifier = ">=0.24.0" },
+    { name = "pytest-cov", specifier = ">=6.0.0,<7" },
+    { name = "result", specifier = ">=0.17.0,<0.18.0" },
+    { name = "unasync", specifier = ">=0.6.0,<0.7.0" },
+]
+doc = [
+    { name = "esbonio", specifier = ">=0.16.1" },
+    { name = "furo", specifier = ">=2024.8.6" },
+    { name = "sphinx", specifier = ">=7.0.0" },
+    { name = "sphinx-autodoc-typehints", specifier = ">=1.12.0,<2" },
 ]
 
 [[package]]
