@@ -1,3 +1,7 @@
+0.5.1  - Released on 2024-11-15
+-------------------------------
+* Last version of jeepito, the project will be renamed messagebus 
+
 0.5.0  - Released on 2024-11-11
 -------------------------------
 * API Break: Use UUID type for the message_id
