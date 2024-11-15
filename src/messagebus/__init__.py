@@ -2,16 +2,7 @@
 messagebus API.
 """
 
-try:
-    # add an ignore for python 3.7 which does not know this standard library
-    from importlib.metadata import version  # type: ignore
-except ImportError:  # coverage: ignore
-    from pkg_resources import get_distribution  # type: ignore
-
-    # pythond 3.7 fallback
-    def version(distribution_name: str) -> str:
-        return get_distribution(distribution_name).version
-
+from importlib.metadata import version
 
 from pydantic import Field
 
