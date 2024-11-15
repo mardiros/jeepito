@@ -15,6 +15,10 @@ Jeepito
    :alt: Coverage Report
 
 
+
+**This is the last version of jeepito, the next version will be named `messagebus`.**
+
+
 Jeepito is a library crafted for sending messages on a bus, providing foundational classes
 for event-driven development and Domain-Driven Design.
 
