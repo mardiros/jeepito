@@ -7,11 +7,11 @@ messagebus
    :alt: Doc
 
 .. image:: https://github.com/mardiros/messagebus/actions/workflows/tests.yml/badge.svg
-:target: https://github.com/mardiros/messagebus/actions/workflows/tests.yml
+   :target: https://github.com/mardiros/messagebus/actions/workflows/tests.yml
    :alt: Continuous Integration
 
 .. image:: https://codecov.io/gh/mardiros/messagebus/branch/main/graph/badge.svg?token=BKUM2G3YSR
-:target: https://codecov.io/gh/mardiros/messagebus
+   :target: https://codecov.io/gh/mardiros/messagebus
    :alt: Coverage Report
 
 
