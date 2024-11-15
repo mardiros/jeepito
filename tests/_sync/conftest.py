@@ -10,23 +10,23 @@ import pytest
 from pydantic import Field
 from result import Err, Ok, Result
 
-from jeepito.domain.model import (
+from messagebus.domain.model import (
     GenericCommand,
     GenericEvent,
     GenericModel,
     Message,
     Metadata,
 )
-from jeepito.service._sync.eventstream import (
+from messagebus.service._sync.eventstream import (
     SyncAbstractEventstreamTransport,
     SyncEventstreamPublisher,
 )
-from jeepito.service._sync.registry import SyncMessageBus
-from jeepito.service._sync.repository import (
+from messagebus.service._sync.registry import SyncMessageBus
+from messagebus.service._sync.repository import (
     SyncAbstractRepository,
     SyncEventstoreAbstractRepository,
 )
-from jeepito.service._sync.unit_of_work import (
+from messagebus.service._sync.unit_of_work import (
     SyncAbstractUnitOfWork,
     SyncUnitOfWorkTransaction,
 )

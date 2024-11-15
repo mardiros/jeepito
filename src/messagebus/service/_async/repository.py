@@ -1,7 +1,7 @@
 """
 Repositories are used to fetch and store domain models.
 
-Anstract repositories derived the :class:`jeepito.AsyncAbstractRepository`
+Anstract repositories derived the :class:`messagebus.AsyncAbstractRepository`
 class to declare every models interface such as CRUD operations,
 and then concrete models implements those abstract methods for a given
 storage.
@@ -11,13 +11,13 @@ import abc
 from collections.abc import MutableSequence
 from typing import Any, Generic, Optional, TypeVar
 
-from jeepito.domain.model import GenericModel, Message
-from jeepito.service._sync.eventstream import SyncEventstreamPublisher
+from messagebus.domain.model import GenericModel, Message
+from messagebus.service._async.eventstream import AsyncEventstreamPublisher
 
 TModel_contra = TypeVar("TModel_contra", bound=GenericModel[Any], contravariant=True)
 
 
-class SyncAbstractRepository(abc.ABC, Generic[TModel_contra]):
+class AsyncAbstractRepository(abc.ABC, Generic[TModel_contra]):
     """Abstract Base Classe for Repository pattern."""
 
     def __init__(self) -> None:
@@ -26,18 +26,18 @@ class SyncAbstractRepository(abc.ABC, Generic[TModel_contra]):
     seen: MutableSequence[TModel_contra]
 
 
-class SyncEventstoreAbstractRepository(abc.ABC):
-    def __init__(self, publisher: Optional[SyncEventstreamPublisher] = None) -> None:
+class AsyncEventstoreAbstractRepository(abc.ABC):
+    def __init__(self, publisher: Optional[AsyncEventstreamPublisher] = None) -> None:
         self.publisher = publisher
         self.stream_buffer: MutableSequence[Message[Any]] = []
 
     @abc.abstractmethod
-    def _add(self, message: Message[Any]) -> None:
+    async def _add(self, message: Message[Any]) -> None:
         """
         Add a message to the storage backend of event repository.
         """
 
-    def add(self, message: Message[Any]) -> None:
+    async def add(self, message: Message[Any]) -> None:
         """
         Add the message to the storage backend and mark as seen
 
@@ -46,10 +46,10 @@ class SyncEventstoreAbstractRepository(abc.ABC):
         If the transaction is rollback, then, message will be dropped too from the
         eventstream.
         """
-        self._add(message)
+        await self._add(message)
         self.stream_buffer.append(message)
 
-    def publish_eventstream(self) -> None:
+    async def publish_eventstream(self) -> None:
         """
         Publish seen message to the eventstream.
         """
@@ -58,11 +58,11 @@ class SyncEventstoreAbstractRepository(abc.ABC):
             return
 
         for message in stream_buffer:
-            self.publisher.send_message(message)
+            await self.publisher.send_message(message)
 
 
-class SyncSinkholeEventstoreRepository(SyncEventstoreAbstractRepository):
+class AsyncSinkholeEventstoreRepository(AsyncEventstoreAbstractRepository):
     """An eventstore that drop all the message."""
 
-    def _add(self, message: Message[Any]) -> None:
+    async def _add(self, message: Message[Any]) -> None:
         """Do nothing. The sinkhole drop every message."""

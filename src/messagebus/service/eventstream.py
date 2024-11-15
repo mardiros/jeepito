@@ -2,7 +2,7 @@ import abc
 from collections.abc import Mapping
 from typing import Any
 
-from jeepito.domain.model import Message
+from messagebus.domain.model import Message
 
 
 class AbstractMessageSerializer(abc.ABC):

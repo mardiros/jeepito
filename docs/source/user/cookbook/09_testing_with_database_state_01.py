@@ -1,7 +1,7 @@
 import pytest
 from reading_club.service.uow import AbstractUnitOfWork
 
-from jeepito import AsyncMessageBus
+from messagebus import AsyncMessageBus
 
 
 @pytest.fixture

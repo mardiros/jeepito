@@ -15,7 +15,7 @@ Glossary
       *Architecture Patterns With Python: Enabling Test-Driven Development,
       Domain-Driven Design, and Event-Driven Microservices* is a book from
       Harry J.W. Percival and Bob Gregory that expose design pattern coming from
-      :term:`DDD`. 
+      :term:`DDD`.
 
    Breaking Change
       In programming, updating contracts can involve breaking changes.
@@ -62,7 +62,7 @@ Glossary
       A software design approach focusing on modeling software to match a domain
       according to input from that domain's experts.
 
-      The term was coined by Eric Evans in his book of the same title published in 2003. 
+      The term was coined by Eric Evans in his book of the same title published in 2003.
 
       https://en.wikipedia.org/wiki/Domain-driven_design
 
@@ -141,7 +141,7 @@ Glossary
 
    Unit Of Work
       The unit of work is an object which is responsible to represent a transaction
-      at the business layer. The jeepito
+      at the business layer. The messagebus
       https://en.wikipedia.org/wiki/Unit_of_work
 
    Repository

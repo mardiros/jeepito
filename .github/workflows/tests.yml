@@ -36,11 +36,11 @@ jobs:
 
       - name: Check types
         run: |
-          uv run mypy src/jeepito/
+          uv run mypy src/messagebus/
 
       - name: Run tests
         run: |
-          uv run pytest tests  --junitxml=junit/test-results-${{ matrix.python-version }}.xml --cov=jeepito --cov-report=xml --cov-report=html
+          uv run pytest tests  --junitxml=junit/test-results-${{ matrix.python-version }}.xml --cov=messagebus --cov-report=xml --cov-report=html
 
       - name: Upload pytest test results
         uses: actions/upload-artifact@v4

@@ -1,6 +1,6 @@
-import jeepito
+import messagebus
 
-__version__ = jeepito.__version__
+__version__ = messagebus.__version__
 
 if __name__ == "__main__":
     print(__version__, end="")

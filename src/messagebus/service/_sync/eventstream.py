@@ -2,35 +2,35 @@ import abc
 from collections.abc import Mapping
 from typing import Any
 
-from jeepito.domain.model import Message
-from jeepito.service.eventstream import AbstractMessageSerializer, MessageSerializer
+from messagebus.domain.model import Message
+from messagebus.service.eventstream import AbstractMessageSerializer, MessageSerializer
 
 
-class AsyncAbstractEventstreamTransport(abc.ABC):
+class SyncAbstractEventstreamTransport(abc.ABC):
     """
     Transport a message to the event stream.
     """
 
     @abc.abstractmethod
-    async def send_message_serialized(self, message: Mapping[str, Any]) -> None:
+    def send_message_serialized(self, message: Mapping[str, Any]) -> None:
         """Publish a serialized message to the eventstream."""
 
 
-class AsyncSinkholeEventstreamTransport(AsyncAbstractEventstreamTransport):
+class SyncSinkholeEventstreamTransport(SyncAbstractEventstreamTransport):
     """
     Drop all messages.
 
     By default, the events are not streamed until it is configured to do so.
     """
 
-    async def send_message_serialized(self, message: Mapping[str, Any]) -> None:
+    def send_message_serialized(self, message: Mapping[str, Any]) -> None:
         """Do nothing."""
 
 
 default_serializer = MessageSerializer()
 
 
-class AsyncEventstreamPublisher:
+class SyncEventstreamPublisher:
     """
     Publish a message to the event stream.
 
@@ -40,14 +40,14 @@ class AsyncEventstreamPublisher:
 
     def __init__(
         self,
-        transport: AsyncAbstractEventstreamTransport,
+        transport: SyncAbstractEventstreamTransport,
         serializer: AbstractMessageSerializer = default_serializer,
     ) -> None:
         """Publish a message to the eventstream."""
         self.transport = transport
         self.serializer = serializer
 
-    async def send_message(self, message: Message[Any]) -> None:
+    def send_message(self, message: Message[Any]) -> None:
         """
         Publish a message to the eventstream.
 
@@ -60,4 +60,4 @@ class AsyncEventstreamPublisher:
         if not message.metadata.published:
             return
         evt = self.serializer.serialize_message(message)
-        await self.transport.send_message_serialized(evt)
+        self.transport.send_message_serialized(evt)

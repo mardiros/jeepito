@@ -1,7 +1,7 @@
 [project]
 authors = [{ name = "Guillaume Gauvrit", email = "guillaume@gauvr.it" }]
 description = "A message bus library"
-name = "Jeepito"
+name = "messagebus"
 version = "0.5.1"
 requires-python = ">=3.9"
 license = { text = "MIT" }
@@ -13,11 +13,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mardiros/jeepito"
-Documentation = "https://mardiros.github.io/jeepito"
-Repository = "https://github.com/mardiros/jeepito.git"
-Issues = "https://github.com/mardiros/jeepito/issues"
-Changelog = "https://mardiros.github.io/jeepito/user/changelog.html"
+Homepage = "https://github.com/mardiros/messagebus"
+Documentation = "https://mardiros.github.io/messagebus"
+Repository = "https://github.com/mardiros/messagebus.git"
+Issues = "https://github.com/mardiros/messagebus/issues"
+Changelog = "https://mardiros.github.io/messagebus/user/changelog.html"
 
 [project.optional-dependencies]
 docs = [
@@ -76,7 +76,7 @@ venvPath = ".venv"
 [[tool.mypy.overrides]]
 disallow_any_generics = true
 disallow_untyped_defs = true
-module = "jeepito.*"
+module = "messagebus.*"
 
 [tool.isort]
 profile = "black"

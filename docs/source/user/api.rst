@@ -1,5 +1,5 @@
-jeepito API
+messagebus API
 ==============
 
-.. automodule:: jeepito
+.. automodule:: messagebus
    :members:

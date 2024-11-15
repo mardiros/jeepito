@@ -1,5 +1,5 @@
 """
-Jeepito API.
+messagebus API.
 """
 
 try:
@@ -53,7 +53,7 @@ from .service._sync.unit_of_work import (
 )
 from .service.eventstream import AbstractMessageSerializer
 
-__version__ = version("Jeepito")
+__version__ = version("messagebus")
 
 __all__ = [
     # models

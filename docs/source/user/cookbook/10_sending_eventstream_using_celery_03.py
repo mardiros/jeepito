@@ -4,7 +4,7 @@ from typing import Any
 import pytest
 from reading_club.adapters.eventstream import EventstreamTransport
 
-from jeepito import AsyncAbstractEventstreamTransport
+from messagebus import AsyncAbstractEventstreamTransport
 
 
 class FakeCelery:

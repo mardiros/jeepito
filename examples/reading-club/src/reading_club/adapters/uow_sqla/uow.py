@@ -6,13 +6,13 @@ from sqlalchemy import insert, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
-from jeepito import (  # AsyncEventstoreAbstractRepository,
+from messagebus import (  # AsyncEventstoreAbstractRepository,
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
     AsyncUnitOfWorkTransaction,
     Message,
 )
-from jeepito.service._async.repository import AsyncEventstoreAbstractRepository
+from messagebus.service._async.repository import AsyncEventstoreAbstractRepository
 from reading_club.domain.model import Book
 from reading_club.service.repositories import (
     AbstractBookRepository,

@@ -15,13 +15,13 @@ from reading_club.service.repositories import (
 from reading_club.service.uow import AbstractUnitOfWork
 from result import Err, Ok
 
-from jeepito import (
+from messagebus import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
     AsyncMessageBus,
     Message,
 )
-from jeepito.service._async.repository import AsyncEventstoreAbstractRepository
+from messagebus.service._async.repository import AsyncEventstoreAbstractRepository
 
 
 class InMemoryEventstoreRepository(AsyncEventstoreAbstractRepository):

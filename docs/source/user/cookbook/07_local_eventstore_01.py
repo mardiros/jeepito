@@ -1,7 +1,7 @@
 from collections.abc import MutableSequence
 from typing import Any, ClassVar
 
-from jeepito import AsyncEventstoreAbstractRepository, Message
+from messagebus import AsyncEventstoreAbstractRepository, Message
 
 
 class InMemoryEventstoreRepository(AsyncEventstoreAbstractRepository):

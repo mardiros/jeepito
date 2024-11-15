@@ -1,11 +1,11 @@
 from collections.abc import Mapping, MutableSequence
 from typing import Any
 
-from jeepito.service._async.eventstream import (
+from messagebus.service._async.eventstream import (
     AsyncAbstractEventstreamTransport,
     AsyncEventstreamPublisher,
 )
-from jeepito.service.eventstream import MessageSerializer
+from messagebus.service.eventstream import MessageSerializer
 from tests._async.conftest import DummyCommand, DummyEvent
 
 

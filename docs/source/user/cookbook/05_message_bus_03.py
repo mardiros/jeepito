@@ -2,7 +2,7 @@ from reading_club.domain.messages import RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.repositories import BookRepositoryOperationResult
 
-from jeepito import AsyncUnitOfWorkTransaction, async_listen
+from messagebus import AsyncUnitOfWorkTransaction, async_listen
 
 
 @async_listen

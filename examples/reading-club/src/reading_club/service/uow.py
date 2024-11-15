@@ -1,4 +1,4 @@
-from jeepito import AsyncAbstractUnitOfWork
+from messagebus import AsyncAbstractUnitOfWork
 from reading_club.service.repositories import (
     AbstractBookRepository,
     AbstractReviewerRepository,

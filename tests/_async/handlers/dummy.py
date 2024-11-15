@@ -1,7 +1,7 @@
 from typing import Any
 
-from jeepito.service._async.registry import async_listen
-from jeepito.service._async.unit_of_work import AsyncAbstractUnitOfWork
+from messagebus.service._async.registry import async_listen
+from messagebus.service._async.unit_of_work import AsyncAbstractUnitOfWork
 from tests._async.conftest import DummyCommand, DummyEvent
 
 

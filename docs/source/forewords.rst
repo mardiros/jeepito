@@ -13,10 +13,10 @@ who tries to do my best.
 
 This library is largerly inspired by the book :term:`Architecture Patterns With Python`
 from Harry J.W. Percival and Bob Gregory. It has been previously written other
-projects I've wrote and available on my github account, such as :term:`purgatory`, 
+projects I've wrote and available on my github account, such as :term:`purgatory`,
 or :term:`casualcms`. At Gandi, I've write a library to encourage Event-Driven
 development, something simple, too simple with a big lack in domain modeling.
-The next services I wrote, have all a copy pasted jeepito.
+The next services I wrote, have all a copy pasted messagebus.
 After multiple copy pasta, and encouraged by my collegue, Michael_,
 I am releasing this library to stop that mess, because this buch of code in every
 software I write at the moment.

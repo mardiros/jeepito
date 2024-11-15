@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from jeepito import Field, Model
+from messagebus import Field, Model
 
 
 class Book(Model):

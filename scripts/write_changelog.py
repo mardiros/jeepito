@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 import datetime
 
-import jeepito
+import messagebus
 
 header = (
-    f"{jeepito.__version__}  - "
+    f"{messagebus.__version__}  - "
     f"Released on {datetime.datetime.now().date().isoformat()}"
 )
 with open("CHANGELOG.rst.new", "w") as changelog:

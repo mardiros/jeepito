@@ -4,7 +4,7 @@ from typing import Any
 
 from celery import Celery
 
-from jeepito import AsyncAbstractEventstreamTransport
+from messagebus import AsyncAbstractEventstreamTransport
 
 
 class EventstreamTransport(AsyncAbstractEventstreamTransport):

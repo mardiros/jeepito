@@ -1,5 +1,5 @@
-from jeepito import Model
-from jeepito.service._async.repository import AsyncAbstractRepository
+from messagebus import Model
+from messagebus.service._async.repository import AsyncAbstractRepository
 
 
 class Dummy(Model): ...

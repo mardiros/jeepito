@@ -1,5 +1,5 @@
-from jeepito.service._async.registry import AsyncMessageBus
-from jeepito.service._async.unit_of_work import AsyncUnitOfWorkTransaction
+from messagebus.service._async.registry import AsyncMessageBus
+from messagebus.service._async.unit_of_work import AsyncUnitOfWorkTransaction
 from tests._async.conftest import (
     AsyncDummyUnitOfWorkWithEvents,
     AsyncEventstreamTransport,

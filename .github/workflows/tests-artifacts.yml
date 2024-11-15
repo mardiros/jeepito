@@ -34,8 +34,8 @@ jobs:
 
       - name: "Install"
         run: |
-          pip install dist/jeepito-*.whl --force-reinstall
+          pip install dist/messagebus-*.whl --force-reinstall
 
       - name: "Test sdist"
         run: |
-          python -c "from jeepito import __version__; print(__version__, end='')"
+          python -c "from messagebus import __version__; print(__version__, end='')"

@@ -24,7 +24,7 @@ Lets run the test to see what happen.
     =============================== FAILURES ================================
     ___________________________ test_bus_handler ____________________________
 
-    bus = <jeepito.service._async.registry.AsyncMessageBus object at 0x7f27b2c07810>
+    bus = <messagebus.service._async.registry.AsyncMessageBus object at 0x7f27b2c07810>
     register_book_cmd = RegisterBook(message_id='6cff6902-139d-11ee-b0cb-5c80b62b9562', created_at=datetime.datetime(2023, 6, 25, 21, 15, 35, ...', schema_version=1, published=False), id='x', isbn='0-321-12521-5', title='Domain Driven Design', author='Eric Evans')
     uow = <tests.conftest.InMemoryUnitOfWork object at 0x7f27b2c7b650>
 

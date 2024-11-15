@@ -1,7 +1,7 @@
 from typing import Any
 
-from jeepito.service._sync.registry import sync_listen
-from jeepito.service._sync.unit_of_work import SyncAbstractUnitOfWork
+from messagebus.service._sync.registry import sync_listen
+from messagebus.service._sync.unit_of_work import SyncAbstractUnitOfWork
 from tests._sync.conftest import DummyCommand, DummyEvent
 
 

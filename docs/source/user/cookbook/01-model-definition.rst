@@ -1,7 +1,7 @@
 Define the core model
 =====================
 
-The domain drive design approach is core domain model centric. 
+The domain drive design approach is core domain model centric.
 The core model contains only the business logic of the app, nothing more.
 
 Initial model
@@ -35,7 +35,7 @@ you can't use an ORM to describe your domain model.
 
 .. note::
 
-    Behind the scene, jeepito use pydantic, the `Field` is just a reexport of
+    Behind the scene, messagebus use pydantic, the `Field` is just a reexport of
     the pydantic Field class.
 
 
@@ -55,6 +55,6 @@ are discouraged, in that case, a new command is created with the change updated.
 .. note::
 
     For example, if we want to transform the author by a list of authors, it is
-    a breaking change, and a new version of the command has to be created. 
+    a breaking change, and a new version of the command has to be created.
 
     .. literalinclude:: 01_model_definition_03.py

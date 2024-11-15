@@ -1,8 +1,8 @@
 Cookbook
 ========
 
-The jeepito cookbook is a step by step tutorial to develop a software
-using the jeepito library.
+The messagebus cookbook is a step by step tutorial to develop a software
+using the messagebus library.
 
 
 .. toctree::

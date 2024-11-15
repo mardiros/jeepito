@@ -17,13 +17,13 @@ docs = ["sphinx (==6.1.3)", "sphinx-mdinclude (==0.5.3)"]
 
 [[package]]
 name = "amqp"
-version = "5.2.0"
+version = "5.3.1"
 description = "Low-level AMQP client for Python (fork of amqplib)."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "amqp-5.2.0-py3-none-any.whl", hash = "sha256:827cb12fb0baa892aad844fd95258143bce4027fdac4fccddbc43330fd281637"},
-    {file = "amqp-5.2.0.tar.gz", hash = "sha256:a1ecff425ad063ad42a486c902807d1482311481c8ad95a72694b2975e75f7fd"},
+    {file = "amqp-5.3.1-py3-none-any.whl", hash = "sha256:43b3319e1b4e7d1251833a93d672b4af1e40f3d632d479b98661a95f117880a2"},
+    {file = "amqp-5.3.1.tar.gz", hash = "sha256:cddc00c725449522023bad949f70fff7b48f0b1ade74d170a6f10ab044739432"},
 ]
 
 [package.dependencies]
@@ -353,27 +353,6 @@ files = [
 colors = ["colorama (>=0.4.6)"]
 
 [[package]]
-name = "Jeepito"
-version = "0.4.0"
-description = "A message bus library"
-optional = false
-python-versions = ">=3.9"
-files = []
-develop = false
-
-[package.dependencies]
-lastuuid = ">=0.1.1"
-pydantic = ">=2.5.0,<3"
-venusian = ">=3.0.0,<4"
-
-[package.extras]
-docs = ["furo (>=2024.8.6)", "sphinx (>=7.0.0)", "sphinx-autodoc-typehints (>=1.12.0,<2)"]
-
-[package.source]
-type = "directory"
-url = "../.."
-
-[[package]]
 name = "kombu"
 version = "5.4.2"
 description = "Messaging library for Python."
@@ -488,6 +467,27 @@ files = [
     {file = "lastuuid-0.1.1-pp39-pypy39_pp73-musllinux_1_1_x86_64.whl", hash = "sha256:e0e3c597bd5a6cd5e9d7923f4e941b917be79c3dfda5ea53e2780a6bd03816ce"},
     {file = "lastuuid-0.1.1.tar.gz", hash = "sha256:83981f29961d690d841e7aa753c231c92c42b6dcc176627d03345679bc40685f"},
 ]
+
+[[package]]
+name = "messagebus"
+version = "0.5.1"
+description = "A message bus library"
+optional = false
+python-versions = ">=3.9"
+files = []
+develop = false
+
+[package.dependencies]
+lastuuid = ">=0.1.1"
+pydantic = ">=2.5.0,<3"
+venusian = ">=3.0.0,<4"
+
+[package.extras]
+docs = ["furo (>=2024.8.6)", "sphinx (>=7.0.0)", "sphinx-autodoc-typehints (>=1.12.0,<2)"]
+
+[package.source]
+type = "directory"
+url = "../.."
 
 [[package]]
 name = "mypy"
@@ -918,13 +918,13 @@ sqlcipher = ["sqlcipher3_binary"]
 
 [[package]]
 name = "tomli"
-version = "2.0.2"
+version = "2.1.0"
 description = "A lil' TOML parser"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "tomli-2.0.2-py3-none-any.whl", hash = "sha256:2ebe24485c53d303f690b0ec092806a085f07af5a5aa1464f3931eec36caaa38"},
-    {file = "tomli-2.0.2.tar.gz", hash = "sha256:d46d457a85337051c36524bc5349dd91b1877838e2979ac5ced3e710ed8a60ed"},
+    {file = "tomli-2.1.0-py3-none-any.whl", hash = "sha256:a5c57c3d1c56f5ccdf89f6523458f60ef716e210fc47c4cfb188c5ba473e0391"},
+    {file = "tomli-2.1.0.tar.gz", hash = "sha256:3f646cae2aec94e17d04973e4249548320197cfabdf130015d023de4b74d8ab8"},
 ]
 
 [[package]]
@@ -989,4 +989,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "9cabfc4c970dd53aa1e903dd7d6872091d0a056dc263d5603cccd52bd6b84731"
+content-hash = "dc0433e2cfcd1b9dcd720022b607514714cd253db28241d987b65774c9fcc855"

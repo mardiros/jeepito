@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from jeepito import Event, Field, Metadata
+from messagebus import Event, Field, Metadata
 
 
 class BookRegistered(Event):

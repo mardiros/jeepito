@@ -1,4 +1,4 @@
-package := 'jeepito'
+package := 'messagebus'
 default_test_suite := 'tests'
 
 install:
@@ -33,7 +33,7 @@ black: fmt
     echo "$(tput setaf 3)Warning: Use 'just fmt' instead$(tput setaf 7)"
 
 typecheck:
-    uv run mypy src/jeepito/ tests/
+    uv run mypy src/messagebus/ tests/
 
 cov test_suite=default_test_suite:
     rm -f .coverage

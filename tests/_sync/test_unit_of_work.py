@@ -1,7 +1,7 @@
 import pytest
 
-from jeepito.domain.model import GenericEvent
-from jeepito.service._sync.unit_of_work import (
+from messagebus.domain.model import GenericEvent
+from messagebus.service._sync.unit_of_work import (
     SyncUnitOfWorkTransaction,
     TransactionError,
     TransactionStatus,

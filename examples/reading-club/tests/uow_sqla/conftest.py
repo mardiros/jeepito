@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from jeepito import AsyncAbstractEventstreamTransport
+from messagebus import AsyncAbstractEventstreamTransport
 
 DATABASE_URL = "sqlite+aiosqlite:///"
 

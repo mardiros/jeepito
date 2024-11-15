@@ -1,7 +1,7 @@
 from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from jeepito import (
+from messagebus import (
     AsyncEventstoreAbstractRepository,
     AsyncEventstreamPublisher,
     Message,

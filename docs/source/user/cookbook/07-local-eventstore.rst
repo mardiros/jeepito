@@ -12,12 +12,12 @@ The message bus can store them in an event repository, usually a sql table in a
 sql based repository.
 
 For the moment, we will replace the default repository (
-:class:`jeepito.AsyncSinkholeEventstoreRepository` in previous chapter)
+:class:`messagebus.AsyncSinkholeEventstoreRepository` in previous chapter)
 and write our own one that store them in memory.
 
 An ``EventstoreRepository`` is a :term:`repository` for all the local events,
-its override the :class:`jeepito.AsyncEventstoreAbstractRepository`.
-Only the abstract method :meth:`jeepito.AsyncEventstoreAbstractRepository._add`
+its override the :class:`messagebus.AsyncEventstoreAbstractRepository`.
+Only the abstract method :meth:`messagebus.AsyncEventstoreAbstractRepository._add`
 needs to be implemented.
 
 
@@ -35,7 +35,7 @@ Finally, we can update the tests to ensure that the message is stored.
 .. literalinclude:: 07_local_eventstore_03.py
 
 Note that there is now way to retrieve message from a
-:class:`jeepito.AsyncEventstoreAbstractRepository`.
+:class:`messagebus.AsyncEventstoreAbstractRepository`.
 The repository is made to be a write only interface. This is why,
 while testing, we add a ``# type: ignore`` by reading from our implementation detail.
 
@@ -53,11 +53,11 @@ Running the tests show that the eventstore is filled out by the bus.
 .. important::
 
     In the real world, we don't tests that a ``InMemoryUnitOfWork`` keep messages,
-    it has been done here has an example. The jeepito is responsible of that
+    it has been done here has an example. The messagebus is responsible of that
     part, nothing more.
 
     By the way, what has to be is the real EventstoreRepository._add method that
     received all kind of messages.
 
-All the basics of the jeepito has been introduced, so, for now, we will create
-a sql implementation of our repository to get a real storage backend example. 
+All the basics of the messagebus has been introduced, so, for now, we will create
+a sql implementation of our repository to get a real storage backend example.

@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from jeepito import Command, Event, Field, Metadata
+from messagebus import Command, Event, Field, Metadata
 
 
 class RegisterBook(Command):

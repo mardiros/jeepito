@@ -1,4 +1,4 @@
-from jeepito import async_listen
+from messagebus import async_listen
 from reading_club.domain.messages import BookRegistered, RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.repositories import BookRepositoryOperationResult

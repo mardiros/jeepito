@@ -1,6 +1,6 @@
 0.5.1  - Released on 2024-11-15
 -------------------------------
-* Last version of jeepito, the project will be renamed messagebus 
+* Last version of messagebus, the project will be renamed messagebus
 
 0.5.0  - Released on 2024-11-11
 -------------------------------
@@ -14,7 +14,7 @@
 
 0.3.2  - Released on 2024-11-09
 -------------------------------
-* Cleanup documentation and CI 
+* Cleanup documentation and CI
 
 0.3.1  - Released on 2024-11-01
 -------------------------------

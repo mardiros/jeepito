@@ -1,7 +1,7 @@
 from reading_club.domain.messages import RegisterBook
 from reading_club.service.repositories import BookRepositoryOperationResult
 
-from jeepito import AsyncUnitOfWorkTransaction
+from messagebus import AsyncUnitOfWorkTransaction
 
 
 async def register_book(

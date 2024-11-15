@@ -6,7 +6,7 @@ from uuid import UUID
 from reading_club.domain.model import Book
 from result import Result
 
-from jeepito import AsyncAbstractRepository
+from messagebus import AsyncAbstractRepository
 
 
 class BookRepositoryError(enum.Enum):

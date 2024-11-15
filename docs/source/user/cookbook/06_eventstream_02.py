@@ -3,7 +3,7 @@ from reading_club.domain.messages import RegisterBook
 from reading_club.domain.model import Book
 from reading_club.service.uow import AbstractUnitOfWork
 
-from jeepito import AsyncMessageBus
+from messagebus import AsyncMessageBus
 from tests.conftest import EventstreamTransport
 
 

@@ -1,5 +1,5 @@
-from jeepito import Model
-from jeepito.service._sync.repository import SyncAbstractRepository
+from messagebus import Model
+from messagebus.service._sync.repository import SyncAbstractRepository
 
 
 class Dummy(Model): ...

@@ -7,7 +7,7 @@ import logging
 from collections.abc import Callable, Coroutine
 from typing import Any, TypeVar
 
-from jeepito.domain.model import Message
+from messagebus.domain.model import Message
 
 from .service._async.unit_of_work import AsyncAbstractUnitOfWork
 from .service._sync.unit_of_work import SyncAbstractUnitOfWork

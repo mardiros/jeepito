@@ -348,7 +348,7 @@ wheels = [
 ]
 
 [[package]]
-name = "jeepito"
+name = "messagebus"
 version = "0.5.1"
 source = { editable = "." }
 dependencies = [

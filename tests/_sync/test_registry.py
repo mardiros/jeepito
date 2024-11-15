@@ -2,7 +2,7 @@ from typing import Any
 
 import pytest
 
-from jeepito.service._sync.registry import ConfigurationError, SyncMessageBus
+from messagebus.service._sync.registry import ConfigurationError, SyncMessageBus
 from tests._sync.conftest import (
     DummyCommand,
     DummyEvent,

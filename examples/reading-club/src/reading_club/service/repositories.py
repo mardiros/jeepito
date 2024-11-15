@@ -4,7 +4,7 @@ from types import EllipsisType
 
 from result import Result
 
-from jeepito import AsyncAbstractRepository
+from messagebus import AsyncAbstractRepository
 from reading_club.domain.model import Book, Review, Reviewer
 
 

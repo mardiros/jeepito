@@ -4,7 +4,7 @@ from reading_club.adapters.uow_sqla.uow import SQLUnitOfWork
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
-from jeepito import AsyncAbstractEventstreamTransport
+from messagebus import AsyncAbstractEventstreamTransport
 
 
 async def test_commit(

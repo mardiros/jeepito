@@ -8,8 +8,8 @@ from collections.abc import Iterator
 from types import TracebackType
 from typing import Any, Generic, Optional, TypeVar
 
-from jeepito.domain.model import Message
-from jeepito.service._async.repository import (
+from messagebus.domain.model import Message
+from messagebus.service._async.repository import (
     AsyncAbstractRepository,
     AsyncEventstoreAbstractRepository,
     AsyncSinkholeEventstoreRepository,
