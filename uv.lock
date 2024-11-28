@@ -523,7 +523,7 @@ wheels = [
 
 [[package]]
 name = "messagebus"
-version = "0.6.0"
+version = "0.7.0"
 source = { editable = "." }
 dependencies = [
     { name = "lastuuid" },
@@ -539,7 +539,7 @@ docs = [
     { name = "sphinx-autodoc-typehints" },
 ]
 
-[package.dependency-groups]
+[package.dev-dependencies]
 dev = [
     { name = "mypy" },
     { name = "pytest" },
@@ -566,7 +566,7 @@ requires-dist = [
     { name = "venusian", specifier = ">=3.0.0,<4" },
 ]
 
-[package.metadata.dependency-groups]
+[package.metadata.requires-dev]
 dev = [
     { name = "mypy", specifier = ">=1.4.0,<2" },
     { name = "pytest", specifier = ">=8,<9" },

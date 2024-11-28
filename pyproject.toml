@@ -2,7 +2,7 @@
 authors = [{ name = "Guillaume Gauvrit", email = "guillaume@gauvr.it" }]
 description = "A message bus library"
 name = "messagebus"
-version = "0.6.0"
+version = "0.7.0"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 
