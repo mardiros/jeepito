@@ -47,39 +47,39 @@ from .service.eventstream import AbstractMessageSerializer
 __version__ = version("messagebus")
 
 __all__ = [
+    # Eventstream
+    "AbstractMessageSerializer",
+    "AsyncAbstractEventstreamTransport",
+    # Repository
+    "AsyncAbstractRepository",
+    # Unit of work
+    "AsyncAbstractUnitOfWork",
+    "AsyncEventstoreAbstractRepository",
+    "AsyncEventstreamPublisher",
+    "AsyncMessageBus",
+    "AsyncSinkholeEventstoreRepository",
+    "AsyncSinkholeEventstreamTransport",
+    "AsyncUnitOfWorkTransaction",
+    "Command",
+    "Event",
+    "Field",
     # models
     "GenericCommand",
     "GenericEvent",
     "GenericModel",
-    "Model",
-    "Field",
     "Message",
     "Metadata",
-    "Command",
-    "Event",
-    # Repository
-    "AsyncAbstractRepository",
+    "Model",
+    "SyncAbstractEventstreamTransport",
     "SyncAbstractRepository",
-    # Unit of work
-    "AsyncAbstractUnitOfWork",
-    "AsyncUnitOfWorkTransaction",
     "SyncAbstractUnitOfWork",
-    "SyncUnitOfWorkTransaction",
-    "AsyncEventstoreAbstractRepository",
     "SyncEventstoreAbstractRepository",
-    "AsyncSinkholeEventstoreRepository",
+    "SyncEventstreamPublisher",
+    "SyncMessageBus",
     "SyncSinkholeEventstoreRepository",
+    "SyncSinkholeEventstreamTransport",
+    "SyncUnitOfWorkTransaction",
     # Registry
     "async_listen",
     "sync_listen",
-    "AsyncMessageBus",
-    "SyncMessageBus",
-    # Eventstream
-    "AbstractMessageSerializer",
-    "AsyncAbstractEventstreamTransport",
-    "AsyncSinkholeEventstreamTransport",
-    "AsyncEventstreamPublisher",
-    "SyncAbstractEventstreamTransport",
-    "SyncSinkholeEventstreamTransport",
-    "SyncEventstreamPublisher",
 ]

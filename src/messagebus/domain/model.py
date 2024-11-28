@@ -67,7 +67,9 @@ class GenericEvent(Message[TMetadata]):
 class GenericModel(BaseModel, Generic[TMetadata]):
     """Base class for model."""
 
-    messages: MutableSequence[Message[TMetadata]] = Field(default_factory=list)
+    messages: MutableSequence[Message[TMetadata]] = Field(
+        default_factory=list, exclude=True
+    )
     """
     List of messages consumed by the unit of work to mutate the repository.
 
@@ -78,8 +80,8 @@ class GenericModel(BaseModel, Generic[TMetadata]):
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, GenericModel):
             return False
-        slf = self.model_dump(exclude={"messages"})
-        otr = other.model_dump(exclude={"messages"})
+        slf = self.model_dump()
+        otr = other.model_dump()
         return slf == otr
 
 
